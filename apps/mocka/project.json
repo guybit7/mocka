@@ -46,7 +46,8 @@
       },
       "configurations": {
         "development": {
-          "buildTarget": "mocka:build:development"
+          "buildTarget": "mocka:build:development",
+          "runBuildTargetDependencies": true
         },
         "production": {
           "buildTarget": "mocka:build:production"
@@ -56,6 +57,19 @@
     "docker-build": {
       "dependsOn": ["build"],
       "command": "docker build -f apps/mocka/Dockerfile . -t mocka"
+    },
+    "custom-serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "echo hello1"
+          },
+          {
+            "command": "echo hello2"
+          }
+        ]
+      }
     }
   }
 }
