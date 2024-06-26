@@ -22,6 +22,12 @@ pipeline {
               bat "echo Build completed for variant: ${BUILD_VARIANT}"
             }
         }
+
+        stage('build ') {
+            steps {
+              bat 'npx nx run mocka-ui:build'
+            }
+        }
     }
 
      post {
