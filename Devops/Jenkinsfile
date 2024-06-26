@@ -17,7 +17,7 @@ pipeline {
     // }
 
     stages {
-        stage('PRE') {
+        stage('pre run') {
             steps {
               bat "echo Build completed for variant: ${BUILD_VARIANT}"
             }
