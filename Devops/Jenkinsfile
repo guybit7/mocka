@@ -31,7 +31,7 @@ pipeline {
 
         stage('build') {
             steps {
-                bat 'nx reset'
+                bat 'npx nx reset'
                 bat 'npx nx run mocka-ui:build'
             }
         }
