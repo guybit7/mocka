@@ -23,6 +23,12 @@ pipeline {
             }
         }
 
+        stage('install') {
+            steps {
+              bat 'npm install'
+            }
+        }
+
         stage('build') {
             steps {
               bat 'npx nx run mocka-ui:build'
