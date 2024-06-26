@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+    parameters {
+        choice(
+            name: 'BuildVariant',
+            choices: ['Development', 'Staging', 'Production'],
+            description: 'Select the build variant'
+            )
+    }
+
+    environment {
+        BUILD_VARIANT = "${params.buildVariant}"
+    }
+
+    // tools {
+    //     nodejs "node-18.17.1"
+    // }
+
+    stages {
+        stage('PRE') {
+            steps {
+              echo "Build completed for variant: ${BUILD_VARIANT}"
+            }
+        }
+    }
+
+     post {
+        always {
+            echo 'Cleaning up...'
+        }
+        success {
+            echo 'Build succeeded!'
+        }
+        failure {
+            echo 'Build failed!'
+        }
+    }
+}
