@@ -19,7 +19,7 @@ pipeline {
     stages {
         stage('PRE') {
             steps {
-              echo "Build completed for variant: ${BUILD_VARIANT}"
+              bat "echo Build completed for variant: ${BUILD_VARIANT}"
             }
         }
     }
