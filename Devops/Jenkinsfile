@@ -12,9 +12,9 @@ pipeline {
         BUILD_VARIANT = "${params.buildVariant}"
     }
 
-    // tools {
-    //     nodejs "node-18.17.1"
-    // }
+    tools {
+        nodejs "node-18.17.1"
+    }
 
     stages {
         stage('pre run') {
@@ -23,7 +23,7 @@ pipeline {
             }
         }
 
-        stage('build ') {
+        stage('build') {
             steps {
               bat 'npx nx run mocka-ui:build'
             }
