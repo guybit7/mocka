@@ -37,9 +37,10 @@ export class MockService {
 
     public static async update(body: any): Promise<MockType | null> {
         try {
+            console.log(body);
             return await Mock.findByIdAndUpdate(body._id, body, {new: true});
         } catch (error) {
-            throw new Error(`Error finding mock by name', ${error.message}`)
+            throw new Error(`Error update', ${error.message}`)
         } 
     }
 

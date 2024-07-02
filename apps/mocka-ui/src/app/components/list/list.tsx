@@ -1,62 +1,31 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { memo } from 'react';
 import ListItem from '../list-item/list-item';
 import Button from '@mui/material/Button';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { NEW } from '../../constants/common.constant';
-// import crypto from 'crypto';
+import { useList } from './list.hook';
+import { useMock } from '../mock/mock.hook';
 
-export function List() {
-  const [items, setItems] = useState([] as any[]);
-  const location = useLocation();
+type ListContainerProps = {};
+
+const List = memo<ListContainerProps>(function List() {
+  const { loading, theList } = useList();
+  const { loadingMock, deleteMock } = useMock();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    try {
-      fetchAll();
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchAll();
-  }, [location]);
-
-  async function fetchAll() {
-    try {
-      const reponse = await axios.get('http://localhost:3000/mock/getAll');
-      const theNewRes: any = [...reponse.data];
-      setItems(theNewRes);
-    } catch (error) {
-      throw Error('fetch all failed');
-    }
-  }
-
-  function editItem(item: any) {
-    console.log(item);
-    navigate(item._id, { relative: 'path' });
-  }
-
   function onCreate() {
     navigate(NEW, { relative: 'path' });
   }
 
-  async function onDelete(id: any) {
-    try {
-      const response = await axios.delete('http://localhost:3000/mock', {
-        data: { id: id },
-      });
-      fetchAll();
-    } catch (error) {
-      console.log('delete failed');
-    }
+  function onEditItem(item: any) {
+    navigate(item._id, { relative: 'path' });
   }
 
-  function createSHA256Hash(inputString: any) {
-    // const hash = crypto.createHash('sha256');
-    // hash.update(inputString);
-    // return hash.digest('hex');
+  async function onDeleteItem(id: any) {
+    try {
+      const res = await deleteMock({ id: id });
+    } catch (e) {
+      console.error('delete failed');
+    }
   }
 
   return (
@@ -67,20 +36,26 @@ export function List() {
         </Button>
       </div>
       <div className="flex flex-col gap-y-1 h-full overflow-auto">
-        {items.map((item, index) => {
-          return (
-            <ListItem
-              item={item}
-              key={item.name}
-              edit={editItem}
-              delete={onDelete}
-            ></ListItem>
-          );
-        })}
+        {loading ? (
+          <div> LOADING </div>
+        ) : (
+          <div>
+            {theList.map((item: any, index: number) => {
+              return (
+                <ListItem
+                  item={item}
+                  key={item.name + `-${index}`}
+                  edit={onEditItem}
+                  delete={onDeleteItem}
+                ></ListItem>
+              );
+            })}
+          </div>
+        )}
       </div>
       <Outlet />
     </div>
   );
-}
+});
 
 export default List;

@@ -7,6 +7,8 @@ import Modal from '@mui/material/Modal';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { EntityModeEnum } from '../../enums/entityModeEnum';
 import { NEW } from '../../constants/common.constant';
+import { useList } from '../list/list.hook';
+import { useMock } from './mock.hook';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -22,6 +24,8 @@ const style = {
 };
 
 export function Mock() {
+  const { loadingMock, createMock, updateMock } = useMock();
+
   const navigate = useNavigate();
   const location = useLocation();
   const params = useParams();
@@ -50,9 +54,7 @@ export function Mock() {
   async function initMockState() {
     if (entityMode === EntityModeEnum.UPDATE) {
       try {
-        const theMock = await axios.get(
-          `http://localhost:3000/mock/${params.id}`
-        );
+        const theMock = await axios.get(`http://localhost:3000/mock/${params.id}`);
         if (theMock === null) {
           console.log(`mock id: ${params.id} not found`);
           handleClose();
@@ -85,10 +87,10 @@ export function Mock() {
       let reponse = null;
       switch (entityMode) {
         case EntityModeEnum.CREATE:
-          reponse = await axios.post('http://localhost:3000/mock', formData);
+          reponse = await createMock(formData);
           break;
         case EntityModeEnum.UPDATE:
-          reponse = await axios.put('http://localhost:3000/mock', formData);
+          reponse = await updateMock(formData);
           break;
         default: {
           throw new Error('missing entity mode');
@@ -109,10 +111,7 @@ export function Mock() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col justify-center w-full p-5 h-full"
-          >
+          <form onSubmit={handleSubmit} className="flex flex-col justify-center w-full p-5 h-full">
             <div className="flex flex-col gap-5 h-full">
               {entityMode}
               <TextField

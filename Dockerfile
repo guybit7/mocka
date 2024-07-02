@@ -1,9 +1,9 @@
 FROM node:lts-alpine as build
 WORKDIR /app
-# COPY ./package*.json ./
-# RUN echo "Contenr of app:"
-# RUN ls -al
-# RUN npm install
+COPY ./package*.json ./
+RUN echo "Contenr of app:"
+RUN ls -al
+RUN npm install
 COPY . .
 RUN npx nx run mocka-ui:build
 
