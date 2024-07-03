@@ -6,10 +6,17 @@ pipeline {
             choices: ['Development', 'Staging', 'Production'],
             description: 'Select the build variant'
             )
+
+        choice(
+            name: 'deleteNodeModules',
+            choices: ['Yes', 'No'],
+            description: 'Delete node modules?'
+            )
     }
 
     environment {
-        BUILD_VARIANT = "${params.buildVariant}"
+        BUILD_VARIANT = ""
+        DELETE_NODE_MODULES = "No"
     }
 
     tools {
@@ -17,6 +24,14 @@ pipeline {
     }
 
     stages {
+        stage('Set Enviorment Variable') {
+            steps {
+                script {
+                    BUILD_VARIANT = params.buildVariant
+                }
+            }
+        }
+        
         stage('pre run') {
             steps {
               bat "echo Build completed for variant: ${BUILD_VARIANT} Latest"
@@ -25,7 +40,12 @@ pipeline {
 
         stage('install') {
             steps {
-              bat 'npm install'
+                script {
+                    if (DELETE_NODE_MODULES == 'Yes') {
+                        bat 'rmdir /s /q node_modules'
+                    }
+                    bat 'npm install'
+                }
             }
         }
 
