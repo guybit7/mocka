@@ -1,13 +1,8 @@
 pipeline {
     agent any
     parameters {
-        choice choices: ['Development', 'Staging', 'Production'], description: 'Select the build variant', name: 'BuildVariant'
-        choice choices: ['Yes', 'No'],  description: 'Delete node modules?', name: 'deleteNodeModules'
-    }
-
-    environment {
-        BUILD_VARIANT = ""
-        DELETE_NODE_MODULES = "No"
+        choice (name: 'BuildVariant', choices: ['Development', 'Staging', 'Production'], description: 'Select the build variant')
+        choice (name: 'deleteNodeModules', choices: ['Yes', 'No'],  description: 'Delete node modules?')
     }
 
     tools {
