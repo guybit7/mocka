@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Shell from './components/shell/shell';
 import Mock from './components/mock/mock';
@@ -29,8 +29,11 @@ export function App() {
           <Shell></Shell>
         </div>
         <Routes>
-          <Route path="list" element={<List />}>
-            <Route path=":id" element={<Mock />} />
+          <Route path="/">
+            <Route index element={<Navigate to="/list" replace />} />
+            <Route path="list" element={<List />}>
+              <Route path=":id" element={<Mock />} />
+            </Route>
           </Route>
         </Routes>
       </div>
