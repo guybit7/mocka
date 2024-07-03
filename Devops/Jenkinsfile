@@ -27,7 +27,7 @@ pipeline {
         stage('install') {
             steps {
                 script {
-                    if (DELETE_NODE_MODULES == 'Yes') {
+                    if (${params.DELETE_NODE_MODULES} == 'Yes') {
                         bat 'rmdir /s /q node_modules'
                     }
                     bat 'npm install'
