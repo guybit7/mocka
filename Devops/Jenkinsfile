@@ -27,14 +27,14 @@ pipeline {
         stage('Set Enviorment Variable') {
             steps {
                 script {
-                    bat 'echo Set Enviorment Variable'
+                    bat "echo Set Enviorment Variable -> ${params.BUILD_VARIANT}"
                 }
             }
         }
         
         stage('pre run') {
             steps {
-              bat "echo Build completed for variant: ${BUILD_VARIANT} Latest"
+              bat "echo Build completed for variant: ${params.BUILD_VARIANT} Latest"
             }
         }
 
