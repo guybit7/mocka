@@ -26,9 +26,9 @@ pipeline {
     stages {
         stage('Set Enviorment Variable') {
             steps {
-                script {
+                // script {
                     // BUILD_VARIANT = params.buildVariant
-                }
+                // }
             }
         }
         
