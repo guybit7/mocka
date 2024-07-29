@@ -15,7 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@mocka/mock": ["libs/mocka/mock/src/index.ts"]
+      "@mocka/mock": ["libs/mocka/mock/src/index.ts"],
+      "@ui-tanstack/mocks": ["libs/@ui-tanstack/mocks/src/index.ts"],
+      "@ui-tanstack/mocks-shell": ["libs/@ui-tanstack/mocks-shell/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
