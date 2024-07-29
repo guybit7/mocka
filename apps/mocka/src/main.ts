@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { MockController } from '@mocka/mock';
 import express from 'express';
 

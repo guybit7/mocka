@@ -13,7 +13,7 @@ export class MockService {
 
     public static async find(): Promise<MockType[] | null> {
         try {
-            return await Mock.find().skip(0).limit(1);
+            return await Mock.find(); //.skip(0).limit(1);
         } catch (error) {
             throw new Error(`Error finding mocks', ${error.message}`)
         }

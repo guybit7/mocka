@@ -2,3 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 /* You can add global styles to this file, and also import other style files */
+
+html, body {
+    @apply bg-slate-950 text-white h-full;
+    font-size: 16px;
+}
