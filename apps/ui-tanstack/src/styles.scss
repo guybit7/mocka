@@ -3,7 +3,18 @@
 @tailwind utilities;
 /* You can add global styles to this file, and also import other style files */
 
-html, body {
-    @apply bg-slate-950 text-white h-full;
-    font-size: 16px;
+html,
+body {
+  @apply bg-slate-950 text-white h-full;
+  font-size: 16px;
+}
+
+@layer components {
+  .card {
+    @apply bg-gray-600 text-green-600 flex;
+  }
+}
+
+.module-container {
+  @apply bg-gray-700 flex flex-col h-full;
 }
