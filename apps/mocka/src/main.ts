@@ -3,14 +3,14 @@ import { MockController } from '@mocka/mock';
 import express from 'express';
 
 const mongoose = require('mongoose');
-const cors= require('cors');
+const cors = require('cors');
 
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
 const app = express();
-app.use(express.json())
-app.use(cors())
+app.use(express.json());
+app.use(cors());
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/mocka', {

@@ -7,7 +7,7 @@ export function Shell() {
   return (
     <QueryClientProvider client={queryClient}>
       <div className="shell-container">
-        <div className='flex flex-col'>
+        <div className='flex gap-4 items-center'>
           <div id="title">
               <Link to=''><span className="text-green-700 text-2xl">Welcome </span></Link>
 

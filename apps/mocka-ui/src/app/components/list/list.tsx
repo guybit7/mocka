@@ -31,9 +31,7 @@ const List = memo<ListContainerProps>(function List() {
   return (
     <div className="h-full border-gray-950 border-2 p-2 flex flex-col gap-2">
       <div className="h-8">
-        <Button variant="outlined" onClick={onCreate} className="h-8">
-          Create
-        </Button>
+
       </div>
       <div className="flex flex-col gap-y-1 h-full overflow-auto">
         {loading ? (

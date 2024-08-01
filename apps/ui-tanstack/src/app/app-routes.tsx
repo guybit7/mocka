@@ -1,5 +1,6 @@
 import { Navigate, RouteObject } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
+import MockModal from './components/mock-modal/mock-modal';
 
 const Shell = lazy(() => import('./components/shell/shell'));
 const SettingsContainer = lazy(() => import('./components/settings-container/settings-container'));
@@ -22,7 +23,7 @@ export const appRoutes: RouteObject[] = [
             <SettingsContainer />
           </Suspense>
         ),
-        },
+      },
       {
         path: 'mocks',
         element: (
@@ -42,6 +43,16 @@ export const appRoutes: RouteObject[] = [
                 <MocksList />
               </Suspense>
             ),
+            children: [
+              {
+                path: ':id',
+                element: (
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <MockModal />
+                  </Suspense>
+                ),
+              },
+            ],
           },
         ],
       },
