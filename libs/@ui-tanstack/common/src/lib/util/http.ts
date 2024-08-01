@@ -3,6 +3,7 @@ import { QueryClient } from '@tanstack/react-query';
 export const queryClient = new QueryClient();
 
 export async function fetchMocks({ signal, searchTerm }) {
+  console.log(signal)
   let url = 'http://localhost:3000/mock/getAll';
 
   if (searchTerm) {
