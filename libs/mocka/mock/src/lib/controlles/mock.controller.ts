@@ -14,7 +14,9 @@ export class MockController {
     this.router.post('/findByName', this.findByName.bind(this));
     this.router.post('', this.create.bind(this));
     this.router.put('', this.update.bind(this));
-    this.router.delete('', this.delete.bind(this));
+    this.router.delete('/:id', this.delete.bind(this));
+    this.router.delete('/all', this.deleteAll.bind(this));
+    this.router.delete('', this.deleteItems.bind(this));
   }
 
   public getRouter() {
@@ -22,12 +24,13 @@ export class MockController {
   }
 
   private async findById(req: Request, res: Response) {
+    console.log(`fetch ${req.params.id}`);
     const r = await MockService.findById(req.params.id);
     res.json(r);
   }
 
   private async find(req: Request, res: Response) {
-    const r = await MockService.find();
+    const r = await MockService.find(req.query.search);
     setTimeout(() => {
       res.json(r);
     }, 500);
@@ -41,12 +44,12 @@ export class MockController {
     if (result !== null) {
       mockDto = new MockDto(result.name, result.value);
     }
-    console.log(mockDto);
     res.json(mockDto);
   }
 
   private async create(req: Request, res: Response) {
     const result = await MockService.create(req.body);
+    console.log(`create a new mock - id`);
     res.json(result);
   }
 
@@ -56,7 +59,17 @@ export class MockController {
   }
 
   private async delete(req: Request, res: Response) {
-    const result = await MockService.delete(req.body.id);
+    const result = await MockService.delete(req.params.id);
     res.json(result);
+  }
+
+  private async deleteItems(req: Request, res: Response) {
+    console.log(req.body.id);
+    const result = await MockService.deleteAll(req.body.id);
+    res.status(200).json(result);
+  }
+
+  private async deleteAll(req: Request, res: Response) {
+    res.status(200);
   }
 }

@@ -9,16 +9,16 @@ export function Shell() {
       <div className="shell-container">
         <div className='flex gap-4 items-center'>
           <div id="title">
-              <Link to=''><span className="text-green-700 text-2xl">Welcome </span></Link>
-
-            
+              <Link to=''><span className="text-green-700 text-2xl">Welcome </span></Link>  
           </div>
           <div className='flex' id="menu-container">
               <Link to='mocks' className='link'>Mocks Container</Link>
               <Link to='settings' className='link'>Settings</Link>
           </div>
         </div>
-        <Outlet />
+        <div className='flex-1'>
+          <Outlet />
+        </div>
       </div>
     </QueryClientProvider>
   );

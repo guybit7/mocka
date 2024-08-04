@@ -1,6 +1,7 @@
 .shell-container {
-  @apply bg-slate-800 h-full p-4 flex flex-col;
+  @apply bg-slate-800 p-4 flex flex-col;
   border: 1px solid green;
+  height: 99%;
 }
 
 .link {
