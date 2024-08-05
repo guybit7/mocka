@@ -1,9 +1,17 @@
+import { Button } from '@mui/material';
 import './shell.scss';
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from '@ui-tanstack/common';
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
 export function Shell() {
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    navigate('./login');
+  }
+
   return (
     <QueryClientProvider client={queryClient}>
       <div className="shell-container">
@@ -14,6 +22,7 @@ export function Shell() {
           <div className='flex' id="menu-container">
               <Link to='mocks' className='link'>Mocks Container</Link>
               <Link to='settings' className='link'>Settings</Link>
+              <Button variant='outlined' onClick={handleLogout}>Logout</Button>
           </div>
         </div>
         <div className='flex-1'>

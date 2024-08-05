@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { MockController } from '@mocka/mock';
+import { AuthController, MockController } from '@mocka/mock';
 import express from 'express';
 
 const mongoose = require('mongoose');
@@ -28,9 +28,14 @@ db.once('open', () => {
 });
 
 const mockController = new MockController();
+const authController = new AuthController();
 
 app.get('/', (req, res) => {
   res.send({ message: 'Hello API' });
+});
+
+app.get('/api/auth/me', (req, res) => {
+  res.send({ message: 'OKOK', data: { name: 'BITON', id: 1 } });
 });
 
 app.listen(port, host, () => {
@@ -38,3 +43,4 @@ app.listen(port, host, () => {
 });
 
 app.use('/mock', mockController.getRouter());
+app.use('/auth', authController.getRouter());

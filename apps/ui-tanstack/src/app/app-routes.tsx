@@ -1,6 +1,11 @@
 import { Navigate, RouteObject } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import MockModal from './components/mock-modal/mock-modal';
+import Login from './components/auth/login/login';
+import ProtectedRoute from './components/auth/protected-route/protected-route';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from '@ui-tanstack/common';
+import AuthProvider from './components/auth/auth-provider/auth-provider';
 
 const Shell = lazy(() => import('./components/shell/shell'));
 const SettingsContainer = lazy(() => import('./components/settings-container/settings-container'));
@@ -12,9 +17,15 @@ export const appRoutes: RouteObject[] = [
     path: '/',
     element: (
       <Suspense fallback={<div>Loading...</div>}>
-        <Shell />
+        <AuthProvider>
+          <ProtectedRoute element={<Shell/>}/>
+        </AuthProvider>
       </Suspense>
     ),
+    loader: async () => {
+      console.log("loader!!");
+      return null;
+    },
     children: [
       {
         path: 'settings',
@@ -57,5 +68,15 @@ export const appRoutes: RouteObject[] = [
         ],
       },
     ],
+  },
+  {
+    path: 'login',
+    element: (
+      <Suspense>
+        <QueryClientProvider client={queryClient}>
+          <Login />
+        </QueryClientProvider>
+      </Suspense>
+    ),
   },
 ];
