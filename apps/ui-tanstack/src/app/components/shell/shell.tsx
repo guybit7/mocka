@@ -1,19 +1,27 @@
 import { Button } from '@mui/material';
 import './shell.scss';
-import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from '@ui-tanstack/common';
+import { QueryClientProvider, useMutation } from "@tanstack/react-query";
+import { logout, queryClient } from '@ui-tanstack/common';
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
 export function Shell() {
 
   const navigate = useNavigate();
 
+  const { mutate: logoutHandler } = useMutation({
+    mutationFn: () => logout(),
+    onSuccess: () => {
+      navigate('./login');
+      
+    },
+  });
+
   const handleLogout = () => {
-    navigate('./login');
+    logoutHandler();
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
+    
       <div className="shell-container">
         <div className='flex gap-4 items-center'>
           <div id="title">
@@ -29,7 +37,6 @@ export function Shell() {
           <Outlet />
         </div>
       </div>
-    </QueryClientProvider>
   );
 }
 

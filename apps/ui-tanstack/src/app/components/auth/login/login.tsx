@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './login.scss';
 import { useMutation } from '@tanstack/react-query';
-import { signin as signinHttp} from '@ui-tanstack/common';
+import { signin as signinHttp} from '../http';
 import { useNavigate } from 'react-router-dom';
 
 

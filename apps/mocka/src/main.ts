@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { AuthController, MockController } from '@mocka/mock';
+import { MockController, AuthController } from '@mocka/mock';
 import express from 'express';
+import session from 'express-session';
 
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -10,7 +11,33 @@ const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: ['http://localhost:4200'], // setting from process.env
+    credentials: true,
+  })
+);
+
+app.use(
+  session({
+    secret: 'yourSecretKey',
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+const mockController = new MockController();
+const authController = new AuthController();
+
+app.use('/mock', mockController.getRouter());
+app.use('/auth', authController.getRouter());
+
+// app.use((req, res, next) => {
+//   console.log('*******');
+//   console.log(req.session.user);
+//   console.log('*******');
+//   next();
+// });
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/mocka', {
@@ -27,20 +54,6 @@ db.once('open', () => {
   console.log('Connected to MongoDB');
 });
 
-const mockController = new MockController();
-const authController = new AuthController();
-
-app.get('/', (req, res) => {
-  res.send({ message: 'Hello API' });
-});
-
-app.get('/api/auth/me', (req, res) => {
-  res.send({ message: 'OKOK', data: { name: 'BITON', id: 1 } });
-});
-
 app.listen(port, host, () => {
   console.log(`[ ready ] http://${host}:${port}`);
 });
-
-app.use('/mock', mockController.getRouter());
-app.use('/auth', authController.getRouter());

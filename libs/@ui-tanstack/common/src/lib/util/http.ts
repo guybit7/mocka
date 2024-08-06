@@ -114,14 +114,14 @@ export async function deleteMocks({ selected }) {
 
   return await response.json();
 }
-
-export async function signin({ formData }) {
-  let url = `http://localhost:3000/auth/login`;
+export async function logout() {
+  let url = `http://localhost:3000/auth/logout`;
 
   const response = await fetch(url, {
     method: 'POST',
-    body: JSON.stringify(formData),
+    body: null,
     headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
   });
 
   if (!response.ok) {
