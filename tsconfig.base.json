@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@mocka/auth": ["libs/mocka/auth/src/index.ts"],
       "@mocka/mock": ["libs/mocka/mock/src/index.ts"],
       "@ui-tanstack/common": ["libs/@ui-tanstack/common/src/index.ts"],
       "@ui-tanstack/mocks": ["libs/@ui-tanstack/mocks/src/index.ts"],

@@ -1,5 +1,4 @@
-import Mock, { Mock as MockType } from '../models/mock';
-import mongoose from 'mongoose';
+import Mock, { IMock as MockType } from '../models/mock';
 
 export class MockService {
   public static async findById(id: string): Promise<MockType | null> {
