@@ -33,6 +33,8 @@ export class AuthController {
     const { email, password } = req.body;
     if (email === 'guy' && password === 'guy') {
       req.session.user = this.theUser;
+
+      // await redis.set('cachedData', JSON.stringify(dataToCache), 'EX', 60); // Cache for 1 hour
       res.send({ message: 'Ok', data: req.session.user });
     } else {
       res.status(401);

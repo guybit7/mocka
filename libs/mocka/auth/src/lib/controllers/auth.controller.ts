@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import User from '../models/user';
 import bcrypt from 'bcrypt';
 import { authMiddleware } from '../middlewares';
+import { RedisClient } from '@mocka/core';
 
 export class AuthController {
   router = Router();
@@ -22,8 +23,10 @@ export class AuthController {
 
   private async currentUser(req: Request, res: Response) {
     console.log(`session: ${JSON.stringify(req.session.user)}`);
+
+    const theUser = await RedisClient.get(`user:${req.session.user._id}`);
     if (req.session.user) {
-      res.send({ message: 'Ok', data: req.session.user });
+      res.send({ message: 'Ok', data: JSON.parse(theUser) });
     } else {
       res.status(401).send({ message: 'Current User Failed', data: null });
     }
@@ -32,33 +35,50 @@ export class AuthController {
   private async login(req: Request, res: Response) {
     console.log(`login body ${JSON.stringify(req.body)}`);
     console.log(`pre login`);
-    const { email, password } = req.body;
+    try {
+      const { email, password } = req.body;
 
-    const user = await User.findOne({ email: req.body.email });
-    if (!user) return res.status(400).send('Invalid email or password.');
+      const user = await User.findOne({ email: req.body.email });
+      if (!user) return res.status(400).send('Invalid email or password.');
 
-    const validPassword = await bcrypt.compare(req.body.password, user.password);
-    if (!validPassword) return res.status(400).send('Invalid email or password.');
+      const validPassword = await bcrypt.compare(req.body.password, user.password);
+      if (!validPassword) return res.status(400).send('Invalid email or password.');
 
-    req.session.user = user._id;
-    console.log(req.session.user);
-    console.log(`post login`);
-    res.send({ message: 'Ok', data: req.session.user });
+      req.session.user = user._id;
+      await RedisClient.set(`user:${user._id}`, JSON.stringify(user), 3600);
+      console.log(req.session.user);
+      console.log(`post login`);
+      res.send({ message: 'Ok', data: req.session.user });
+    } catch (error) {
+      console.log(error);
+      res.status(400).send('Error accourd during the login');
+    }
   }
 
   private async logout(req: Request, res: Response) {
-    console.log(`logout123`);
+    console.log(`starting logout process`);
     if (req.session.user) {
-      req.session.destroy(err => {
-        if (err) {
-          console.error('Error destroying session:', err);
-          return res.status(500).json({ message: 'Error logging out' });
+      const userId = req.session.user._id;
+      req.session.destroy(async err => {
+        try {
+          if (err) {
+            console.error('Error destroying session:', err);
+            return res.status(500).json({ message: 'Error logging out' });
+          }
+          const isDeleted = await RedisClient.delete(`user:${userId}`);
+          if (isDeleted) {
+            console.log('DELETED!!!');
+          } else {
+            console.log('NOT DELETED!!!');
+          }
+          res.clearCookie('connect.sid');
+          res.send({ message: 'Ok', data: null });
+        } catch (e) {
+          console.error(`logout failed`, e);
         }
-        res.clearCookie('connect.sid');
-        res.send({ message: 'Ok', data: null });
       });
     } else {
-      res.status(401).json({ message: 'logout failed', data: null });
+      res.status(401).json({ message: 'Not connected user', data: null });
     }
   }
 
