@@ -6,7 +6,6 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import { MockController } from '@mocka/mock';
 import { AuthController } from '@mocka/auth';
-import { RedisClient } from '@mocka/core';
 
 const MONGODB_URI = 'mongodb://localhost:27017/mocka';
 const host = process.env.HOST ?? 'localhost';
@@ -74,18 +73,3 @@ const authController = new AuthController();
 
 app.use('/mock', mockController.getRouter());
 app.use('/auth', authController.getRouter());
-
-// Example of caching data
-app.get('/cache', async (req, res) => {
-  const cachedData = await RedisClient.get('cachedData');
-
-  if (cachedData) {
-    // If data exists in the cache, return it
-    res.send(JSON.parse(cachedData));
-  } else {
-    // If data is not in the cache, fetch it from the source
-    const dataToCache = { message: 'Data to be cached' };
-    await RedisClient.set('cachedData', JSON.stringify(dataToCache), 60);
-    res.send(dataToCache);
-  }
-});
