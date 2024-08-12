@@ -6,6 +6,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import { MockController } from '@mocka/mock';
 import { AuthController } from '@mocka/auth';
+import { MockCron } from '@mocka/cron';
 
 const MONGODB_URI = 'mongodb://localhost:27017/mocka';
 const host = process.env.HOST ?? 'localhost';
@@ -32,6 +33,8 @@ mongoose
     app.listen(port, host, () => {
       console.log(`[ ready ] http://${host}:${port}`);
     });
+
+    const mock = new MockCron();
   })
   .catch(err => {
     console.log(err);

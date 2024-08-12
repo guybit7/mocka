@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import User, { IUser as UserType } from '../models/user';
 import bcrypt from 'bcrypt';
 
@@ -11,6 +12,7 @@ export class UserService {
         username: 'admin',
         createdAt: new Date(),
         role: 'admin',
+        isVerified: true,
       });
       user.save();
     } catch (err) {
@@ -42,6 +44,20 @@ export class UserService {
     }
   }
 
+  public static async clearIsUnVerifiedUsers() {
+    try {
+      const gracePeriodHours = 10; // Define the grace period - 10 min
+      const gracePeriodMillis = gracePeriodHours * 60 * 60 * 1000;
+      const cutoffDate = new Date(Date.now() - gracePeriodMillis);
+      const result = await User.deleteMany({
+        isVerified: false,
+        createdAt: { $lte: cutoffDate },
+      });
+      console.log(`Deleted ${result.deletedCount} is un verified users`);
+    } catch (error) {
+      throw new Error(`Error Clear Is UnVerified Users', ${error.message}`);
+    }
+  }
   // public static async find(term): Promise<MockType[] | null> {
   //   console.log(`find mock service: ${term}`);
   //   try {

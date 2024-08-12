@@ -6,6 +6,7 @@ import ProtectedRoute from './components/auth/protected-route/protected-route';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '@ui-tanstack/common';
 import AuthProvider from './components/auth/auth-provider/auth-provider';
+import Register from './components/auth/register/register';
 
 const Shell = lazy(() => import('./components/shell/shell'));
 const SettingsContainer = lazy(() => import('./components/settings-container/settings-container'));
@@ -75,6 +76,16 @@ export const appRoutes: RouteObject[] = [
       <Suspense>
         <QueryClientProvider client={queryClient}>
           <Login />
+        </QueryClientProvider>
+      </Suspense>
+    ),
+  },
+  {
+    path: 'register',
+    element: (
+      <Suspense>
+        <QueryClientProvider client={queryClient}>
+          <Register />
         </QueryClientProvider>
       </Suspense>
     ),

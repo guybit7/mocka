@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import './login.scss';
 import { useMutation } from '@tanstack/react-query';
-import { signin as signinHttp} from '../http';
+import { signin as signinHttp } from '../http';
 import { useNavigate } from 'react-router-dom';
 
-
 export function Login() {
-
   const navigation = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
@@ -14,9 +12,9 @@ export function Login() {
   });
 
   const { mutate: signinHandler } = useMutation({
-    mutationFn: ({ formData }) => signinHttp({formData}),
-    onSuccess: (data) => {
-      console.log(data)
+    mutationFn: ({ formData }) => signinHttp({ formData }),
+    onSuccess: data => {
+      console.log(data);
       navigation('/');
     },
   });
@@ -31,8 +29,12 @@ export function Login() {
 
   const handleSubmit = event => {
     event.preventDefault();
-    signinHandler({formData});
-  }
+    signinHandler({ formData });
+  };
+
+  const onRegister = () => {
+    navigation('/register');
+  };
 
   return (
     <section className="h-screen flex flex-col md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center my-2 mx-5 md:mx-0 md:my-0">
@@ -73,7 +75,7 @@ export function Login() {
           </div>
           <div className="mt-4 font-semibold text-sm text-slate-500 text-center md:text-left">
             Don&apos;t have an account?{' '}
-            <a className="text-red-600 hover:underline hover:underline-offset-4" href="#">
+            <a className="text-red-600 hover:underline hover:underline-offset-4" onClick={onRegister}>
               Register
             </a>
           </div>

@@ -3,6 +3,7 @@ import User from '../models/user';
 import bcrypt from 'bcrypt';
 import { authMiddleware } from '../middlewares';
 import { RedisClient } from '@mocka/core';
+import { UserService } from '../services';
 
 export class AuthController {
   router = Router();
@@ -15,6 +16,7 @@ export class AuthController {
     this.router.get('/currentUser', authMiddleware, this.currentUser.bind(this));
     this.router.post('/login', this.login.bind(this));
     this.router.post('/logout', this.logout.bind(this));
+    this.router.post('/register', this.register.bind(this));
   }
 
   public getRouter() {
@@ -42,7 +44,13 @@ export class AuthController {
       if (!user) return res.status(400).send('Invalid email or password.');
 
       const validPassword = await bcrypt.compare(req.body.password, user.password);
-      if (!validPassword) return res.status(400).send('Invalid email or password.');
+      if (!validPassword) {
+        return res.status(400).send('Invalid email or password.');
+      }
+
+      if (!user.isVerified) {
+        return res.status(400).send('User is not verified');
+      }
 
       req.session.user = user._id;
       await RedisClient.set(`user:${user._id}`, JSON.stringify(user), 3600);
@@ -79,6 +87,32 @@ export class AuthController {
       });
     } else {
       res.status(401).json({ message: 'Not connected user', data: null });
+    }
+  }
+
+  /*
+
+    {"email":"guy@gmail.com","password":"admin123","fullName":"guy bit","username":"guybit"}
+  */
+  private async register(req: Request, res: Response) {
+    console.log(`register body ${JSON.stringify(req.body)}`);
+    console.log(`pre register`);
+    try {
+      const { email, password, fullName, username } = req.body;
+
+      const user = await User.findOne({ email: req.body.email });
+      if (user) {
+        return res.status(400).send('Email already exsit');
+      }
+      // validate password
+      const crypePassword = await bcrypt.hashSync(password, 10);
+      const thePendingUser = await UserService.create({ email, password: crypePassword, fullName, username });
+
+      console.log(`post login`);
+      res.send({ message: 'Ok', data: thePendingUser });
+    } catch (error) {
+      console.log(error);
+      res.status(400).send('Error accourd during the login');
     }
   }
 

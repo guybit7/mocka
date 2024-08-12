@@ -18,6 +18,25 @@ export async function signin({ formData }) {
   return await response.json();
 }
 
+export async function register({ formData }) {
+  let url = `http://localhost:3000/auth/register`;
+
+  const response = await fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(formData),
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    const error: any = new Error('An error occurred while regiter user');
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  return await response.json();
+}
 export async function logout() {
   let url = `http://localhost:3000/auth/logout`;
 

@@ -11,6 +11,7 @@ export interface IUser {
   token: string;
   refreshToken: string;
   lastLogin: Date;
+  isVerified: boolean;
 }
 
 export interface UserDocument extends IUser, Document {}
@@ -28,6 +29,7 @@ const userSchema = new Schema<UserDocument>({
   token: { type: String },
   refreshToken: { type: String },
   lastLogin: { type: Date },
+  isVerified: { type: Boolean, default: false },
 });
 
 const User = model<UserDocument, UserModel>('Users', userSchema);
