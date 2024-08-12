@@ -7,7 +7,7 @@ export class MockCron {
   }
 
   cleanInVerifiedUsers() {
-    console.log('#CRON -> clearIsUnVerifiedUsers');
+    console.log(`#CRON ${Date.now()}-> clearIsUnVerifiedUsers`);
     UserService.clearIsUnVerifiedUsers();
   }
 }
