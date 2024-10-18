@@ -37,7 +37,7 @@ export const appRoutes: RouteObject[] = [
         ),
       },
       {
-        path: 'mocks',
+        path: 'main',
         element: (
           <Suspense fallback={<div>Loading...</div>}>
             <MocksContainer />

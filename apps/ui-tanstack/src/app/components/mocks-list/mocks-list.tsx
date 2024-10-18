@@ -110,95 +110,86 @@ export function MocksList() {
 
   if (data) {
     content = (
-      <div>
-        <TableContainer sx={{ maxHeight: 500, overflowY: 'auto' }}>
-          <Table
-            stickyHeader
-            aria-label="sticky table"
-            sx={{ Inline: '100px' }}
-            className="bg-green-800"
-            size={dense ? 'small' : 'medium'}
-          >
-            <TableHead>
-              <TableRow>
-                <TableCell sx={{ ...tableHeader }}></TableCell>
-                <TableCell sx={{ ...tableHeader, width: '4rem' }}>Actions</TableCell>
-                <TableCell sx={tableHeader}>Name</TableCell>
-                <TableCell sx={tableHeader}>id</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {data.map((row: any, index: number) => {
-                const isItemSelected = isSelected(row._id);
-                const labelId = `enhanced-table-checkbox-${index}`;
-                return (
-                  <TableRow
-                    hover
-                    key={row._id}
-                    role="checkbox"
-                    aria-checked={isItemSelected}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: 'pointer' }}
-                  >
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        color="primary"
-                        onClick={event => handleClick(event, row._id)}
-                        checked={isItemSelected}
-                        inputProps={{
-                          'aria-labelledby': labelId,
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell component="td">
-                      <div className="flex gap-4">
-                        <Button variant="contained" color="primary" onClick={() => handleRowClick(row)}>
-                          Edit
-                        </Button>
-                        <Button variant="contained" color="primary" onClick={() => handleDeleteRow(row)}>
-                          Delete
-                        </Button>
-                      </div>
-                    </TableCell>
-                    <TableCell component="td" scope="row" sx={{ color: 'white' }}>
-                      {row.name}
-                    </TableCell>
-                    <TableCell align="left" sx={{ color: 'white' }}>
-                      {row._id}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label="Dense padding" />
-      </div>
+      <TableContainer sx={{ maxHeight: '100%', overflowY: 'hidden' }}>
+        <Table stickyHeader aria-label="sticky table" sx={{ Inline: '100px' }} size={dense ? 'small' : 'medium'}>
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{ ...tableHeader }}></TableCell>
+              <TableCell sx={{ ...tableHeader, width: '4rem' }}>Actions</TableCell>
+              <TableCell sx={tableHeader}>Name</TableCell>
+              <TableCell sx={tableHeader}>id</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody className="tablebody">
+            {data.map((row: any, index: number) => {
+              const isItemSelected = isSelected(row._id);
+              const labelId = `enhanced-table-checkbox-${index}`;
+              return (
+                <TableRow
+                  hover
+                  key={row._id}
+                  role="checkbox"
+                  aria-checked={isItemSelected}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: 'pointer' }}
+                >
+                  <TableCell padding="checkbox">
+                    <Checkbox
+                      color="primary"
+                      onClick={event => handleClick(event, row._id)}
+                      checked={isItemSelected}
+                      inputProps={{
+                        'aria-labelledby': labelId,
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell component="td">
+                    <div className="flex gap-4">
+                      <Button variant="contained" color="primary" onClick={() => handleRowClick(row)}>
+                        Edit
+                      </Button>
+                      <Button variant="contained" color="primary" onClick={() => handleDeleteRow(row)}>
+                        Delete
+                      </Button>
+                    </div>
+                  </TableCell>
+                  <TableCell component="td" scope="row" sx={{ color: 'white' }}>
+                    {row.name}
+                  </TableCell>
+                  <TableCell align="left" sx={{ color: 'white' }}>
+                    {row._id}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      // <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label="Dense padding" />
     );
   }
 
   return (
-    <div className="h-full flex flex-col bg-">
-      <div className="">
-        <div id="search-container" className="p-4">
-          <h2>Find item </h2>
-          <input
-            type="search"
-            className="input"
-            defaultValue={searchTerm || ''}
-            placeholder="Search item"
-            onChange={e => debounced(e.target.value)}
-          />
-        </div>
+    <div className="mocks-list-container">
+      <div className="mocks-list-header">
+        <h2>Find item </h2>
+        <input
+          type="search"
+          className="input"
+          defaultValue={searchTerm || ''}
+          placeholder="Search item"
+          onChange={e => debounced(e.target.value)}
+        />
       </div>
-      <div id="list-container" className="flex flex-col flex-1">
-        <div className="h-12">
-          <Button onClick={handleNewItem}>Add New Item</Button>
-          <Button onClick={deleteAllSelected} variant="contained">
+      <div className="list-container">
+        <div className="list-container__actions">
+          <Button onClick={handleNewItem} variant="outlined">
+            Add New Item
+          </Button>
+          <Button onClick={deleteAllSelected} variant="outlined">
             Delete All Selected
           </Button>
         </div>
-        <Box sx={{ height: '100%' }}>{content}</Box>
-        {/* <div className="bg-purple-500 flex p-5"></div> */}
+        <Box sx={{ height: '100%', overflow: 'auto' }}>{content}</Box>
       </div>
       <Outlet></Outlet>
     </div>
@@ -207,4 +198,4 @@ export function MocksList() {
 
 export default MocksList;
 
-const tableHeader = { color: 'white', fontWeight: 'bold', background: '#166534' };
+const tableHeader = { color: 'white', fontWeight: 'bold', background: 'black' };

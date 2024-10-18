@@ -1,13 +1,31 @@
+@use 'sass:meta';
+@use './main-styles/main-styles' as *;
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 /* You can add global styles to this file, and also import other style files */
 
+@layer main-styles;
+
+
+@layer main-styles {
+  @include meta.load-css('main-styles')
+}
+
 html,
 body {
-  @apply text-white h-full;
-  background-color: rgb(182 182 182);
-  font-size: 16px;
+  height: 100%;
+  font-size: 14px;
+  overflow: hidden;
+  color: var(--text-primary);
+
+  &.light {
+    @include light;
+  }
+  &.dark {
+    @include dark;
+  }
 }
 
 @layer components {
@@ -23,3 +41,4 @@ body {
 .module-container {
   @apply bg-gray-700 flex flex-col h-full;
 }
+

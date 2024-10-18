@@ -18,6 +18,7 @@ export function Register() {
     mutationFn: ({ formData }) => register({ formData }),
     onSuccess: data => {
       console.log(data);
+      navigation('/login');
     },
   });
 

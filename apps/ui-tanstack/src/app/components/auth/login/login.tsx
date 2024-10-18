@@ -3,23 +3,24 @@ import './login.scss';
 import { useMutation } from '@tanstack/react-query';
 import { signin as signinHttp } from '../http';
 import { useNavigate } from 'react-router-dom';
+import { SigninFormData } from '@ui-tanstack/common';
 
 export function Login() {
   const navigation = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-  });
+  } as SigninFormData);
 
   const { mutate: signinHandler } = useMutation({
-    mutationFn: ({ formData }) => signinHttp({ formData }),
+    mutationFn: ({ formData }) => signinHttp(formData),
     onSuccess: data => {
       console.log(data);
       navigation('/');
     },
   });
 
-  const handleInputChange = event => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormData(prevData => ({
       ...prevData,
@@ -27,7 +28,7 @@ export function Login() {
     }));
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     signinHandler({ formData });
   };

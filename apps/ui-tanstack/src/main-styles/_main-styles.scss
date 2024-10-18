@@ -1,0 +1,9 @@
+@mixin dark {
+    --text-primary: white;
+    --background-level-1: #000912;
+}
+
+@mixin light {
+    --text-primary: rgba(0,0,0,0.9);
+    --background-level-1: #f5f6f7;
+}
