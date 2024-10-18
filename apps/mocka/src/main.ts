@@ -56,7 +56,11 @@ var store = new MongoDBStore({
 app.use(express.json());
 app.use(
   cors({
-    origin: ['http://localhost:4200'], // setting from process.env
+    origin: [
+      'http://localhost:4200',
+      'chrome-extension://hgpfhoeanepaahcapolclohknpgffhci/background-gayny.js',
+      'chrome-extension://hgpfhoeanepaahcapolclohknpgffhci',
+    ],
     credentials: true,
   })
 );

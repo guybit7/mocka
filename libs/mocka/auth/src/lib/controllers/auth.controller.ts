@@ -56,7 +56,7 @@ export class AuthController {
       await RedisClient.set(`user:${user._id}`, JSON.stringify(user), 3600);
       console.log(req.session.user);
       console.log(`post login`);
-      res.send({ message: 'Ok', data: req.session.user });
+      res.send({ message: 'Ok from Nitay', data: req.session.user });
     } catch (error) {
       console.log(error);
       res.status(400).send('Error accourd during the login');
