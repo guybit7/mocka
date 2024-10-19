@@ -7,6 +7,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '@ui-tanstack/common';
 import AuthProvider from './components/auth/auth-provider/auth-provider';
 import Register from './components/auth/register/register';
+import GroupsContainer from './components/groups/groups-container/groups-container';
 
 const Shell = lazy(() => import('./components/shell/shell'));
 const SettingsContainer = lazy(() => import('./components/settings-container/settings-container'));
@@ -19,12 +20,12 @@ export const appRoutes: RouteObject[] = [
     element: (
       <Suspense fallback={<div>Loading...</div>}>
         <AuthProvider>
-          <ProtectedRoute element={<Shell/>}/>
+          <ProtectedRoute element={<Shell />} />
         </AuthProvider>
       </Suspense>
     ),
     loader: async () => {
-      console.log("loader!!");
+      console.log('loader!!');
       return null;
     },
     children: [
@@ -33,6 +34,14 @@ export const appRoutes: RouteObject[] = [
         element: (
           <Suspense fallback={<div>Loading...</div>}>
             <SettingsContainer />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'groups',
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <GroupsContainer />
           </Suspense>
         ),
       },

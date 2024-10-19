@@ -24,11 +24,15 @@ export function Topbar() {
 
   const settingsHandler = () => {
     navigate('./settings');
-  }
+  };
 
   const MocksHandler = () => {
     navigate('./main');
-  }
+  };
+
+  const groupsHandler = () => {
+    navigate('./groups');
+  };
 
   useEffect(() => {
     console.log(user);
@@ -42,6 +46,9 @@ export function Topbar() {
       <div className={styles['topbar-actions']}>
         <Button variant="outlined" onClick={settingsHandler}>
           Settings
+        </Button>
+        <Button variant="outlined" onClick={groupsHandler}>
+          Groups
         </Button>
         <Button variant="outlined" onClick={MocksHandler}>
           Mocks List

@@ -114,6 +114,30 @@ export async function deleteMocks({ selected }) {
 
   return await response.json();
 }
+
+//////////// GROPS
+export async function createGroup({ formData }) {
+  delete formData._id;
+  console.log(JSON.stringify(formData));
+  const url = `http://localhost:3000/group`;
+
+  const response = await fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(formData),
+    headers: { 'Content-Type': 'application/json' },
+  });
+
+  if (!response.ok) {
+    const error: any = new Error('An error occurred while fetching the events');
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  return await response.json();
+}
+
+/////////// AUTH
 export async function logout() {
   let url = `http://localhost:3000/auth/logout`;
 

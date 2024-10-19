@@ -4,7 +4,7 @@ import { UserService } from '@mocka/auth';
 import { default as connectMongoDBSession } from 'connect-mongodb-session';
 import cors from 'cors';
 import mongoose from 'mongoose';
-import { MockController } from '@mocka/mock';
+import { GroupController, MockController } from '@mocka/mock';
 import { AuthController } from '@mocka/auth';
 import { MockCron } from '@mocka/cron';
 
@@ -72,7 +72,9 @@ app.use(
 //////////////////////////////////////////////////
 
 const mockController = new MockController();
+const groupController = new GroupController();
 const authController = new AuthController();
 
 app.use('/mock', mockController.getRouter());
 app.use('/auth', authController.getRouter());
+app.use('/group', groupController.getRouter());
