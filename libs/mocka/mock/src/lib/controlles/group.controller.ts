@@ -14,8 +14,6 @@ export class GroupController {
     this.router.post('', this.create.bind(this));
     this.router.put('', this.update.bind(this));
     this.router.delete('/:id', this.delete.bind(this));
-    // this.router.delete('/all', this.deleteAll.bind(this));
-    // this.router.delete('', this.deleteItems.bind(this));
   }
 
   public getRouter() {
@@ -61,14 +59,4 @@ export class GroupController {
     const result = await this.groupService.delete(req.params.id);
     res.json(result);
   }
-
-  //   private async deleteItems(req: Request, res: Response) {
-  //     console.log(req.body.id);
-  //     const result = await MockService.deleteAll(req.body.id);
-  //     res.status(200).json(result);
-  //   }
-
-  //   private async deleteAll(req: Request, res: Response) {
-  //     res.status(200);
-  //   }
 }

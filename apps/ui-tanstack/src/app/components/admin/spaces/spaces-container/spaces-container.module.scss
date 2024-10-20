@@ -1,0 +1,23 @@
+/*
+ * Replace this with your own classes
+ *
+ * e.g.
+ * .container {
+ * }
+*/
+.module-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    gap: 0.5rem;
+
+    .module-outlet-container {
+        flex: 1;
+        padding-inline: 1rem;
+        padding-block: 0.5rem;
+        display: flex;
+        flex-direction: column;
+        overflow: auto;
+    }
+}

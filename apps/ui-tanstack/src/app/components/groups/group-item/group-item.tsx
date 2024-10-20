@@ -10,9 +10,13 @@ export function GroupItem({ row, onDelete }) {
     navigate(`./${row._id}` + location.search);
   };
 
+  const mockList = () => {
+    navigate(`../../mocks/${row._id}`);
+  };
+
   const deleteGroup = () => {
     onDelete(row);
-  }
+  };
 
   return (
     <div className={styles['group-item-container']}>
@@ -22,6 +26,9 @@ export function GroupItem({ row, onDelete }) {
         </Button>
         <Button variant="outlined" onClick={editGroup}>
           Edit
+        </Button>
+        <Button variant="outlined" onClick={mockList}>
+          Mock List
         </Button>
       </div>
 

@@ -1,6 +1,6 @@
 import { Navigate, RouteObject } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
-import MockModal from './components/mock-modal/mock-modal';
+import MockModal from './components/temp/mock-modal/mock-modal';
 import Login from './components/auth/login/login';
 import ProtectedRoute from './components/auth/protected-route/protected-route';
 import { QueryClientProvider } from '@tanstack/react-query';
@@ -10,11 +10,14 @@ import Register from './components/auth/register/register';
 import GroupsContainer from './components/groups/groups-container/groups-container';
 import GroupsList from './components/groups/groups-list/groups-list';
 import GroupModal from './components/groups/group-modal/group-modal';
+import AdminContainer from './components/admin/admin-container/admin-container';
+import SpacesContainer from './components/admin/spaces/spaces-container/spaces-container';
+import SpacesList from './components/admin/spaces/spaces-list/spaces-list';
 
 const Shell = lazy(() => import('./components/shell/shell'));
 const SettingsContainer = lazy(() => import('./components/settings-container/settings-container'));
-const MocksContainer = lazy(() => import('./components/mocks-container/mocks-container'));
-const MocksList = lazy(() => import('./components/mocks-list/mocks-list'));
+const MocksContainer = lazy(() => import('./components/mocks/mocks-container/mocks-container'));
+const MocksList = lazy(() => import('./components/temp/mocks-list/mocks-list'));
 
 export const appRoutes: RouteObject[] = [
   {
@@ -72,6 +75,14 @@ export const appRoutes: RouteObject[] = [
         ],
       },
       {
+        path: 'mocks/:groupId',
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <MocksContainer />
+          </Suspense>
+        ),
+      },
+      {
         path: 'main',
         element: (
           <Suspense fallback={<div>Loading...</div>}>
@@ -96,6 +107,38 @@ export const appRoutes: RouteObject[] = [
                 element: (
                   <Suspense fallback={<div>Loading...</div>}>
                     <MockModal />
+                  </Suspense>
+                ),
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: 'admin',
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <AdminContainer />
+          </Suspense>
+        ),
+        children: [
+          {
+            path: 'spaces',
+            element: (
+              <Suspense fallback={<div>Loading...</div>}>
+                <SpacesContainer />
+              </Suspense>
+            ),
+            children: [
+              {
+                index: true,
+                element: <Navigate to="list" replace />,
+              },
+              {
+                path: 'list',
+                element: (
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <SpacesList />
                   </Suspense>
                 ),
               },

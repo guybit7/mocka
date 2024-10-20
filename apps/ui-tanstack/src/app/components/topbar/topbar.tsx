@@ -1,13 +1,14 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import styles from './topbar.module.scss';
 import { AuthContext } from '../auth/auth-provider/auth-provider';
-import { Button } from '@mui/material';
+import { Button, Menu, MenuItem } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { logout } from '@ui-tanstack/common';
 
 export function Topbar() {
   const { user } = useContext(AuthContext) as any;
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const navigate = useNavigate();
 
@@ -38,12 +39,49 @@ export function Topbar() {
     console.log(user);
   }, []);
 
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleSpaces = () => {
+    navigate('./admin/spaces');
+    handleClose();
+  };
+
   return (
     <div className={styles['topbar-container']}>
       <div>
         <span> {user.fullName}</span>
       </div>
       <div className={styles['topbar-actions']}>
+        <div>
+          <Button
+            id="basic-button"
+            aria-controls={open ? 'basic-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+            onClick={handleClick}
+          >
+            Dashboard
+          </Button>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              'aria-labelledby': 'basic-button',
+            }}
+          >
+            <MenuItem onClick={handleSpaces}>Spaces</MenuItem>
+            <MenuItem onClick={handleClose}>Users</MenuItem>
+            {/* <MenuItem onClick={handleClose}></MenuItem> */}
+          </Menu>
+        </div>
         <Button variant="outlined" onClick={settingsHandler}>
           Settings
         </Button>
