@@ -60,7 +60,7 @@ export function MockModal() {
   const { mutate } = useMutation({
     mutationFn: ({ formData }) => (isCreateMode ? createMock({ formData }) : updateMock({ formData })),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['events', { searchTerm: searchParams }], exact: true });
+      queryClient.invalidateQueries({ queryKey: ['groups', { searchTerm: searchParams }], exact: true });
       handleClose();
     },
   });

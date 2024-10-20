@@ -1,0 +1,31 @@
+/*
+ * Replace this with your own classes
+ *
+ * e.g.
+ * .container {
+ * }
+*/
+.group-modal-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.group-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.group-modal-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: auto;
+}
+
+.group-modal-footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}

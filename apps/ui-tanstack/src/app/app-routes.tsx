@@ -8,6 +8,8 @@ import { queryClient } from '@ui-tanstack/common';
 import AuthProvider from './components/auth/auth-provider/auth-provider';
 import Register from './components/auth/register/register';
 import GroupsContainer from './components/groups/groups-container/groups-container';
+import GroupsList from './components/groups/groups-list/groups-list';
+import GroupModal from './components/groups/group-modal/group-modal';
 
 const Shell = lazy(() => import('./components/shell/shell'));
 const SettingsContainer = lazy(() => import('./components/settings-container/settings-container'));
@@ -44,6 +46,30 @@ export const appRoutes: RouteObject[] = [
             <GroupsContainer />
           </Suspense>
         ),
+        children: [
+          {
+            index: true,
+            element: <Navigate to="list" replace />,
+          },
+          {
+            path: 'list',
+            element: (
+              <Suspense fallback={<div>Loading...</div>}>
+                <GroupsList />
+              </Suspense>
+            ),
+            children: [
+              {
+                path: ':id',
+                element: (
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <GroupModal />
+                  </Suspense>
+                ),
+              },
+            ],
+          },
+        ],
       },
       {
         path: 'main',

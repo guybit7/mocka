@@ -9,11 +9,11 @@ export class GroupController {
 
   private initRoutes() {
     this.router.get('/getAll', this.findAll.bind(this));
-    // this.router.get('/:id', this.findById.bind(this));
+    this.router.get('/:id', this.findById.bind(this));
     // this.router.post('/findByName', this.findByName.bind(this));
     this.router.post('', this.create.bind(this));
-    // this.router.put('', this.update.bind(this));
-    // this.router.delete('/:id', this.delete.bind(this));
+    this.router.put('', this.update.bind(this));
+    this.router.delete('/:id', this.delete.bind(this));
     // this.router.delete('/all', this.deleteAll.bind(this));
     // this.router.delete('', this.deleteItems.bind(this));
   }
@@ -22,11 +22,11 @@ export class GroupController {
     return this.router;
   }
 
-  //   private async findById(req: Request, res: Response) {
-  //     console.log(`fetch ${req.params.id}`);
-  //     const r = await MockService.findById(req.params.id);
-  //     res.json(r);
-  //   }
+  private async findById(req: Request, res: Response) {
+    console.log(`fetch ${req.params.id}`);
+    const r = await this.groupService.getById(req.params.id);
+    res.json(r);
+  }
 
   private async findAll(req: Request, res: Response) {
     const r = await this.groupService.getAll();
@@ -52,15 +52,15 @@ export class GroupController {
     res.json(result);
   }
 
-  //   private async update(req: Request, res: Response) {
-  //     const result = await MockService.update(req.body);
-  //     res.json(result);
-  //   }
+  private async update(req: Request, res: Response) {
+    const result = await this.groupService.update(req.body._id, req.body);
+    res.json(result);
+  }
 
-  //   private async delete(req: Request, res: Response) {
-  //     const result = await MockService.delete(req.params.id);
-  //     res.json(result);
-  //   }
+  private async delete(req: Request, res: Response) {
+    const result = await this.groupService.delete(req.params.id);
+    res.json(result);
+  }
 
   //   private async deleteItems(req: Request, res: Response) {
   //     console.log(req.body.id);

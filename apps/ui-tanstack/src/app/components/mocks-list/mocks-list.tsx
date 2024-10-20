@@ -13,7 +13,6 @@ import { Outlet, useNavigate, useParams, useSearchParams } from 'react-router-do
 import { useDebouncedCallback } from 'use-debounce';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 
 export function MocksList() {

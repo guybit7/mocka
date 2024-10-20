@@ -39,9 +39,10 @@ export abstract class BaseService<T extends Document> {
     }
   }
 
-  public async delete(id: string): Promise<T | null> {
+  public async delete(id: string): Promise<any | null> {
     try {
-      return await this.model.findByIdAndDelete(id);
+      console.log({ _id: id });
+      return await this.model.deleteOne({ _id: id });
     } catch (error) {
       throw new Error(`Error deleting entity: ${error.message}`);
     }
