@@ -10,34 +10,39 @@ import { useGroupContext } from '../groups-container/groups-container';
 export function GroupsList() {
   const location = useLocation();
 
-  const [searchParams] = useSearchParams();
-  const [searchTerm, setSearchTerm] = useState<string>();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchTerm, setSearchTerm] = useState<string>('');
   const { activeSpace } = useGroupContext();
 
   let content = <p> Hello </p>;
 
   const { mutate: deleteSigleGroup } = useMutation({
-    mutationFn: ({ row }) => deleteGroup({ row }),
+    mutationFn: deleteGroup,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['groups', 'search'], exact: true });
+      queryClient.invalidateQueries({ queryKey: ['groups', searchTerm], exact: true });
     },
   });
 
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['groups', 'search'],
+  const { data, isLoading, isError, error, refetch } = useQuery({
+    queryKey: ['groups', searchTerm],
     queryFn: ({ signal, queryKey }) => {
       const activeSpaceId = activeSpace?._id;
       return fetchGroups({ signal, searchTerm, activeSpaceId });
     },
-    enabled: searchTerm !== undefined && activeSpace !== null,
+    enabled: activeSpace !== null,
   });
 
+  const getSearchTerm = (params: URLSearchParams) => params.get('search') ?? '';
+
   useEffect(() => {
-    const searchQuery = searchParams.get('search');
-    if (searchQuery) {
-      setSearchTerm(searchQuery);
+    setSearchTerm(getSearchTerm(searchParams));
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (activeSpace?._id && searchTerm === '') {
+      refetch();
     }
-  }, [location.search, searchParams]);
+  }, [activeSpace?._id]);
 
   const handleDeleteGroup = (row: any) => {
     deleteSigleGroup({ row });

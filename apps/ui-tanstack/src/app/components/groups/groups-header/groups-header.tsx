@@ -35,9 +35,7 @@ export function GroupsHeader() {
 
   useEffect(() => {
     const searchQuery = searchParams.get('search');
-    if (searchQuery) {
-      setSearchTerm(searchQuery);
-    }
+    setSearchTerm(searchQuery ?? '');
   }, []);
 
   useEffect(() => {
@@ -65,7 +63,7 @@ export function GroupsHeader() {
     setSpace(event.target.value as string);
     const params = new URLSearchParams(searchParams);
     params.set('space', event.target.value);
-    params.delete('search');
+    params.set('search', '');
     setSearchTerm('');
     setSearchParams(params);
     setTheActiveSpace(event.target.value);

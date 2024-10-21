@@ -52,6 +52,7 @@ export function GroupModal() {
       setFormData({
         _id: data._id,
         name: data.name,
+        spaceId: data.spaceId,
       });
     }
   }, [data]);
@@ -67,7 +68,7 @@ export function GroupModal() {
   const { mutate } = useMutation({
     mutationFn: ({ formData }) => (isCreateMode ? createGroup({ formData }) : updateGroup({ formData })),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['groups', 'search'], exact: true });
+      queryClient.invalidateQueries({ queryKey: ['groups', searchParams.get('search')], exact: true });
       handleClose();
     },
   });
