@@ -1,0 +1,17 @@
+.spaces-header-container {
+    height: 4rem;
+    padding-inline: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border: 1px solid white;
+    background-color: rgb(22, 22, 43);
+
+    .sh-actions-container {
+        height: 100%;
+        flex: 2;
+        display: flex;
+        align-items: center;
+    }
+}

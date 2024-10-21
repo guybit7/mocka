@@ -6,11 +6,10 @@ export class BaseController<T> {
 
   constructor(service: any) {
     this.service = service;
-    this.initRoutes();
   }
 
   protected initRoutes() {
-    this.router.get('/', this.findAll.bind(this));
+    this.router.get('/getAll', this.findAll.bind(this));
     this.router.get('/:id', this.findById.bind(this));
     this.router.post('/', this.create.bind(this));
     this.router.put('/', this.update.bind(this));

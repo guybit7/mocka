@@ -13,6 +13,7 @@ import GroupModal from './components/groups/group-modal/group-modal';
 import AdminContainer from './components/admin/admin-container/admin-container';
 import SpacesContainer from './components/admin/spaces/spaces-container/spaces-container';
 import SpacesList from './components/admin/spaces/spaces-list/spaces-list';
+import SpaceForm from './components/admin/spaces/space-form/space-form';
 
 const Shell = lazy(() => import('./components/shell/shell'));
 const SettingsContainer = lazy(() => import('./components/settings-container/settings-container'));
@@ -141,6 +142,16 @@ export const appRoutes: RouteObject[] = [
                     <SpacesList />
                   </Suspense>
                 ),
+                children: [
+                  {
+                    path: ':id',
+                    element: (
+                      <Suspense fallback={<div>Loading...</div>}>
+                        <SpaceForm />
+                      </Suspense>
+                    ),
+                  },
+                ],
               },
             ],
           },
