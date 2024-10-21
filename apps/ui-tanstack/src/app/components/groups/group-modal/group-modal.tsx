@@ -1,18 +1,19 @@
-import { Box, Button, Modal, Typography } from '@mui/material';
+import { Box, Button, FormControl, Modal, TextField, Typography } from '@mui/material';
 import styles from './group-modal.module.scss';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { createGroup, fetchGroup, updateGroup } from '../util/http';
 import { queryClient } from '@ui-tanstack/common';
+import { useGroupContext } from '../groups-container/groups-container';
 
 const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: '50%',
-  height: '75%',
+  width: '40rem',
+  height: '20rem',
   border: '1px solid #000',
   p: 2,
   background: '#1e293b',
@@ -25,12 +26,15 @@ export function GroupModal() {
   const location = useLocation();
   const [searchParams] = useSearchParams();
 
+  const { activeSpace } = useGroupContext();
+
   const { id } = useParams();
   const isCreateMode = id === 'NEW';
 
   const [formData, setFormData] = useState({
     _id: '',
     name: '',
+    spaceId: '',
   });
 
   const { data, isLoading, isError, error } = useQuery({
@@ -70,9 +74,10 @@ export function GroupModal() {
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    console.log('Form data:', formData);
-    setFormData(formData);
-    mutate({ formData: formData });
+    if (activeSpace) {
+      formData.spaceId = activeSpace._id;
+      mutate({ formData: formData });
+    }
   };
 
   return (
@@ -88,18 +93,19 @@ export function GroupModal() {
             </Button>
           </div>
           <div className={styles['group-modal-body']}>
-            <div className="form-control">
-              <label className="block text-white font-bold" htmlFor="name">
-                Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                className="input"
-              />
+            <span>Space Details: {activeSpace?.name}</span>
+            <div className={styles['group-modal-body__controls']}>
+              <FormControl fullWidth size="small">
+                <TextField
+                  size="small"
+                  label="Name"
+                  placeholder="Name"
+                  name="name"
+                  inputProps={{ 'aria-label': 'search groups' }}
+                  value={formData.name}
+                  onChange={handleInputChange}
+                />
+              </FormControl>
             </div>
           </div>
         </div>

@@ -22,6 +22,10 @@
     flex: 1;
     overflow: auto;
     padding-inline: 0.5rem;
+    
+    .group-modal-body__controls {
+        margin: 2rem;
+    }
 }
 
 .group-modal-footer {

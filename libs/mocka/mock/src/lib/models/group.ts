@@ -3,6 +3,7 @@ import { Schema, Document, model, Model } from 'mongoose';
 // Interface for the Group
 export interface IGroup {
   name: string; // Name of the mock item group
+  spaceId: string;
   description?: string; // Optional description of the group
   createdAt?: Date; // Creation timestamp (optional)
   updatedAt?: Date; // Update timestamp (optional)
@@ -17,8 +18,9 @@ interface GroupModel extends Model<GroupDocument> {}
 // Define the Mongoose schema for Group
 const groupSchema = new Schema<GroupDocument>(
   {
-    name: { type: String, required: true }, // Required name field
+    name: { type: String, required: true, unique: true }, // Required name field
     description: { type: String, required: false }, // Optional description field
+    spaceId: { type: String, required: true },
   },
   {
     timestamps: true, // Automatically manage createdAt and updatedAt fields

@@ -5,12 +5,14 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { deleteGroup, fetchGroups } from '../util/http';
 import GroupItem from '../group-item/group-item';
 import { queryClient } from '@ui-tanstack/common';
+import { useGroupContext } from '../groups-container/groups-container';
 
 export function GroupsList() {
   const location = useLocation();
 
   const [searchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState<string>();
+  const { activeSpace } = useGroupContext();
 
   let content = <p> Hello </p>;
 
@@ -24,9 +26,10 @@ export function GroupsList() {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['groups', 'search'],
     queryFn: ({ signal, queryKey }) => {
-      return fetchGroups({ signal, searchTerm });
+      const activeSpaceId = activeSpace?._id;
+      return fetchGroups({ signal, searchTerm, activeSpaceId });
     },
-    enabled: searchTerm !== undefined,
+    enabled: searchTerm !== undefined && activeSpace !== null,
   });
 
   useEffect(() => {

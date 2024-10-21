@@ -39,9 +39,8 @@ export async function updateGroup({ formData }) {
   return await response.json();
 }
 
-export async function fetchGroups({ signal, searchTerm }) {
-  console.log(signal);
-  let url = 'http://localhost:3000/group/getAll';
+export async function fetchGroups({ signal, searchTerm, activeSpaceId }) {
+  let url = `http://localhost:3000/group/getAll/${activeSpaceId}`;
 
   if (searchTerm) {
     url += '?search=' + searchTerm;

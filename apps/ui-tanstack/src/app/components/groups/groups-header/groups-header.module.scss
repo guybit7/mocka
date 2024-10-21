@@ -7,12 +7,14 @@
     gap: 1rem;
     border: 1px solid white;
     background-color: rgb(22, 22, 43);
-
+    
     .gh-search-container {
         height: 100%;
         flex: 1;
         display: flex;
         align-items: center;
+        gap: 0.5rem;
+        min-width: 30rem;
     }
     .gh-actions-container {
         height: 100%;
