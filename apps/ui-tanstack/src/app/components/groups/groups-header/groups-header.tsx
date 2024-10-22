@@ -28,6 +28,7 @@ export function GroupsHeader() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const debouncedSearch = useDebouncedCallback((value: any) => {
+    setSearchTerm(value);
     const params = new URLSearchParams(searchParams);
     params.set('search', value);
     setSearchParams(params);
@@ -104,7 +105,6 @@ export function GroupsHeader() {
                 defaultValue={searchTerm}
                 value={searchTerm}
                 onChange={e => {
-                  setSearchTerm(e.target.value);
                   debouncedSearch(e.target.value);
                 }}
               />

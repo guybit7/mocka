@@ -11,10 +11,13 @@ export function AuthProvider({ children }) {
     console.log('effect auth');
     const checkAuth = async () => {
       try {
-        const response = await axios.get('/auth/currentUser', { baseURL: 'http://localhost:3000', withCredentials: true  });
+        const response = await axios.get('/api/auth/currentUser', {
+          baseURL: 'http://localhost:3000',
+          withCredentials: true,
+        });
         setUser(response.data.data);
       } catch (error) {
-        setUser(null)
+        setUser(null);
       } finally {
       }
     };

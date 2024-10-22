@@ -1,7 +1,7 @@
 import { SigninFormData } from '@ui-tanstack/common';
 
 export async function signin(formData: SigninFormData): Promise<void> {
-  const url = `http://localhost:3000/auth/login`;
+  const url = `http://localhost:3000/api/auth/login`;
 
   const response = await fetch(url, {
     method: 'POST',
@@ -21,7 +21,7 @@ export async function signin(formData: SigninFormData): Promise<void> {
 }
 
 export async function register({ formData }) {
-  const url = `http://localhost:3000/auth/register`;
+  const url = `http://localhost:3000/api/auth/register`;
 
   const response = await fetch(url, {
     method: 'POST',
@@ -40,7 +40,7 @@ export async function register({ formData }) {
   return await response.json();
 }
 export async function logout() {
-  const url = `http://localhost:3000/auth/logout`;
+  const url = `http://localhost:3000/api/auth/logout`;
 
   const response = await fetch(url, {
     method: 'POST',

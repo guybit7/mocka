@@ -9,12 +9,26 @@ export class MockService {
     }
   }
 
-  public static async find(term): Promise<MockType[] | null> {
-    console.log(`find mock service: ${term}`);
+  public static async find(term, groupId): Promise<MockType[] | null> {
+    // console.log(`find mock service: ${term}`);
     try {
       return await Mock.find({
-        // $or: [{ name: { $regex: term, $options: 'i' } }],
-      }); //.skip(0).limit(1);
+        groupId,
+      });
+    } catch (error) {
+      throw new Error(`Error finding mocks', ${error.message}`);
+    }
+  }
+
+  public static async findQuery(groupId, endpoint): Promise<MockType[] | null> {
+    console.log(`groupId: ${groupId}`);
+    console.log(`endpoint: ${endpoint}`);
+    try {
+      const query = {
+        name: endpoint,
+        groupId: groupId,
+      };
+      return await Mock.find(query);
     } catch (error) {
       throw new Error(`Error finding mocks', ${error.message}`);
     }

@@ -1,7 +1,24 @@
-/*
- * Replace this with your own classes
- *
- * e.g.
- * .container {
- * }
-*/
+.header-container {
+    height: 4rem;
+    padding-inline: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    border: 1px solid white;
+    background-color: rgb(22, 22, 43);
+
+    .search-container {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        min-width: 15rem;
+    }
+
+    .actions-container {
+        height: 100%;   
+        display: flex;
+        align-items: center;
+    }
+}

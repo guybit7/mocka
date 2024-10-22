@@ -1,6 +1,5 @@
 import { Navigate, RouteObject } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
-import MockModal from './components/temp/mock-modal/mock-modal';
 import Login from './components/auth/login/login';
 import ProtectedRoute from './components/auth/protected-route/protected-route';
 import { QueryClientProvider } from '@tanstack/react-query';
@@ -14,11 +13,12 @@ import AdminContainer from './components/admin/admin-container/admin-container';
 import SpacesContainer from './components/admin/spaces/spaces-container/spaces-container';
 import SpacesList from './components/admin/spaces/spaces-list/spaces-list';
 import SpaceForm from './components/admin/spaces/space-form/space-form';
+import MockModal from './components/mocks/mock-modal/mock-modal';
 
 const Shell = lazy(() => import('./components/shell/shell'));
 const SettingsContainer = lazy(() => import('./components/settings-container/settings-container'));
 const MocksContainer = lazy(() => import('./components/mocks/mocks-container/mocks-container'));
-const MocksList = lazy(() => import('./components/temp/mocks-list/mocks-list'));
+const MocksList = lazy(() => import('./components/mocks/mocks-list/mocks-list'));
 
 export const appRoutes: RouteObject[] = [
   {
@@ -76,15 +76,7 @@ export const appRoutes: RouteObject[] = [
         ],
       },
       {
-        path: 'mocks/:groupId',
-        element: (
-          <Suspense fallback={<div>Loading...</div>}>
-            <MocksContainer />
-          </Suspense>
-        ),
-      },
-      {
-        path: 'main',
+        path: 'mocks/:spaceId/:groupId',
         element: (
           <Suspense fallback={<div>Loading...</div>}>
             <MocksContainer />

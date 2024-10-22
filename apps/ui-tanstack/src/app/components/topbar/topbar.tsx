@@ -27,10 +27,6 @@ export function Topbar() {
     navigate('./settings');
   };
 
-  const MocksHandler = () => {
-    navigate('./main');
-  };
-
   const groupsHandler = () => {
     navigate('./groups');
   };
@@ -54,19 +50,20 @@ export function Topbar() {
 
   return (
     <div className={styles['topbar-container']}>
-      <div>
-        <span> {user.fullName}</span>
-      </div>
-      <div className={styles['topbar-actions']}>
+      <div className={styles['topbar-start']}>
+        <div>
+          <span style={{ color: 'green' }}> {user.fullName}</span>
+        </div>
         <div>
           <Button
             id="basic-button"
+            variant="outlined"
             aria-controls={open ? 'basic-menu' : undefined}
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
             onClick={handleClick}
           >
-            Dashboard
+            Admin
           </Button>
           <Menu
             id="basic-menu"
@@ -82,15 +79,15 @@ export function Topbar() {
             {/* <MenuItem onClick={handleClose}></MenuItem> */}
           </Menu>
         </div>
-        <Button variant="outlined" onClick={settingsHandler}>
-          Settings
-        </Button>
         <Button variant="outlined" onClick={groupsHandler}>
           Groups
         </Button>
-        <Button variant="outlined" onClick={MocksHandler}>
-          Mocks List
-        </Button>
+      </div>
+
+      <div className={styles['topbar-actions']}>
+        {/* <Button variant="outlined" onClick={settingsHandler}>
+          Settings
+        </Button> */}
       </div>
       <div>
         <Button variant="outlined" onClick={handleLogout}>

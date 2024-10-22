@@ -2,7 +2,7 @@
 export async function createSpace({ formData }) {
   delete formData._id;
   console.log(JSON.stringify(formData));
-  const url = `http://localhost:3000/space`;
+  const url = `http://localhost:3000/api/space`;
 
   const response = await fetch(url, {
     method: 'POST',
@@ -20,7 +20,7 @@ export async function createSpace({ formData }) {
   return await response.json();
 }
 export async function updateSpace({ formData }) {
-  const url = `http://localhost:3000/space`;
+  const url = `http://localhost:3000/api/space`;
 
   const response = await fetch(url, {
     method: 'PUT',
@@ -40,7 +40,7 @@ export async function updateSpace({ formData }) {
 
 export async function fetchSpaces({ signal, searchTerm }) {
   console.log(signal);
-  let url = 'http://localhost:3000/space/getAll';
+  let url = 'http://localhost:3000/api/space/getAll';
 
   if (searchTerm) {
     url += '?search=' + searchTerm;
@@ -58,7 +58,7 @@ export async function fetchSpaces({ signal, searchTerm }) {
 }
 
 export async function deleteSpace({ row }) {
-  const url = `http://localhost:3000/space/${row._id}`;
+  const url = `http://localhost:3000/api/space/${row._id}`;
 
   const response = await fetch(url, {
     method: 'DELETE',
@@ -77,7 +77,7 @@ export async function deleteSpace({ row }) {
 
 export async function fetchSpace({ signal, id }) {
   console.log(signal);
-  const url = `http://localhost:3000/space/${id}`;
+  const url = `http://localhost:3000/api/space/${id}`;
 
   const response = await fetch(url, { signal: signal });
   if (!response.ok) {

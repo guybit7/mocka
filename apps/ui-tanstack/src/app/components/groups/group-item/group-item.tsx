@@ -2,7 +2,7 @@ import { Button } from '@mui/material';
 import styles from './group-item.module.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-export function GroupItem({ row, onDelete }) {
+export function GroupItem({ row, onDelete, onSelect }) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -11,7 +11,7 @@ export function GroupItem({ row, onDelete }) {
   };
 
   const mockList = () => {
-    navigate(`../../mocks/${row._id}`);
+    onSelect(row);
   };
 
   const deleteGroup = () => {

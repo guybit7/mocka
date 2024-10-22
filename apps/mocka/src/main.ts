@@ -7,6 +7,7 @@ import mongoose from 'mongoose';
 import { GroupController, MockController, SpaceController } from '@mocka/mock';
 import { AuthController } from '@mocka/auth';
 import { MockCron } from '@mocka/cron';
+import axios from 'axios';
 
 const MONGODB_URI = 'mongodb://localhost:27017/mocka';
 const host = process.env.HOST ?? 'localhost';
@@ -69,6 +70,46 @@ app.use(
     // cookie: { secure: true, httpOnly: true, maxAge: 3600000 },
   })
 );
+
+//////////////////////////////// Middleware
+
+async function redirect(groupId, endpoint) {
+  try {
+    // Make a request to another API
+    const body = {
+      groupId: groupId,
+      endpoint: endpoint,
+    };
+    const response = await axios.post(`http://localhost:3000/api/mock/findQuery`, body);
+
+    // Return the response from the external API to the client
+    return response;
+  } catch (error) {
+    // Handle any errors that occur during the API call
+    console.error('Error calling external API:', error);
+  }
+}
+
+async function myMiddleware(req: Request, res, next) {
+  console.log('Middleware executed!');
+  const segments = req.url.split('/').filter(segment => segment); // Filter out empty segments
+  console.log(segments);
+  const firstPath = segments[0] || ''; // First segment
+  if (firstPath === 'api' || firstPath === '') {
+    return next();
+  }
+  const groupId = segments[0]; // Second segment
+  const endpoint = segments.slice(1).join('/') || ''; // Join remaining segments
+
+  console.log('[main]groupid: ', groupId);
+  console.log('[main]endpoint: ', endpoint);
+
+  const response = await redirect(groupId, endpoint);
+  res.json(response.data);
+}
+
+app.use(myMiddleware); // This will apply to all routes
+
 //////////////////////////////////////////////////
 
 const mockController = new MockController();
@@ -76,7 +117,7 @@ const groupController = new GroupController();
 const authController = new AuthController();
 const spaceController = new SpaceController();
 
-app.use('/mock', mockController.getRouter());
-app.use('/auth', authController.getRouter());
-app.use('/group', groupController.getRouter());
-app.use('/space', spaceController.getRouter());
+app.use('/api/mock', mockController.getRouter());
+app.use('/api/auth', authController.getRouter());
+app.use('/api/group', groupController.getRouter());
+app.use('/api/space', spaceController.getRouter());

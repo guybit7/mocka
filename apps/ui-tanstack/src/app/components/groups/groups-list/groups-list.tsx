@@ -1,4 +1,4 @@
-import { Outlet, useLocation, useSearchParams } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import styles from './groups-list.module.scss';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -13,6 +13,7 @@ export function GroupsList() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState<string>('');
   const { activeSpace } = useGroupContext();
+  const navigate = useNavigate();
 
   let content = <p> Hello </p>;
 
@@ -48,9 +49,14 @@ export function GroupsList() {
     deleteSigleGroup({ row });
   };
 
+  // mocks/:spaceId/:groupId
+  const handleSelectGroup = (row: any) => {
+    navigate(`../../mocks/${activeSpace?._id}/${row._id}`);
+  };
+
   if (data) {
     content = data?.map((row: any, index: number) => {
-      return <GroupItem key={row._id} row={row} onDelete={handleDeleteGroup}></GroupItem>;
+      return <GroupItem key={row._id} row={row} onDelete={handleDeleteGroup} onSelect={handleSelectGroup}></GroupItem>;
     });
   }
 

@@ -1,8 +1,7 @@
-//////////// GROPS
-export async function createGroup({ formData }) {
+export async function createMock({ formData }) {
   delete formData._id;
   console.log(JSON.stringify(formData));
-  const url = `http://localhost:3000/api/group`;
+  const url = `http://localhost:3000/api/mock`;
 
   const response = await fetch(url, {
     method: 'POST',
@@ -11,7 +10,7 @@ export async function createGroup({ formData }) {
   });
 
   if (!response.ok) {
-    const error: any = new Error('An error occurred while fetching the events');
+    const error: any = new Error('An error occurred while fetching the mocks');
     error.code = response.status;
     error.info = await response.json();
     throw error;
@@ -20,8 +19,8 @@ export async function createGroup({ formData }) {
   return await response.json();
 }
 
-export async function updateGroup({ formData }) {
-  const url = `http://localhost:3000/api/group`;
+export async function updateMock({ formData }) {
+  const url = `http://localhost:3000/api/mock`;
 
   const response = await fetch(url, {
     method: 'PUT',
@@ -30,7 +29,7 @@ export async function updateGroup({ formData }) {
   });
 
   if (!response.ok) {
-    const error: any = new Error('An error occurred while updating the group');
+    const error: any = new Error('An error occurred while updating the mock');
     error.code = response.status;
     error.info = await response.json();
     throw error;
@@ -39,8 +38,8 @@ export async function updateGroup({ formData }) {
   return await response.json();
 }
 
-export async function fetchGroups({ signal, searchTerm, activeSpaceId }) {
-  let url = `http://localhost:3000/api/group/getAll/${activeSpaceId}`;
+export async function fetchMocks({ signal, groupId, searchTerm }) {
+  let url = `http://localhost:3000/api/mock/getAll?groupId=${groupId}`;
 
   if (searchTerm) {
     url += '?search=' + searchTerm;
@@ -48,7 +47,7 @@ export async function fetchGroups({ signal, searchTerm, activeSpaceId }) {
 
   const response = await fetch(url, { signal: signal });
   if (!response.ok) {
-    const error: any = new Error('An error occurred while fetching the events');
+    const error: any = new Error('An error occurred while fetching the mocks');
     error.code = response.status;
     error.info = await response.json();
     throw error;
@@ -57,8 +56,8 @@ export async function fetchGroups({ signal, searchTerm, activeSpaceId }) {
   return await response.json();
 }
 
-export async function deleteGroup({ row }) {
-  const url = `http://localhost:3000/api/group/${row._id}`;
+export async function deleteMock({ row }) {
+  const url = `http://localhost:3000/api/mock/${row._id}`;
 
   const response = await fetch(url, {
     method: 'DELETE',
@@ -66,7 +65,7 @@ export async function deleteGroup({ row }) {
   });
 
   if (!response.ok) {
-    const error: any = new Error('An error occurred while fetching the events');
+    const error: any = new Error('An error occurred while fetching the mocks');
     error.code = response.status;
     error.info = await response.json();
     throw error;
@@ -75,28 +74,13 @@ export async function deleteGroup({ row }) {
   return await response.json();
 }
 
-export async function fetchGroup({ signal, id }) {
+export async function fetchMock({ signal, id }) {
   console.log(signal);
-  const url = `http://localhost:3000/api/group/${id}`;
+  const url = `http://localhost:3000/api/mock/${id}`;
 
   const response = await fetch(url, { signal: signal });
   if (!response.ok) {
-    const error: any = new Error('An error occurred while fetching the group');
-    error.code = response.status;
-    error.info = await response.json();
-    throw error;
-  }
-
-  return await response.json();
-}
-
-export async function fetchSummarySpaces({ signal }) {
-  console.log(signal);
-  const url = `http://localhost:3000/api/space/summary/getAll`;
-
-  const response = await fetch(url, { signal: signal });
-  if (!response.ok) {
-    const error: any = new Error('An error occurred while fetching the summary spaces list');
+    const error: any = new Error('An error occurred while fetching the mock');
     error.code = response.status;
     error.info = await response.json();
     throw error;
