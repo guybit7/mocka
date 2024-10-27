@@ -18,7 +18,7 @@ export function MocksList() {
   const { mutate: deleteSingleMock } = useMutation({
     mutationFn: deleteMock,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['mocks', searchTerm], exact: true });
+      queryClient.invalidateQueries({ queryKey: ['mocks'], exact: false });
     },
   });
 

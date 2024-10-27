@@ -42,12 +42,26 @@ export async function fetchMocks({ signal, groupId, searchTerm }) {
   let url = `http://localhost:3000/api/mock/getAll?groupId=${groupId}`;
 
   if (searchTerm) {
-    url += '?search=' + searchTerm;
+    url += '&search=' + searchTerm;
   }
 
   const response = await fetch(url, { signal: signal });
   if (!response.ok) {
     const error: any = new Error('An error occurred while fetching the mocks');
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  return await response.json();
+}
+
+export async function fetchGroupById({ signal, groupId }) {
+  let url = `http://localhost:3000/api/group/${groupId}`;
+
+  const response = await fetch(url, { signal: signal });
+  if (!response.ok) {
+    const error: any = new Error('An error occurred while fetching the group');
     error.code = response.status;
     error.info = await response.json();
     throw error;

@@ -5,6 +5,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { createMock, fetchMock, updateMock } from '../util/http';
 import { queryClient } from '@ui-tanstack/common';
 import { Box, Button, FormControl, Modal, TextField, Typography } from '@mui/material';
+import { useMocksContext } from '../mocks-container/mocks-container';
 
 const style = {
   position: 'absolute',
@@ -24,7 +25,7 @@ export function MockModal() {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
-
+  const { activeGroup } = useMocksContext();
   const { id } = useParams();
   const isCreateMode = id === 'NEW';
 
@@ -32,7 +33,7 @@ export function MockModal() {
     _id: '',
     name: '',
     value: '',
-    groupId: '',
+    groupId: activeGroup?._id,
   });
 
   const { data, isLoading, isError, error } = useQuery({
@@ -70,13 +71,16 @@ export function MockModal() {
   const { mutate } = useMutation({
     mutationFn: ({ formData }) => (isCreateMode ? createMock({ formData }) : updateMock({ formData })),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['mocks', searchParams.get('search')], exact: true });
+      queryClient.invalidateQueries({ queryKey: ['mocks'], exact: false });
       handleClose();
     },
   });
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
+    if (isCreateMode) {
+      formData.groupId = activeGroup?._id;
+    }
     mutate({ formData: formData });
   };
 
@@ -93,7 +97,7 @@ export function MockModal() {
             </Button>
           </div>
           <div className={styles['modal-body']}>
-            <span>Group Details: {}</span>
+            <span>Group Details: {activeGroup?.name}</span>
             <div className={styles['modal-body__controls']}>
               <FormControl fullWidth size="small">
                 <TextField

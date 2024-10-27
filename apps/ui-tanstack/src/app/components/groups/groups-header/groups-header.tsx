@@ -40,8 +40,22 @@ export function GroupsHeader() {
   }, []);
 
   useEffect(() => {
-    const spaceQuery = searchParams.get('space');
-    if (summarySpaces && spaceQuery) {
+    let spaceQuery = searchParams.get('space');
+    if (summarySpaces === undefined) {
+      return;
+    }
+    if (summarySpaces && summarySpaces?.length === 0) {
+      console.log('not found spaces..');
+      return;
+    }
+    if (spaceQuery === null) {
+      spaceQuery = summarySpaces[0]._id;
+      const params = new URLSearchParams(searchParams);
+      params.set('space', spaceQuery);
+      setSearchParams(params);
+      setSpace(spaceQuery);
+      setTheActiveSpace(spaceQuery);
+    } else {
       const selectedSpace: any = summarySpaces?.find((space: any) => space?._id === spaceQuery);
       if (selectedSpace) {
         setSpace(selectedSpace?._id);

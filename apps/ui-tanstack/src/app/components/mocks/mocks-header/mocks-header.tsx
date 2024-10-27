@@ -2,7 +2,7 @@ import { Button, FormControl, IconButton, InputLabel, Paper, TextField } from '@
 import styles from './mocks-header.module.scss';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
 export function MocksHeader() {
@@ -17,6 +17,10 @@ export function MocksHeader() {
     params.set('search', value);
     setSearchParams(params);
   }, 300);
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+  }, []);
 
   const addGroup = () => {
     navigate('./list/NEW' + location.search);

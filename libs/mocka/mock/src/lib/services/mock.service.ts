@@ -46,7 +46,7 @@ export class MockService {
     try {
       return await Mock.create(body);
     } catch (error) {
-      throw new Error(`Error finding mock by name', ${error.message}`);
+      throw new Error(`Error create mock', ${error.message}`);
     }
   }
 

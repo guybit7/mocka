@@ -91,19 +91,17 @@ async function redirect(groupId, endpoint) {
 }
 
 async function myMiddleware(req: Request, res, next) {
-  console.log('Middleware executed!');
   const segments = req.url.split('/').filter(segment => segment); // Filter out empty segments
-  console.log(segments);
   const firstPath = segments[0] || ''; // First segment
   if (firstPath === 'api' || firstPath === '') {
     return next();
   }
   const groupId = segments[0]; // Second segment
   const endpoint = segments.slice(1).join('/') || ''; // Join remaining segments
-
+  console.log('*****middleware start***');
   console.log('[main]groupid: ', groupId);
   console.log('[main]endpoint: ', endpoint);
-
+  console.log('*****middleware end***');
   const response = await redirect(groupId, endpoint);
   res.json(response.data);
 }

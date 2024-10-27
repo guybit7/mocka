@@ -15,7 +15,7 @@ export function GroupsList() {
   const { activeSpace } = useGroupContext();
   const navigate = useNavigate();
 
-  let content = <p> Hello </p>;
+  let content = <p> Please select space and group </p>;
 
   const { mutate: deleteSigleGroup } = useMutation({
     mutationFn: deleteGroup,
