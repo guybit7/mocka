@@ -4,8 +4,10 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
+import { useMocksContext } from '../mocks-container/mocks-container';
 
 export function MocksHeader() {
+  const { activeGroup } = useMocksContext();
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -28,6 +30,10 @@ export function MocksHeader() {
 
   return (
     <div className={styles['header-container']}>
+      <div className={styles['group-details']}>
+        <span className={styles['group-details__title']}>{activeGroup?.name}</span>
+        <span className={styles['group-details__id']}>{activeGroup?._id}</span>
+      </div>
       <div className={styles['search-container']}>
         <Paper component="form" sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <FormControl fullWidth size="small">

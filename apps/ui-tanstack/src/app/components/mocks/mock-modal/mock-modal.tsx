@@ -97,7 +97,6 @@ export function MockModal() {
             </Button>
           </div>
           <div className={styles['modal-body']}>
-            <span>Group Details: {activeGroup?.name}</span>
             <div className={styles['modal-body__controls']}>
               <FormControl fullWidth size="small">
                 <TextField
