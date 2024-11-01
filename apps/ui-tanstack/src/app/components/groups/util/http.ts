@@ -94,7 +94,11 @@ export async function fetchSummarySpaces({ signal }) {
   console.log(signal);
   const url = `http://localhost:3000/api/space/summary/getAll`;
 
-  const response = await fetch(url, { signal: signal });
+  const response = await fetch(url, {
+    signal: signal,
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+  });
   if (!response.ok) {
     const error: any = new Error('An error occurred while fetching the summary spaces list');
     error.code = response.status;

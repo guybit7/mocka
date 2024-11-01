@@ -20,6 +20,7 @@ mongoose
   });
 
 const db = mongoose.connection;
+
 db.on('error', () => {
   console.error('MongoDB connection error:');
 });
@@ -33,6 +34,7 @@ db.once('open', () => {
 const store = new MongoDBStore({
   uri: MONGODB_URI,
   collection: 'sessions',
+  ttl: 60 * 60, // 1 hour in seconds
 });
 
 export { store };

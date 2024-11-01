@@ -1,4 +1,4 @@
-import { UserService } from '@mocka/auth';
+import { UserService } from '@mocka/authentication';
 import { CronClient } from '@mocka/core';
 
 export class MockCron {

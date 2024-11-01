@@ -1,5 +1,6 @@
 import { Application } from 'express';
-import { AuthController, GroupController, MockController, SpaceController } from './controlles';
+import { GroupController, MockController, SpaceController } from './controlles';
+import { AuthController } from '@mocka/authentication';
 
 export function registerControllers(app: Application) {
   const controllers = [

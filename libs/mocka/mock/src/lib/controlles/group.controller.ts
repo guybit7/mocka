@@ -1,9 +1,11 @@
 import { Request, Response } from 'express';
 import { GroupService } from '../services/group.service';
 import { BaseController } from './base.controller';
+import { authMiddleware } from '@mocka/authentication';
 export class GroupController extends BaseController<any> {
   constructor() {
     super(new GroupService());
+    // this.router.use(authMiddleware);
     this.router.get('/getAll/:spaceId', this.getAllBySpaceId.bind(this));
     super.initRoutes();
   }

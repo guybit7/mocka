@@ -1,20 +1,17 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Launch Program",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}\\apps\\mocka\\src\\main.ts",
-            "outFiles": [
-                "${workspaceFolder}/**/*.js"
-            ]
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Express Server",
+      "program": "${workspaceFolder}/apps/mocka/src/main.ts", // Update to your main file
+      "outFiles": ["${workspaceFolder}/dist/apps/mocka/**/*.js"], // Adjust as needed
+      "runtimeArgs": ["--inspect-brk"], // This will pause execution on startup
+      "port": 9229,
+      "env": {
+        "NODE_ENV": "development"
+      }
+    }
+  ]
 }

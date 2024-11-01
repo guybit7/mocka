@@ -115,10 +115,9 @@ export async function deleteMocks({ selected }) {
   return await response.json();
 }
 
-
 /////////// AUTH
 export async function logout() {
-  let url = `http://localhost:3000/auth/logout`;
+  let url = `http://localhost:3000/api/auth/logout`;
 
   const response = await fetch(url, {
     method: 'POST',

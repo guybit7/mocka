@@ -25,9 +25,12 @@ export async function mainMiddleware(req: Request, res, next) {
   }
   const groupId = segments[0]; // Second segment
   const endpoint = segments.slice(1).join('/') || ''; // Join remaining segments
-  console.log('*****middleware start***');
-  console.log('[main]groupid: ', groupId);
-  console.log('[main]endpoint: ', endpoint);
+  if (groupId === 'favicon.ico') {
+    return next();
+  }
+  console.log('*****[mainMiddleware START]***');
+  // console.log('[main]groupid: ', groupId);
+  // console.log('[main]endpoint: ', endpoint);
   console.log('*****middleware end***');
   const response = await redirect(groupId, endpoint);
   res.json(response.data);

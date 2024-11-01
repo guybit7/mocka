@@ -1,11 +1,13 @@
 import { Router, Request, Response } from 'express';
 import { MockService } from '../services';
 import { MockDto } from '../dtos/mock.dto';
+import { authMiddleware } from '@mocka/authentication';
 
 export class MockController {
   router = Router();
   constructor() {
     this.initRoutes();
+    this.router.use(authMiddleware);
   }
 
   private initRoutes() {
