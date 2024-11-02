@@ -9,7 +9,9 @@
     "noImplicitAny": true,
   },
   "files": [],
-  "include": [],
+  "include": [
+    "./src/vite-env.d.ts" 
+  ],
   "references": [
     {
       "path": "./tsconfig.app.json"

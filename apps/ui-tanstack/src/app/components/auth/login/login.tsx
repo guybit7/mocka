@@ -1,22 +1,24 @@
 import { useState } from 'react';
 import './login.scss';
 import { useMutation } from '@tanstack/react-query';
-import { signin as signinHttp } from '../http';
 import { useNavigate } from 'react-router-dom';
-import { SigninFormData } from '@ui-tanstack/common';
+import { axiosClient } from '@ui-tanstack/common';
 
 export function Login() {
   const navigation = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-  } as SigninFormData);
+  } as any);
 
   const { mutate: signinHandler } = useMutation({
-    mutationFn: ({ formData }) => signinHttp(formData),
+    mutationFn: ({ formData }) => axiosClient.post('api/auth/login', JSON.stringify(formData)),
     onSuccess: data => {
       console.log(data);
       navigation('/');
+    },
+    onError: err => {
+      alert(err);
     },
   });
 

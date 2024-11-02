@@ -4,7 +4,26 @@ import { AuthContext } from '../auth/auth-provider/auth-provider';
 import { Button, Menu, MenuItem } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
-import { logout } from '@ui-tanstack/common';
+
+export async function logout() {
+  const url = `http://localhost:3000/api/auth/logout`;
+
+  const response = await fetch(url, {
+    method: 'POST',
+    body: null,
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    const error: any = new Error('An error occurred while fetching the events');
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  return await response.json();
+}
 
 export function Topbar() {
   const { user } = useContext(AuthContext) as any;

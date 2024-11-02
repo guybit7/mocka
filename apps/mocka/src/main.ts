@@ -14,6 +14,7 @@ const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 const app = express();
 
 app.use(express.json());
+
 const currentDate = new Date();
 
 const theExpiresDate = new Date(currentDate.getTime() + 4 * 60 * 60 * 1000);
@@ -32,7 +33,6 @@ app.use(
   })
 );
 
-// expires: new Date(new Date().getDate() + 10)
 app.use(
   cors({
     origin: ['http://localhost:4200'], // setting from process.env

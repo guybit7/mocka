@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import './register.scss';
 import { useMutation } from '@tanstack/react-query';
-import { register } from '../http';
+import { axiosClient } from '@ui-tanstack/common';
 
 export function Register() {
   const navigation = useNavigate();
@@ -15,7 +15,7 @@ export function Register() {
   });
 
   const { mutate: signinHandler } = useMutation({
-    mutationFn: ({ formData }) => register({ formData }),
+    mutationFn: ({ formData }) => axiosClient.post('api/auth/register', JSON.stringify(formData)),
     onSuccess: data => {
       console.log(data);
       navigation('/login');
