@@ -2,8 +2,7 @@ import { useLocation, useNavigate, useParams, useSearchParams } from 'react-rout
 import styles from './mock-modal.module.scss';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { createMock, fetchMock, updateMock } from '../util/http';
-import { queryClient } from '@ui-tanstack/common';
+import { axiosClient, queryClient } from '@ui-tanstack/common';
 import { Box, Button, FormControl, Modal, TextField, Typography } from '@mui/material';
 import { useMocksContext } from '../mocks-container/mocks-container';
 
@@ -30,15 +29,19 @@ export function MockModal() {
   const isCreateMode = id === 'NEW';
 
   const [formData, setFormData] = useState({
-    _id: '',
     name: '',
     value: '',
     groupId: activeGroup?._id,
+  } as {
+    _id?: string;
+    name: string;
+    value: string;
+    groupId: string;
   });
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['mocks', { id: id }],
-    queryFn: ({ signal, queryKey }) => fetchMock({ signal, id }),
+    queryFn: ({ signal, queryKey }) => axiosClient.get<any, any>(`/api/mock/${id}`, { signal }),
     enabled: id !== undefined && id !== 'NEW',
   });
 
@@ -51,12 +54,20 @@ export function MockModal() {
       const jsonObject = JSON.parse(data.value);
       const formattedJson = JSON.stringify(jsonObject, null, 2);
 
-      setFormData({
-        _id: data._id,
-        name: data.name,
-        value: formattedJson,
-        groupId: data.groupId,
-      });
+      if (isCreateMode) {
+        setFormData({
+          name: data.name,
+          value: formattedJson,
+          groupId: data.groupId,
+        });
+      } else {
+        setFormData({
+          _id: data._id,
+          name: data.name,
+          value: formattedJson,
+          groupId: data.groupId,
+        });
+      }
     }
   }, [data]);
 
@@ -69,7 +80,8 @@ export function MockModal() {
   };
 
   const { mutate } = useMutation({
-    mutationFn: ({ formData }) => (isCreateMode ? createMock({ formData }) : updateMock({ formData })),
+    mutationFn: ({ formData }) =>
+      isCreateMode ? axiosClient.post(`/api/mock`, formData) : axiosClient.put(`/api/mock`, formData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['mocks'], exact: false });
       handleClose();

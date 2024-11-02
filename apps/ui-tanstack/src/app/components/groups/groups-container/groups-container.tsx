@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import GroupsHeader from '../groups-header/groups-header';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { fetchSummarySpaces } from '../util/http';
+import { axiosClient } from '@ui-tanstack/common';
 
 // Define the shape of the space object
 interface Space {
@@ -33,7 +33,7 @@ export function GroupsContainer() {
     error,
   } = useQuery({
     queryKey: ['spaces', 'summary'],
-    queryFn: ({ signal }) => fetchSummarySpaces({ signal }),
+    queryFn: ({ signal }) => axiosClient.get('/api/space/summary/getAll',{ signal }),
     enabled: true,
   });
 

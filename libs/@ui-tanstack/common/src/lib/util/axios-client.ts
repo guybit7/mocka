@@ -8,4 +8,24 @@ export const axiosClient = axios.create({
   withCredentials: true,
 });
 
+axiosClient.interceptors.request.use(
+  config => {
+    // You can modify the config here (e.g., add authorization token)
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
+
+axiosClient.interceptors.response.use(
+  response => {
+    return response.data; // Return the response directly
+  },
+  error => {
+    // Handle errors globally (e.g., logging, showing notifications)
+    return Promise.reject(error);
+  }
+);
+
 export default axiosClient;

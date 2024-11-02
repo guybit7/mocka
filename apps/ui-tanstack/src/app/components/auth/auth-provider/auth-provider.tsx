@@ -12,7 +12,7 @@ export function AuthProvider({ children }) {
     const checkAuth = async () => {
       try {
         const response = await axiosClient.get('/api/auth/currentUser');
-        setUser(response.data.data);
+        setUser(response.data);
       } catch (error) {
         setUser(null);
       } finally {

@@ -2,8 +2,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styles from './space-form.module.scss';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { createSpace, fetchSpace, updateSpace } from '../util/http';
-import { queryClient } from '@ui-tanstack/common';
+import { axiosClient, queryClient } from '@ui-tanstack/common';
 import { Button } from '@mui/material';
 
 export function SpaceForm() {
@@ -14,13 +13,13 @@ export function SpaceForm() {
   const isCreateMode = id === 'NEW';
 
   const [formData, setFormData] = useState({
-    _id: '',
     name: '',
-  });
+  } as { _id?: string; name: string });
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['space', { id: id }],
-    queryFn: ({ signal, queryKey }) => fetchSpace({ signal, id }),
+    queryFn: ({ signal, queryKey }) =>
+      axiosClient.get<any, { _id: string; name: string }>(`api/space/${id}`, { signal }),
     enabled: id !== undefined && id !== 'NEW',
   });
 
@@ -31,7 +30,6 @@ export function SpaceForm() {
   useEffect(() => {
     if (id === 'NEW') {
       setFormData({
-        _id: '',
         name: '',
       });
     }
@@ -52,7 +50,13 @@ export function SpaceForm() {
   };
 
   const { mutate } = useMutation({
-    mutationFn: ({ formData }) => (isCreateMode ? createSpace({ formData }) : updateSpace({ formData })),
+    mutationFn: ({ formData }) => {
+      if (isCreateMode) {
+        return axiosClient.post('api/space', formData);
+      } else {
+        return axiosClient.put('api/space', formData);
+      }
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['spaces', 'search'], exact: true });
       handleClose();

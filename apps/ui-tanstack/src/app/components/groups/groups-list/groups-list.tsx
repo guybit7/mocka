@@ -2,9 +2,8 @@ import { Outlet, useLocation, useNavigate, useSearchParams } from 'react-router-
 import styles from './groups-list.module.scss';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { deleteGroup, fetchGroups } from '../util/http';
 import GroupItem from '../group-item/group-item';
-import { queryClient } from '@ui-tanstack/common';
+import { axiosClient, queryClient } from '@ui-tanstack/common';
 import { useGroupContext } from '../groups-container/groups-container';
 
 export function GroupsList() {
@@ -18,7 +17,7 @@ export function GroupsList() {
   let content = <p> Please select space and group </p>;
 
   const { mutate: deleteSigleGroup } = useMutation({
-    mutationFn: deleteGroup,
+    mutationFn: ({ row }) => axiosClient.delete(`/api/group/${row._id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['groups', searchTerm], exact: true });
     },
@@ -28,7 +27,11 @@ export function GroupsList() {
     queryKey: ['groups', searchTerm],
     queryFn: ({ signal, queryKey }) => {
       const activeSpaceId = activeSpace?._id;
-      return fetchGroups({ signal, searchTerm, activeSpaceId });
+      let url = `/api/group/getAll/${activeSpaceId}`;
+      if (searchTerm) {
+        url += '?search=' + searchTerm;
+      }
+      return axiosClient.get(`${url}`);
     },
     enabled: activeSpace !== null,
   });

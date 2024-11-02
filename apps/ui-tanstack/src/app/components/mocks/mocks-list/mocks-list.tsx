@@ -2,9 +2,8 @@ import { Outlet, useLocation, useNavigate, useParams, useSearchParams } from 're
 import styles from './mocks-list.module.scss';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { queryClient } from '@ui-tanstack/common';
+import { axiosClient, queryClient } from '@ui-tanstack/common';
 import MockItem from '../mock-item/mock-item';
-import { deleteMock, fetchMocks } from '../util/http';
 
 export function MocksList() {
   const location = useLocation();
@@ -16,7 +15,7 @@ export function MocksList() {
   let content = <p> Welcome to mocks list</p>;
 
   const { mutate: deleteSingleMock } = useMutation({
-    mutationFn: deleteMock,
+    mutationFn: ({ row }) => axiosClient.delete(`/api/mock/${row._id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['mocks'], exact: false });
     },
@@ -25,7 +24,7 @@ export function MocksList() {
   const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['mocks', searchTerm],
     queryFn: ({ signal, queryKey }) => {
-      return fetchMocks({ signal, groupId, searchTerm });
+      return axiosClient.get(`/api/mock/getAll?groupId=${groupId}`, { signal });
     },
     enabled: true,
   });

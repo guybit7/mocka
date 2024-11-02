@@ -3,7 +3,7 @@ import styles from './mocks-container.module.scss';
 import MocksHeader from '../mocks-header/mocks-header';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { fetchGroupById } from '../util/http';
+import { axiosClient } from '@ui-tanstack/common';
 
 interface Group {
   _id: string; // Adjust type as necessary
@@ -31,7 +31,7 @@ export function MocksContainer() {
     error,
   } = useQuery({
     queryKey: ['active-group', groupId],
-    queryFn: ({ signal }) => fetchGroupById({ signal, groupId }),
+    queryFn: ({ signal }) => axiosClient.get(`/api/group/${groupId}`, { signal }),
     enabled: !!groupId,
   });
 

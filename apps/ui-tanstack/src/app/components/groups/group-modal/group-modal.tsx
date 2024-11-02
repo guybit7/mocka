@@ -3,8 +3,7 @@ import styles from './group-modal.module.scss';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { createGroup, fetchGroup, updateGroup } from '../util/http';
-import { queryClient } from '@ui-tanstack/common';
+import { axiosClient, queryClient } from '@ui-tanstack/common';
 import { useGroupContext } from '../groups-container/groups-container';
 
 const style = {
@@ -39,7 +38,7 @@ export function GroupModal() {
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['event', { id: id }],
-    queryFn: ({ signal, queryKey }) => fetchGroup({ signal, id }),
+    queryFn: ({ signal, queryKey }) => axiosClient.get(`/api/group/${id}`, {signal}),
     enabled: id !== undefined && id !== 'NEW',
   });
 
@@ -66,7 +65,7 @@ export function GroupModal() {
   };
 
   const { mutate } = useMutation({
-    mutationFn: ({ formData }) => (isCreateMode ? createGroup({ formData }) : updateGroup({ formData })),
+    mutationFn: ({ formData }) => (isCreateMode ? axiosClient.post('/api/group', formData) : axiosClient.put('/api/group', formData)),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['groups', searchParams.get('search')], exact: true });
       handleClose();
