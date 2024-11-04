@@ -3,14 +3,18 @@ import session from 'express-session';
 import { UserService } from '@mocka/authentication';
 import cors from 'cors';
 import { registerControllers } from '@mocka/mock';
-import { MockCron } from '@mocka/cron';
+// import { MockCron } from '@mocka/cron';
 import { dbEventEmitter, store } from '@mocka/core';
 import { mainMiddleware } from '@mocka/mock';
 import { seedTasks, seedRoles } from '@mocka/authentication';
+import dotenv from 'dotenv';
 
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
+dotenv.config();
+
+console.log(process.env.CORS_ORIGIN);
 const app = express();
 
 app.use(express.json());
@@ -33,9 +37,10 @@ app.use(
   })
 );
 
+console.log(process.env.CORS_ORIGIN);
 app.use(
   cors({
-    origin: ['http://localhost:4200'], // setting from process.env
+    origin: [process.env.CORS_ORIGIN], // setting from process.env
     credentials: true,
   })
 );
@@ -56,7 +61,7 @@ dbEventEmitter.on('dbReady', async () => {
   }
 });
 
-// app.use(mainMiddleware);
+app.use(mainMiddleware);
 registerControllers(app);
 
 app.get('/api/test/add', async (req: Request, res: Response) => {
@@ -80,7 +85,7 @@ app.get('/api/test', async (req: Request, res: Response) => {
   }
 });
 
-app.listen(port, host, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log(`[ ready ] http://${host}:${port}`);
   // const mock = new MockCron();
   console.log('Current server time:', new Date().toString());

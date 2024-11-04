@@ -1,26 +1,46 @@
-version: '3'
-services:
-  nx-app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - '3000:3000' # Backend
-      - '4200:4200' # Frontend
-    environment:
-      - NODE_ENV=production
-      - MONGODB_URI=mongodb://mongo:27017/mocka
-      - REDIS_HOST=redis
-    depends_on:
-      - mongo
-      - redis
+version: '3.8'
 
-  mongo:
-    image: mongo
+services:
+  mocka:
+    build:
+      context: . # Set context to the root of your monorepo
+      dockerfile: apps/mocka/Dockerfile # Specify the path to the Dockerfile
     ports:
-      - '27017:27017'
+      - '3000:3000'
+    networks:
+      - mocka-network
+    environment:
+      - MONGO_URI=mongodb://mocka-mongo:27017/mocka
+      - REDIS_HOST=mocka-redis
+      - REDIS_PORT=6379
+      - CORS_ORIGIN=http://localhost:3001
+
+  ui-tanstack:
+    build:
+      context: . # Set context to the root of your monorepo
+      dockerfile: apps/ui-tanstack/Dockerfile # Specify the path to the Dockerfile
+    ports:
+      - '3001:80' # Map container port 80 to host port 3001
+    networks:
+      - mocka-network
+  mongo:
+    image: mongo:latest
+    container_name: mocka-mongo
+    networks:
+      - mocka-network
+    ports:
+      - "27018:27017"  # Map MongoDB container port 27017 to host port 27018
+    volumes:
+      - mongo-data:/data/db
 
   redis:
-    image: redis
-    ports:
-      - '6379:6379'
+    image: redis:latest
+    container_name: mocka-redis
+    networks:
+      - mocka-network
+
+networks:
+  mocka-network:
+
+volumes:
+  mongo-data:

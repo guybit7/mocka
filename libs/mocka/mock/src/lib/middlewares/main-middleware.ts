@@ -18,6 +18,7 @@ async function redirect(groupId, endpoint) {
 }
 
 export async function mainMiddleware(req: Request, res, next) {
+  console.log('mainMiddleware');
   const segments = req.url.split('/').filter(segment => segment); // Filter out empty segments
   const firstPath = segments[0] || ''; // First segment
   if (firstPath === 'api' || firstPath === '') {
@@ -25,6 +26,8 @@ export async function mainMiddleware(req: Request, res, next) {
   }
   const groupId = segments[0]; // Second segment
   const endpoint = segments.slice(1).join('/') || ''; // Join remaining segments
+  console.log(groupId);
+  console.log(endpoint);
   if (groupId === 'favicon.ico') {
     return next();
   }

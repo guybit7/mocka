@@ -1,5 +1,4 @@
 import Redis, { Redis as IoredisClient } from 'ioredis';
-
 export class RedisClient {
   private static client: IoredisClient;
 

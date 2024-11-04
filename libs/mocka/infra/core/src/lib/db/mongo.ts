@@ -3,8 +3,8 @@ import session from 'express-session';
 import mongoose from 'mongoose';
 import { default as connectMongoDBSession } from 'connect-mongodb-session';
 import EventEmitter from 'events';
-
-const MONGODB_URI = 'mongodb://localhost:27017/mocka';
+//
+const MONGODB_URI = process.env.MONGO_URI; // mongodb://mocka-mongo:27017/mocka
 const MongoDBStore = connectMongoDBSession(session);
 
 export const dbEventEmitter = new EventEmitter();
