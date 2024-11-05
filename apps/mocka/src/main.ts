@@ -40,7 +40,7 @@ app.use(
 console.log(process.env.CORS_ORIGIN);
 app.use(
   cors({
-    origin: [process.env.CORS_ORIGIN], // setting from process.env
+    origin: [process.env.CORS_ORIGIN, 'http://localhost:4200'], // setting from process.env
     credentials: true,
   })
 );

@@ -31,15 +31,23 @@ export function GroupModal() {
   const isCreateMode = id === 'NEW';
 
   const [formData, setFormData] = useState({
-    _id: '',
     name: '',
     spaceId: '',
-  });
+  } as { _id?: string; name: string; spaceId: string });
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['event', { id: id }],
-    queryFn: ({ signal, queryKey }) => axiosClient.get(`/api/group/${id}`, {signal}),
+    queryFn: ({ signal, queryKey }) => axiosClient.get<any, any>(`/api/group/${id}`, { signal }),
     enabled: id !== undefined && id !== 'NEW',
+  });
+
+  const { mutate } = useMutation({
+    mutationFn: ({ formData }) =>
+      isCreateMode ? axiosClient.post('/api/group', formData) : axiosClient.put('/api/group', formData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['groups', searchParams.get('search')], exact: true });
+      handleClose();
+    },
   });
 
   function handleClose() {
@@ -63,14 +71,6 @@ export function GroupModal() {
       [name]: value,
     }));
   };
-
-  const { mutate } = useMutation({
-    mutationFn: ({ formData }) => (isCreateMode ? axiosClient.post('/api/group', formData) : axiosClient.put('/api/group', formData)),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['groups', searchParams.get('search')], exact: true });
-      handleClose();
-    },
-  });
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
