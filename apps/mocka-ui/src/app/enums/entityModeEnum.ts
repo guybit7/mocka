@@ -1,4 +1,4 @@
 export enum EntityModeEnum {
-    CREATE = 'CREATE',
-    UPDATE = 'UPDATE'
+  CREATE = 'CREATE',
+  UPDATE = 'UPDATE',
 }

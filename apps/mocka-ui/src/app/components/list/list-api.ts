@@ -1,7 +1,7 @@
 import { commonApi } from '../../redux/common.api';
 
 export const listApi = commonApi.injectEndpoints({
-  endpoints: (build) => ({
+  endpoints: build => ({
     getList: build.query<[], void>({
       query: () => ({
         url: '/mock/getAll',
@@ -9,7 +9,7 @@ export const listApi = commonApi.injectEndpoints({
           limit: 5,
         },
       }),
-      providesTags: (result) => [{ type: 'MockList', id: 'List' }],
+      providesTags: result => [{ type: 'MockList', id: 'List' }],
     }),
   }),
 });

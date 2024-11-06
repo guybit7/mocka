@@ -1,7 +1,7 @@
 import { commonApi } from '../../redux/common.api';
 
 export const mockApi = commonApi.injectEndpoints({
-  endpoints: (build) => ({
+  endpoints: build => ({
     create: build.mutation<any, { body: Partial<any> }>({
       query: ({ body }) => ({
         url: '/mock',

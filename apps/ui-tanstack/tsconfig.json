@@ -6,12 +6,10 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "types": ["vite/client"],
-    "noImplicitAny": true,
+    "noImplicitAny": true
   },
   "files": [],
-  "include": [
-    "./src/vite-env.d.ts" 
-  ],
+  "include": ["./src/vite-env.d.ts"],
   "references": [
     {
       "path": "./tsconfig.app.json"

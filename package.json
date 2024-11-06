@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "npx nx run mocka:serve --configuration=production"
+    "start": "npx nx run mocka:serve --configuration=production",
+    "format-ui-tanstack": "prettier --write \"libs/@ui-tanstack/**/*.{ts,js,json,md}\" \"apps/ui-tanstack/**/*.{ts,js,json,md}\""
   },
   "private": true,
   "dependencies": {
