@@ -59,13 +59,29 @@ jobs:
       - name: Run Prettier Check
         run: npm run format:ui-tanstack:check
 
-  # build:
-  #   name: Build Application
-  #   runs-on: ubuntu-latest
-  #   needs: [setup, prettier, lint]
-  #   steps:
-  #     - name: Checkout Code
-  #       uses: actions/checkout@v4
+  build:
+    name: Build Application
+    runs-on: ubuntu-latest
+    needs: [setup, prettier]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-  #     - name: Run Build
-  #       run: npm run build
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.15.0'
+
+      - name: Cache Node Modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install Dependencies (if not already present)
+        run: npm install
+
+      - name: Run Build
+        run: npx nx run ui-tanstack:build
