@@ -9,9 +9,8 @@ on:
       - main
 
 jobs:
-  # Single Job for Setup, Dependencies, and Prettier Check
-  lint-and-check:
-    name: Install Dependencies and Run Prettier Check
+  setup:
+    name: Set Up and Install Dependencies
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -33,5 +32,37 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+  prettier:
+    name: Run Prettier Check
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.15.0'
+
+      - name: Cache Node Modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Run Prettier Check
         run: npm run format:ui-tanstack:check
+
+  # build:
+  #   name: Build Application
+  #   runs-on: ubuntu-latest
+  #   needs: [setup, prettier, lint]
+  #   steps:
+  #     - name: Checkout Code
+  #       uses: actions/checkout@v4
+
+  #     - name: Run Build
+  #       run: npm run build
