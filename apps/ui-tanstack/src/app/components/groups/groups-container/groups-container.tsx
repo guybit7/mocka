@@ -33,7 +33,7 @@ export function GroupsContainer() {
     error,
   } = useQuery({
     queryKey: ['spaces', 'summary'],
-    queryFn: ({ signal }) => axiosClient.get('/api/space/summary/getAll',{ signal }),
+    queryFn: ({ signal }) => axiosClient.get('/api/space/summary/getAll', { signal }),
     enabled: true,
   });
 

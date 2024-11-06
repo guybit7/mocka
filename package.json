@@ -4,8 +4,8 @@
   "license": "MIT",
   "scripts": {
     "start": "npx nx run mocka:serve --configuration=production",
-    "format:ui-tanstack:write": "prettier --write \"libs/@ui-tanstack/**/*.{ts,js,json,md}\" \"apps/ui-tanstack/**/*.{ts,js,json,md}\"",
-    "format:ui-tanstack:read": "prettier --read \"libs/@ui-tanstack/**/*.{ts,js,json,md}\" \"apps/ui-tanstack/**/*.{ts,js,json,md}\""
+    "format:ui-tanstack:write": "prettier --write \"libs/@ui-tanstack/**/*.{ts,tsx,js,json,md}\" \"apps/ui-tanstack/**/*.{ts,tsx,js,json,md}\"",
+    "format:ui-tanstack:read": "prettier --read \"libs/@ui-tanstack/**/*.{ts,tsx,js,json,md}\" \"apps/ui-tanstack/**/*.{ts,tsx,js,json,md}\""
   },
   "private": true,
   "dependencies": {

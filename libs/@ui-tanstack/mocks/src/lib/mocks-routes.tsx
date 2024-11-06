@@ -7,12 +7,12 @@ export const mocksRoutes: any = [
     element: <Outlet />,
     children: [
       {
-        index: true, 
+        index: true,
         element: <Navigate to="list" replace />, // Redirect to 'list'
       },
       {
         path: 'list',
-        element: <MocksList/>,
+        element: <MocksList />,
       },
     ],
   },

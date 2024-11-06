@@ -1,4 +1,4 @@
-import  './error-page.scss';
+import './error-page.scss';
 
 export function ErrorPage() {
   return (

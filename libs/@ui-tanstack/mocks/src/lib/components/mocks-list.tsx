@@ -9,19 +9,20 @@ export function MocksList() {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['events', { searchTerm: searchTerm }],
     queryFn: ({ signal, queryKey }) => fetchMocks({ signal, ...queryKey[1] }),
-    enabled: true //searchTerm !== undefined
+    enabled: true, //searchTerm !== undefined
   });
-  console.log(data)
+  console.log(data);
   return (
     <>
-    <h1>List container</h1>
-    <ul className="events-list">
-    {data && data.map((mock: any) => (
-      <li key={mock.id}>
-        <span>{mock.name}</span>
-      </li>
-    ))}
-  </ul>
+      <h1>List container</h1>
+      <ul className="events-list">
+        {data &&
+          data.map((mock: any) => (
+            <li key={mock.id}>
+              <span>{mock.name}</span>
+            </li>
+          ))}
+      </ul>
     </>
   );
 }

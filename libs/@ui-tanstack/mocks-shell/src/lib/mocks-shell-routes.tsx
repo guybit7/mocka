@@ -4,16 +4,17 @@ import { mocksRoutes } from '@ui-tanstack/mocks';
 // import { ErrorPage } from '@ui-tanstack/common';
 import { Suspense } from 'react';
 
-
 const MocksShell = lazy(() => import('./mocks-shell'));
 // const Mocks = lazy(()=> import('@ui-tanstack/mocks').then(module => ({ default: module.Mocks })))
 
 export const mocksShellRoutes: RouteObject[] = [
   {
     path: 'shell',
-    element: <Suspense fallback={<div>Loading...</div>}>
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
         <MocksShell />,
-      </Suspense>,
+      </Suspense>
+    ),
     // errorElement: <ErrorPage/>,
     children: [
       // {
