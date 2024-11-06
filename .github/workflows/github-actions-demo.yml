@@ -53,6 +53,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
+      - name: Install Dependencies
+        run: npm install
+
       - name: Run Prettier Check
         run: npm run format:ui-tanstack:check
 
