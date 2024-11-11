@@ -1,0 +1,21 @@
+
+html,
+body {
+    height: 100%;
+    font-size: 14px;
+    width: 450px;
+    height: 600px;
+    overflow: hidden;
+    color: white;
+    background-color: rgba(6, 6, 14, 0.826);
+
+    &.light {
+        // @include light;
+    }
+
+    &.dark {
+        // @include dark;
+    }
+}
+
+

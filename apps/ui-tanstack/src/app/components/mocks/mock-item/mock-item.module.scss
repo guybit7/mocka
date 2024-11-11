@@ -18,6 +18,10 @@
     .item__name {
         font-weight: 600;
         font-size: 1.5rem;
+        width: 700px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .item__id {

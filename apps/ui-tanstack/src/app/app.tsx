@@ -4,7 +4,6 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '@ui-tanstack/common';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import axios from 'axios';
 
 const appRouter = createBrowserRouter(appRoutes);
 
