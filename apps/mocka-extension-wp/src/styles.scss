@@ -1,8 +1,12 @@
+:root {
+    --me-background-primary: #001526ff;
+    --me-text-primary: #ffffffcc;
+}
 html {
     height: 600px;
     width: 600px;
     overflow: hidden;
-    background-color: white;
+    background-color: black;
     display: flex;
     flex-direction: column;
 }
@@ -10,11 +14,12 @@ html {
     body {
         height: 100%;
         font-size: 14px;
-        color: black;
+        color: var(--me-text-primary);
         display: flex;
         flex-direction: column;
-        background-color: rgba(196, 196, 241, 0.826);
-        margin: 1rem;
+        background-color: var(--me-background-primary);
+        border-radius: 1rem;
+        // margin: 1rem;
         &.light {
             // @include light;
         }

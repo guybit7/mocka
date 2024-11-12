@@ -14,16 +14,3 @@ export function App() {
 }
 
 export default App;
-/*
-
-    <div>
-      <span> Hello! </span>
-      <HashRouter>
-        <div>
-          <Routes>
-            <Route path="/" element={<Login />} />
-          </Routes>
-        </div>
-      </HashRouter>
-    </div>
-*/
