@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './dashboard.scss';
-import { getTabs } from '@me/common';
+import { getTabs, sendMessage } from '@me/common';
 import { Button, FormControl, InputLabel, Menu, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
 
 export function Dashboard() {
@@ -9,6 +9,7 @@ export function Dashboard() {
   const [formData, setFormData] = useState({
     tab: '',
     groupId: '',
+    domainList: 'http://localhost:3000', // change to list
   } as any);
 
   async function initTabsList() {
@@ -41,8 +42,13 @@ export function Dashboard() {
     }));
   };
 
-  const handleStart = () => {
+  const handleStart = async () => {
     console.log(formData);
+    const messageResponse = await sendMessage({
+      id: formData.tab.id,
+      groupId: formData.groupId,
+      domainList: [formData.domainList],
+    });
   };
   const handleStop = () => {
     console.log(formData);
@@ -51,6 +57,16 @@ export function Dashboard() {
   return (
     <div className="dashboard-container">
       <div className="dashboard-form">
+        <FormControl fullWidth>
+          <TextField
+            name="domainList"
+            id="domainList"
+            value={formData.domainList}
+            label="Domain List"
+            variant="outlined"
+            onChange={handleInputChange}
+          />
+        </FormControl>
         <FormControl fullWidth>
           <InputLabel id="select-tab-label">Tab</InputLabel>
           <Select

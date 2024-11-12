@@ -46,7 +46,12 @@ export class MockService {
     try {
       return await Mock.create(body);
     } catch (error) {
-      throw new Error(`Error create mock', ${error.message}`);
+      if (error.code === 11000) {
+        console.error('Duplicate combination of groupId and name!');
+      } else {
+        console.error('An error occurred:', error);
+      }
+      // throw new Error(`Error create mock', ${error.message}`);
     }
   }
 

@@ -16,6 +16,9 @@ const mockSchema = new Schema<MockDocument>({
   groupId: { type: String, required: true },
 });
 
+// Add a unique compound index
+mockSchema.index({ groupId: 1, name: 1 }, { unique: true });
+
 const Mock = model<MockDocument, MockModel>('Mocks', mockSchema);
 
 export default Mock;
