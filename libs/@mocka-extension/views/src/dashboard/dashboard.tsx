@@ -1,11 +1,152 @@
+import { useEffect, useState } from 'react';
 import './dashboard.scss';
+import { getTabs } from '@me/common';
+import { Button, FormControl, InputLabel, Menu, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
 
 export function Dashboard() {
+  const [tabs, setTabs] = useState([] as any[]);
+
+  const [formData, setFormData] = useState({
+    tab: '',
+    groupId: '',
+  } as any);
+
+  async function initTabsList() {
+    const tabs = await getTabs();
+    const theTabs = [];
+    for (const tab of tabs) {
+      theTabs.push({
+        label: tab.title,
+        id: tab.id,
+      });
+    }
+    setTabs(theTabs);
+  }
+  useEffect(() => {
+    initTabsList();
+  }, []);
+
+  const handleSelectTab = (event: SelectChangeEvent) => {
+    setFormData((prevData: any) => ({
+      ...prevData,
+      tab: event.target.value as string,
+    }));
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormData((prevData: any) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleStart = () => {
+    console.log(formData);
+  };
+  const handleStop = () => {
+    console.log(formData);
+  };
+
   return (
-    <div>
-      <h1>Welcome to Dashboard!</h1>
+    <div className="dashboard-container">
+      <div className="dashboard-form">
+        <FormControl fullWidth>
+          <InputLabel id="select-tab-label">Tab</InputLabel>
+          <Select
+            labelId="select-tab-label"
+            id="select-tab-id"
+            value={formData.tab}
+            label="Tab"
+            onChange={handleSelectTab}
+          >
+            {tabs &&
+              tabs.map(t => {
+                return <MenuItem value={t}>{t.label} </MenuItem>;
+              })}
+          </Select>
+        </FormControl>
+        <FormControl fullWidth>
+          <TextField name="groupId" id="groupId" label="Group Id" variant="outlined" onChange={handleInputChange} />
+        </FormControl>
+      </div>
+      <div className="dashbaord-actions">
+        <Button type="submit" variant="contained" onClick={handleStart}>
+          Start
+        </Button>
+        <Button type="submit" variant="contained" onClick={handleStop}>
+          Stop
+        </Button>
+      </div>
     </div>
   );
 }
 
 export default Dashboard;
+/*
+
+active
+: 
+true
+audible
+: 
+false
+autoDiscardable
+: 
+true
+discarded
+: 
+false
+favIconUrl
+: 
+"https://reactrouter.com/favicon-dark.png"
+groupId
+: 
+-1
+height
+: 
+1039
+highlighted
+: 
+true
+id
+: 
+138221087
+incognito
+: 
+false
+index
+: 
+9
+lastAccessed
+: 
+1731406906733.958
+mutedInfo
+: 
+{muted: false}
+openerTabId
+: 
+138220874
+pinned
+: 
+false
+selected
+: 
+true
+status
+: 
+"complete"
+title
+: 
+"createHashRouter | React Router"
+url
+: 
+"https://reactrouter.com/en/main/routers/create-hash-router"
+width
+: 
+1920
+windowId
+: 
+138212085
+
+*/

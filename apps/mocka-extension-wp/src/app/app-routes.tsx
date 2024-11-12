@@ -2,7 +2,7 @@ import { RouteObject } from 'react-router-dom';
 import { Suspense } from 'react';
 import { AuthProvider, Login, ProtectedRoute } from '@me/auth';
 import { Shell } from '@me/common';
-// import { Dashboard } from '@me/views';
+import { Dashboard } from '@me/views';
 
 export const appRoutes: RouteObject[] = [
   {
@@ -21,7 +21,7 @@ export const appRoutes: RouteObject[] = [
     children: [
       {
         path: '/',
-        element: <Suspense fallback={<div>Loading...</div>}>{/* <Dashboard /> */}</Suspense>,
+        element: <Suspense fallback={<div>Loading...</div>}>{<Dashboard />}</Suspense>,
       },
     ],
   },

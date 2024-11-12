@@ -1,0 +1,24 @@
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    background-color: rgb(237, 237, 237);// var(--me-background-secondary);
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: 1rem;
+
+    .dashboard-form {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        height: 100%;
+    }
+
+    .dashbaord-actions {
+        display: flex;
+        padding-inline: 1rem;
+        justify-content: flex-end;
+        gap: 1rem;
+    }
+}
