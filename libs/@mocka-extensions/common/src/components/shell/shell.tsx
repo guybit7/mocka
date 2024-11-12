@@ -1,5 +1,5 @@
-import './shell.scss';
 import { Outlet } from 'react-router-dom';
+import './shell.scss';
 
 export function Shell() {
   return (
