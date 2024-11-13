@@ -3,7 +3,7 @@ import styles from './mock-modal.module.scss';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { axiosClient, queryClient } from '@ui-tanstack/common';
-import { Box, Button, FormControl, Modal, TextField, Typography } from '@mui/material';
+import { Box, Button, FormControl, Modal, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { useMocksContext } from '../mocks-container/mocks-container';
 
 const style = {
@@ -25,6 +25,8 @@ export function MockModal() {
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const { activeGroup } = useMocksContext();
+  const [status, setStatus] = useState('Success');
+
   const { id } = useParams();
   const isCreateMode = id === 'NEW';
 
@@ -37,6 +39,7 @@ export function MockModal() {
     name: string;
     value: string;
     groupId: string;
+    status: boolean;
   });
 
   const { data, isLoading, isError, error } = useQuery({
@@ -59,13 +62,16 @@ export function MockModal() {
           name: data.name,
           value: formattedJson,
           groupId: data.groupId,
+          status: true,
         });
       } else {
+        setStatus(data.status ? 'Success' : 'Fail');
         setFormData({
           _id: data._id,
           name: data.name,
           value: formattedJson,
           groupId: data.groupId,
+          status: data.status,
         });
       }
     }
@@ -93,7 +99,12 @@ export function MockModal() {
     if (isCreateMode) {
       formData.groupId = activeGroup?._id;
     }
+    formData.status = status === 'Success';
     mutate({ formData: formData });
+  };
+
+  const handleChangeSuccess = (event: React.MouseEvent<HTMLElement>, newStatus: any) => {
+    setStatus(newStatus);
   };
 
   return (
@@ -121,11 +132,24 @@ export function MockModal() {
                   onChange={handleInputChange}
                 />
               </FormControl>
+              <FormControl fullWidth size="small">
+                <ToggleButtonGroup
+                  color="primary"
+                  value={status}
+                  exclusive
+                  onChange={handleChangeSuccess}
+                  aria-label="Platform"
+                >
+                  <ToggleButton value="Success">Success</ToggleButton>
+                  <ToggleButton value="Fail">Fail</ToggleButton>
+                </ToggleButtonGroup>
+              </FormControl>
+
               <TextField
                 label="JSON Input"
                 name="value"
                 multiline
-                rows={20}
+                rows={18}
                 variant="outlined"
                 value={formData.value}
                 onChange={handleInputChange}

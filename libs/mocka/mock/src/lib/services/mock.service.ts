@@ -20,7 +20,7 @@ export class MockService {
     }
   }
 
-  public static async findQuery(groupId, endpoint): Promise<MockType[] | null> {
+  public static async findQuery(groupId, endpoint): Promise<MockType | null> {
     console.log(`groupId: ${groupId}`);
     console.log(`endpoint: ${endpoint}`);
     try {
@@ -28,7 +28,7 @@ export class MockService {
         name: endpoint,
         groupId: groupId,
       };
-      return await Mock.find(query);
+      return await Mock.findOne(query);
     } catch (error) {
       throw new Error(`Error finding mocks', ${error.message}`);
     }

@@ -1,6 +1,6 @@
 :root {
-    --me-background-primary: #001526ff;
-    --me-background-secondary: #344252ff;
+    --me-background-primary: #1E1E1E;
+    --me-background-secondary: #252526;
     --me-text-primary: #ffffffcc;
 }
 
@@ -10,7 +10,7 @@
 html {
     height: 100%;
     overflow: hidden;
-    background-color: rgb(237, 237, 237);
+    background-color: var(--me-background-primary);
     display: flex;
     flex-direction: column;
 }
@@ -21,7 +21,7 @@ html {
         color: var(--me-text-primary);
         display: flex;
         flex-direction: column;
-        background-color: rgb(237, 237, 237); //var(--me-background-primary);
+        background-color: var(--me-background-primary);
         border-radius: 1rem;
         // margin: 1rem;
         &.light {

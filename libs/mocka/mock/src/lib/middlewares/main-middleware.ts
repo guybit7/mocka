@@ -1,16 +1,15 @@
 import axios from 'axios';
+import { IMock } from '../models';
+import { Response } from 'express';
 
-async function redirect(groupId, endpoint) {
+async function redirect(groupId, endpoint): Promise<IMock> {
   try {
     // Make a request to another API
     const body = {
       groupId: groupId,
       endpoint: endpoint,
     };
-    const response = await axios.post(`http://localhost:3000/api/mock/findQuery`, body);
-
-    // Return the response from the external API to the client
-    return response;
+    return await axios.post(`http://localhost:3000/api/mock/findQuery`, body);
   } catch (error) {
     // Handle any errors that occur during the API call
     console.error('Error calling external API:', error);
@@ -35,6 +34,15 @@ export async function mainMiddleware(req: Request, res, next) {
   // console.log('[main]groupid: ', groupId);
   // console.log('[main]endpoint: ', endpoint);
   console.log('*****middleware end***');
-  const response = await redirect(groupId, endpoint);
-  res.json(response.data);
+  const response: any = await redirect(groupId, endpoint);
+  console.log(response.data.status);
+  if (response.data.status) {
+    res.json(JSON.parse(response.data.value));
+  } else {
+    if (Object.keys(response.data.value).length > 0) {
+      res.status(500).json(JSON.parse(response.data.value));
+    } else {
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  }
 }

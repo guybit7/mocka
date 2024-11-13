@@ -18,6 +18,10 @@ export function MockItem({ row, onDelete, onSelect }) {
     onDelete(row);
   };
 
+  const link = () => {
+    window.open(`http://localhost:3000/${row.groupId}/${row.name}`, '_blank'); // Open in a new tab
+  }
+
   return (
     <div className={styles['item-container']}>
       <div className={styles['action-container']}>
@@ -26,6 +30,9 @@ export function MockItem({ row, onDelete, onSelect }) {
         </Button>
         <Button variant="outlined" onClick={editGroup}>
           Edit
+        </Button>
+        <Button variant="outlined" onClick={link}>
+          Link
         </Button>
       </div>
 

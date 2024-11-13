@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import './dashboard.scss';
 import { getTabs, sendMessage } from '@me/common';
 import { Button, FormControl, InputLabel, Menu, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
+import Divider from '@mui/material/Divider';
 
 export function Dashboard() {
   const [tabs, setTabs] = useState([] as any[]);
@@ -59,6 +60,7 @@ export function Dashboard() {
       <div className="dashboard-form">
         <FormControl fullWidth>
           <TextField
+            className="me-text-field"
             name="domainList"
             id="domainList"
             value={formData.domainList}
@@ -67,6 +69,7 @@ export function Dashboard() {
             onChange={handleInputChange}
           />
         </FormControl>
+        {/* <Divider /> */}
         <FormControl fullWidth>
           <InputLabel id="select-tab-label">Tab</InputLabel>
           <Select
@@ -82,6 +85,7 @@ export function Dashboard() {
               })}
           </Select>
         </FormControl>
+        {/* <Divider /> */}
         <FormControl fullWidth>
           <TextField name="groupId" id="groupId" label="Group Id" variant="outlined" onChange={handleInputChange} />
         </FormControl>

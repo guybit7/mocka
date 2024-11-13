@@ -4,6 +4,7 @@ export interface IMock {
   name: String;
   value: Object;
   groupId: String;
+  status: boolean;
 }
 
 export interface MockDocument extends IMock, Document {}
@@ -14,6 +15,7 @@ const mockSchema = new Schema<MockDocument>({
   name: { type: String, required: true },
   value: { type: Object, required: true },
   groupId: { type: String, required: true },
+  status: { type: Boolean, default: true },
 });
 
 // Add a unique compound index

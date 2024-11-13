@@ -8,7 +8,7 @@ const appRouter = createHashRouter(appRoutes);
 
 const darkTheme = createTheme({
   palette: {
-    mode: 'light',
+    mode: 'dark',
   },
 });
 
