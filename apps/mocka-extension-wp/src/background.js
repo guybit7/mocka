@@ -1,9 +1,14 @@
+
 /* eslint-disable no-undef */
 let currentTabId;
 let sessionName = '';
 let groupId = null;
 let version = '1.0';
 let domainList = [];
+
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true });
+});
 
 console.log('inside background js!!!');
 const requests = new Map();
