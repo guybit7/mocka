@@ -25,7 +25,6 @@ export class AuthController {
 
   private async currentUser(req: Request, res: Response) {
     console.log(`session: ${JSON.stringify(req.session.user)}`);
-    console.log("************************************", req.session.user._id)
     const theUser = await RedisClient.get(`user:${req.session.user._id}`);
     if (req.session.user) {
       res.send({ message: 'Ok', data: JSON.parse(theUser) });
@@ -35,8 +34,6 @@ export class AuthController {
   }
 
   private async login(req: Request, res: Response) {
-    console.log(`login body ${JSON.stringify(req.body)}`);
-    console.log(`pre login`);
     try {
       console.log(bcrypt);
       const { email, password } = req.body;

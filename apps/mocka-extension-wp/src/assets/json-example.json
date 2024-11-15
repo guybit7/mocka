@@ -1,0 +1,104 @@
+{
+  "request_general_header": {
+    "headers": {
+      "Accept": "application/json, text/plain, */*",
+      "Referer": "http://localhost:4200/",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+      "sec-ch-ua": "Google Chrome = 131 Chromium131b Not_A Brand24",
+      "sec-ch-ua-mobile": "?0",
+      "sec-ch-ua-platform": "Windows"
+    },
+    "initialPriority": "High",
+    "isSameSite": true,
+    "method": "GET",
+    "mixedContentType": "none",
+    "referrerPolicy": "strict-origin-when-cross-origin",
+    "url": "http://localhost:3000/api/space/getAll"
+  },
+  "response": {
+    "alternateProtocolUsage": "unspecifiedReason",
+    "charset": "utf-8",
+    "connectionId": 495759,
+    "connectionReused": false,
+    "encodedDataLength": 285,
+    "fromDiskCache": false,
+    "fromPrefetchCache": false,
+    "fromServiceWorker": false,
+    "headers": {
+      "Access-Control-Allow-Credentials": "true",
+      "Access-Control-Allow-Origin": "http://localhost:4200",
+      "Content-Length": "279",
+      "Content-Type": "application/json; charset=utf-8",
+      "Date": "Fri, 15 Nov 2024 12:14:11 GMT",
+      "ETag": "W/",
+      "Vary": "Origin",
+      "X-Powered-By": "Express"
+    },
+    "mimeType": "application/json",
+    "protocol": "http/1.1",
+    "remoteIPAddress": "127.0.0.1",
+    "remotePort": 3000,
+    "responseTime": 1731672851185.129,
+    "securityState": "secure",
+    "status": 200,
+    "statusText": "OK",
+    "timing": {
+      "connectEnd": 310.677,
+      "connectStart": 1.269,
+      "dnsEnd": 1.269,
+      "dnsStart": 1.252,
+      "proxyEnd": -1,
+      "proxyStart": -1,
+      "pushEnd": 0,
+      "pushStart": 0,
+      "receiveHeadersEnd": 318.061,
+      "receiveHeadersStart": 317.854,
+      "requestTime": 1001075.820177,
+      "sendEnd": 310.888,
+      "sendStart": 310.754,
+      "sslEnd": -1,
+      "sslStart": -1,
+      "workerFetchStart": -1,
+      "workerReady": -1,
+      "workerRespondWithSettled": -1,
+      "workerStart": -1
+    },
+    "url": "http://localhost:3000/api/space/getAll"
+  },
+  "response_body": {
+    "base64Encoded": false,
+    "body": [
+      {
+        "_id": "671804a0ad4c48e7578ff0ff",
+        "name": "TEST ENV 123",
+        "createdAt": "2024-10-22T20:01:36.979Z",
+        "updatedAt": "2024-11-10T22:17:40.943Z",
+        "__v": 0
+      },
+      {
+        "_id": "6735a7e114d06db0d98da40c",
+        "name": "Inon",
+        "createdAt": "2024-11-14T07:33:53.400Z",
+        "updatedAt": "2024-11-14T07:33:53.400Z",
+        "__v": 0
+      }
+    ]
+  },
+  "cookies": [
+    {
+      "domain": "localhost",
+      "expires": 1731684803.672222,
+      "httpOnly": true,
+      "name": "connect.sid",
+      "path": "/",
+      "priority": "Medium",
+      "sameParty": false,
+      "secure": false,
+      "session": false,
+      "size": 91,
+      "sourcePort": 3000,
+      "sourceScheme": "NonSecure",
+      "value": "s%3AxZUsDSnwAW8ZwyHdbFF3WgO7s-o2JdMr.gR0CE2uXOkvUlrEiOWATNEzM7MyDw5j0m4QuNtwBWuY"
+    }
+  ]
+}

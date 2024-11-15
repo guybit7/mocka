@@ -30,12 +30,9 @@ export async function mainMiddleware(req: Request, res, next) {
   if (groupId === 'favicon.ico') {
     return next();
   }
-  console.log('*****[mainMiddleware START]***');
-  // console.log('[main]groupid: ', groupId);
-  // console.log('[main]endpoint: ', endpoint);
-  console.log('*****middleware end***');
+
   const response: any = await redirect(groupId, endpoint);
-  console.log(response.data.status);
+
   if (response.data.status) {
     res.json(JSON.parse(response.data.value));
   } else {

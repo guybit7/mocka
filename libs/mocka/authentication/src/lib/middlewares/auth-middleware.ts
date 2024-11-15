@@ -3,7 +3,7 @@ import { Request } from 'express';
 
 export const authMiddleware = async (req: any, res, next) => {
   console.log(`******* [start - authMiddleware - ${req.url}] *******`);
-
+  console.log(req.session);
   if (!req.session.user) {
     return res.status(401).send('Access denied.');
   }
