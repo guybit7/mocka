@@ -155,8 +155,12 @@ function allEventHandler(debuggerId, message, params) {
  * @param {*} pathname
  * @returns
  */
-function getEndpoint(pathname) {
-  return pathname.replace(/^\//, '');
+function getEndpoint(pathname, params) {
+  const theEndpoint = pathname.replace(/^\//, '');
+  // if (params) {
+
+  // }
+  return theEndpoint
 }
 
 function parseAcceptHeader(acceptHeader) {
@@ -193,9 +197,9 @@ async function saveRequestData(requestDataMap, requestId) {
   }
   const method = request_general_header.method;
   const requestHeaderAccept = parseAcceptHeader(request_general_header.headers.Accept);
-  const { pathname } = new URL(request_general_header.url);
+  const { pathname, params } = new URL(request_general_header.url);
   
-  const endpoint = getEndpoint(pathname);
+  const endpoint = getEndpoint(pathname, params);
   
   console.log(method);
   console.log(requestHeaderAccept);

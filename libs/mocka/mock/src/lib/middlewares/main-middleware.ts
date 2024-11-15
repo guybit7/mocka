@@ -18,7 +18,12 @@ async function redirect(groupId, endpoint): Promise<IMock> {
 
 export async function mainMiddleware(req: Request, res, next) {
   console.log('mainMiddleware');
-  const segments = req.url.split('/').filter(segment => segment); // Filter out empty segments
+  let theUrl = req.url;
+  if (theUrl.endsWith('/')) {
+    theUrl = theUrl.slice(0, -1);
+  }
+  console.log(theUrl);
+  const segments = theUrl.split('/').filter(segment => segment); // Filter out empty segments
   const firstPath = segments[0] || ''; // First segment
   if (firstPath === 'api' || firstPath === '') {
     return next();
@@ -32,14 +37,15 @@ export async function mainMiddleware(req: Request, res, next) {
   }
 
   const response: any = await redirect(groupId, endpoint);
-
-  if (response.data.status) {
+  console.log(response.data);
+  if (response.data && response.data.status) {
     res.json(JSON.parse(response.data.value));
   } else {
-    if (Object.keys(response.data.value).length > 0) {
-      res.status(500).json(JSON.parse(response.data.value));
-    } else {
-      res.status(500).json({ message: 'Internal Server Error' });
-    }
+    res.status(500).json({ message: 'Internal Server Error' });
   }
+  // if (Object.keys(response.data.value).length > 0) {
+  //   res.status(500).json(JSON.parse(response.data.value));
+  // } else {
+  // }
+  // }
 }
