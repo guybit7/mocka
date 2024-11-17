@@ -85,7 +85,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export default function MuShell() {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
 
   const navigate = useNavigate();
 

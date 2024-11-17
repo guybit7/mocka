@@ -25,7 +25,7 @@ export function SpaceItem({ row, onDelete }: any) {
         </Button>
       </div>
 
-      <span className="item__name">{row.name}</span>
+      <span className="item__name" >{row.name}</span>
 
       <span className="item__id">{row._id}</span>
     </div>

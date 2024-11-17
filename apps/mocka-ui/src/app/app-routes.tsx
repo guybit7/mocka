@@ -1,4 +1,4 @@
-import { RouteObject } from 'react-router-dom';
+import { Navigate, RouteObject } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { MuAuthProvider, muQueryClient, MyProtectedRoute } from '@mu/mu-auth';
@@ -21,7 +21,15 @@ export const appRoutes: RouteObject[] = [
       console.log('loader!!');
       return null;
     },
-    children: [...adminRoutes, ...groupsRoutes, ...mocksRoutes],
+    children: [
+      {
+        index: true,
+        element: <Navigate to="admin" replace />,
+      },
+      ...adminRoutes,
+      ...groupsRoutes,
+      ...mocksRoutes,
+    ],
   },
   {
     path: 'login',

@@ -1,5 +1,5 @@
 import { Outlet, useLocation, useSearchParams } from 'react-router-dom';
-import styles from './spaces-list.module.scss';
+import './spaces-list.scss';
 import SpaceItem from '../space-item/space-item';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -61,8 +61,8 @@ export function SpacesList() {
   }
 
   return (
-    <div className={styles['spaces-list-container']}>
-      <div className={styles['spaces-list-wrapper']}>{content}</div>
+    <div className="spaces-list-container">
+      <div className="spaces-list-wrapper">{content}</div>
       <Outlet />
     </div>
   );
