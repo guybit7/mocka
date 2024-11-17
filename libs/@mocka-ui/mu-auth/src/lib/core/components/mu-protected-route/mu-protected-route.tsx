@@ -1,10 +1,10 @@
 import { useContext, useEffect } from 'react';
-import './protected-route.scss';
-import { AuthContext } from '../auth-provider/auth-provider';
+import './mu-protected-route.scss';
 import { Navigate } from 'react-router-dom';
+import { MuAuthContext } from '../mu-auth-provider/mu-auth-provider';
 
-export function ProtectedRoute({ element: Component, ...rest }: any) {
-  const { user }: any = useContext(AuthContext);
+export function MyProtectedRoute({ element: Component, ...rest }: any) {
+  const { user }: any = useContext(MuAuthContext);
 
   useEffect(() => {
     console.log(user);
@@ -18,4 +18,4 @@ export function ProtectedRoute({ element: Component, ...rest }: any) {
   return Component;
 }
 
-export default ProtectedRoute;
+export default MyProtectedRoute;
