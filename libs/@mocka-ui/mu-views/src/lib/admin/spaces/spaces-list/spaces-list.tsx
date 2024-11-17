@@ -3,7 +3,7 @@ import styles from './spaces-list.module.scss';
 import SpaceItem from '../space-item/space-item';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { axiosClient, queryClient } from '@ui-tanstack/common';
+import { muAxiosClient, muQueryClient } from '@mu/mu-auth';
 
 export function SpacesList() {
   const location = useLocation();
@@ -14,9 +14,9 @@ export function SpacesList() {
   let content = <p> Hello </p>;
 
   const { mutate: deleteSingleSpace } = useMutation({
-    mutationFn: ({ row }) => axiosClient.delete(`/api/space/${row._id}`),
+    mutationFn: ({ row }) => muAxiosClient.delete(`/api/space/${row._id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['spaces', 'search'], exact: true });
+      muQueryClient.invalidateQueries({ queryKey: ['spaces', 'search'], exact: true });
     },
   });
 
@@ -29,7 +29,7 @@ export function SpacesList() {
         url += '?search=' + searchTerm;
       }
 
-      return axiosClient.get(`${url}`, { signal });
+      return muAxiosClient.get(`${url}`, { signal });
     },
     enabled: true,
   });
