@@ -1,5 +1,7 @@
 import express, { Request, Response } from 'express';
 import session from 'express-session';
+import cookieParser from 'cookie-parser';
+
 import { UserService } from '@mocka/authentication';
 import cors from 'cors';
 import { registerControllers } from '@mocka/mock';
@@ -16,26 +18,27 @@ dotenv.config();
 
 console.log(process.env.CORS_ORIGIN);
 const app = express();
-
+app.use(cookieParser());
 app.use(express.json());
 
-const currentDate = new Date();
+// auth session
+// const currentDate = new Date();
 
-const theExpiresDate = new Date(currentDate.getTime() + 4 * 60 * 60 * 1000);
+// const theExpiresDate = new Date(currentDate.getTime() + 4 * 60 * 60 * 1000);
 
-app.use(
-  session({
-    secret: 'yourSecretKey',
-    resave: false,
-    saveUninitialized: false,
-    store: store,
-    cookie: {
-      secure: false,
-      httpOnly: true,
-      expires: theExpiresDate, // Set expiration explicitly
-    },
-  })
-);
+// app.use(
+//   session({
+//     secret: 'yourSecretKey',
+//     resave: false,
+//     saveUninitialized: false,
+//     store: store,
+//     cookie: {
+//       secure: false,
+//       httpOnly: true,
+//       expires: theExpiresDate, // Set expiration explicitly
+//     },
+//   })
+// );
 
 console.log(process.env.CORS_ORIGIN);
 app.use(

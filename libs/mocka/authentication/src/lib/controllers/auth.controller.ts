@@ -1,9 +1,10 @@
 import { Router, Request, Response } from 'express';
 import User from '../models/user';
 import * as bcrypt from 'bcrypt';
-import { authMiddleware } from '../middlewares';
+import { authenticateToken } from '../middlewares';
 import { UserService } from '../services';
 import { RedisClient } from '@mocka/core';
+import * as jwt from 'jsonwebtoken';
 
 export class AuthController {
   router = Router();
@@ -13,9 +14,9 @@ export class AuthController {
   }
 
   private initRoutes() {
-    this.router.get('/currentUser', authMiddleware, this.currentUser.bind(this));
     this.router.post('/login', this.login.bind(this));
-    this.router.post('/logout', authMiddleware, this.logout.bind(this));
+    this.router.get('/currentUser', authenticateToken, this.currentUser.bind(this));
+    this.router.post('/logout', authenticateToken, this.logout.bind(this));
     this.router.post('/register', this.register.bind(this));
   }
 
@@ -24,10 +25,10 @@ export class AuthController {
   }
 
   private async currentUser(req: Request, res: Response) {
-    console.log(`session: ${JSON.stringify(req.session.user)}`);
-    const theUser = await RedisClient.get(`user:${req.session.user._id}`);
-    if (req.session.user) {
-      res.send({ message: 'Ok', data: JSON.parse(theUser) });
+    // console.log(`session: ${JSON.stringify(req.session.user)}`);
+
+    if (req.user) {
+      res.send({ message: 'Ok', data: req.user });
     } else {
       res.status(401).send({ message: 'Current User Failed', data: null });
     }
@@ -50,18 +51,34 @@ export class AuthController {
         return res.status(400).send('User is not verified');
       }
 
-      req.session.user = user._id;
+      // Create JWT token
+      const token = jwt.sign(
+        { userId: user.id, role: user.role },
+        process.env.SECRET_KEY,
+        { expiresIn: '1h' } // Adjust expiration as needed.
+      );
+
+      // when use auth session
+      // req.session.user = user._id;
       await RedisClient.set(`user:${user._id}`, JSON.stringify(user), 360000);
-      console.log(req.session.user);
-      console.log(`post login`);
-      res.send({ message: 'Ok', data: req.session.user });
+      delete user.password;
+
+      res.cookie('token', token, {
+        httpOnly: true, // Prevents JavaScript from accessing the cookie
+        secure: process.env.NODE_ENV === 'production', // Only send over HTTPS in production
+        sameSite: 'strict', // Prevents cross-site request forgery
+        maxAge: 3600000, // Token expiration time (1 hour)
+      });
+
+      res.send({ message: 'Ok', data: { user, token } });
     } catch (error) {
       console.log(error);
       res.status(400).send('Error accourd during the login');
     }
   }
 
-  private async logout(req: Request, res: Response) {
+  // deprecated
+  private async logoutAuthSession(req: Request, res: Response) {
     console.log(`starting logout process`);
     if (req.session.user) {
       const userId = req.session.user._id;
@@ -83,6 +100,21 @@ export class AuthController {
           console.error(`logout failed`, e);
         }
       });
+    } else {
+      res.status(401).json({ message: 'Not connected user', data: null });
+    }
+  }
+  private async logout(req: Request, res: Response) {
+    if (req.user) {
+      console.log(`starting logout process`);
+      res.clearCookie('token');
+      const isDeleted = await RedisClient.delete(`user:${req.user._id}`);
+      if (isDeleted) {
+        console.log('DELETED!!!');
+      } else {
+        console.log('NOT DELETED!!!');
+      }
+      res.send({ message: 'Ok', data: null });
     } else {
       res.status(401).json({ message: 'Not connected user', data: null });
     }

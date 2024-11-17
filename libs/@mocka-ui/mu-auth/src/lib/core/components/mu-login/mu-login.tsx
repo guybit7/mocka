@@ -16,6 +16,7 @@ export function MuLogin() {
     mutationFn: async ({ formData }: any) => await muAxiosClient.post('/api/auth/login', JSON.stringify(formData)),
     onSuccess: data => {
       console.log(data);
+
       navigation('/');
     },
     onError: err => {

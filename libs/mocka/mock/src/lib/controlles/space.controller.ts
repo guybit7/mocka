@@ -1,14 +1,14 @@
 import { Request, Response } from 'express';
 import { SpaceService } from '../services';
 import { BaseController } from './base.controller';
-import { authMiddleware, RbacMiddleware } from '@mocka/authentication';
+import { authenticateToken, RbacMiddleware } from '@mocka/authentication';
 export class SpaceController extends BaseController<any> {
   constructor() {
     super(new SpaceService());
     // this.router.use(authMiddleware);
     this.router.get(
       '/summary/getAll',
-      [authMiddleware, RbacMiddleware.checkPermission('read_space')],
+      [authenticateToken, RbacMiddleware.checkPermission('read_space')],
       this.getAllSummary.bind(this)
     );
     super.initRoutes();

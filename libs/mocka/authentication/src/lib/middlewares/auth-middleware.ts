@@ -1,5 +1,4 @@
 import { RedisClient } from '@mocka/core';
-import { Request } from 'express';
 
 export const authMiddleware = async (req: any, res, next) => {
   console.log(`******* [start - authMiddleware - ${req.url}] *******`);

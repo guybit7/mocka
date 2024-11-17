@@ -21,6 +21,8 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import DashboardIcon from '@mui/icons-material/Dashboard'; // Admin-specific icon
+import { useMutation } from '@tanstack/react-query';
+import { muAxiosClient } from '@mu/mu-auth';
 
 const drawerWidth = 240;
 
@@ -89,6 +91,13 @@ export default function MuShell() {
 
   const navigate = useNavigate();
 
+  const { mutate: logoutHandler } = useMutation({
+    mutationFn: async () => await muAxiosClient.post('api/auth/logout', {}),
+    onSuccess: () => {
+      navigate('./login');
+    },
+  });
+
   const navigationItems = [
     { text: 'Admin', path: '/admin', icon: <DashboardIcon /> },
     { text: 'Groups', path: '/groups', icon: <DashboardIcon /> },
@@ -103,6 +112,10 @@ export default function MuShell() {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const handleLogout = () => {
+    logoutHandler();
   };
 
   return (
@@ -161,6 +174,16 @@ export default function MuShell() {
               </ListItemButton>
             </ListItem>
           ))}
+          <ListItem key={'logout'} disablePadding>
+            <ListItemButton
+              onClick={() => {
+                handleLogout();
+              }}
+            >
+              {/* <ListItemIcon>Logout</ListItemIcon> */}
+              <ListItemText primary={'Logout'} />
+            </ListItemButton>
+          </ListItem>
         </List>
       </Drawer>
       <Main open={open} sx={{ height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
