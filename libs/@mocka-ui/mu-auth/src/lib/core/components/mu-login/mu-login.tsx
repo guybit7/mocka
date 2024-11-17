@@ -3,6 +3,7 @@ import './mu-login.scss';
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { Button, FormControl, TextField } from '@mui/material';
+import { muAxiosClient } from '../../api';
 
 export function MuLogin() {
   const navigation = useNavigate();
@@ -12,14 +13,7 @@ export function MuLogin() {
   } as any);
 
   const { mutate: signinHandler } = useMutation({
-    mutationFn: ({ formData }: any) =>
-      fetch('http://localhost:3000/api/auth/login', {
-        method: 'POST', // HTTP method
-        headers: {
-          'Content-Type': 'application/json', // Send data as JSON
-        },
-        body: JSON.stringify(formData), // Convert data object to JSON string
-      }), //.post('api/auth/login', JSON.stringify(formData)),
+    mutationFn: async ({ formData }: any) => await muAxiosClient.post('/api/auth/login', JSON.stringify(formData)),
     onSuccess: data => {
       console.log(data);
       navigation('/');

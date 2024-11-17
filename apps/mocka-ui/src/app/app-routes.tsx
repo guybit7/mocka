@@ -1,10 +1,12 @@
 import { RouteObject } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { MuAuthProvider, MuLogin, muQueryClient, MyProtectedRoute } from '@mu/mu-auth';
+import { MuAuthProvider, muQueryClient, MyProtectedRoute } from '@mu/mu-auth';
+import { adminRoutes, groupsRoutes, mocksRoutes } from '@mu/mu-views'; //change to lazy
 
 const MuShell = lazy(() => import('@mu/mu-views').then(module => ({ default: module.MuShell })));
-//
+const MuLogin = lazy(() => import('@mu/mu-auth').then(module => ({ default: module.MuLogin })));
+
 export const appRoutes: RouteObject[] = [
   {
     path: '/',
@@ -19,6 +21,7 @@ export const appRoutes: RouteObject[] = [
       console.log('loader!!');
       return null;
     },
+    children: [...adminRoutes, ...groupsRoutes, ...mocksRoutes],
   },
   {
     path: 'login',
