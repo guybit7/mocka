@@ -22,6 +22,8 @@
       "@mocka/core": ["libs/mocka/infra/core/src/index.ts"],
       "@mocka/cron": ["libs/mocka/cron/src/index.ts"],
       "@mocka/mock": ["libs/mocka/mock/src/index.ts"],
+      "@mu/mu-auth": ["libs/@mocka-ui/mu-auth/src/index.ts"],
+      "@mu/mu-views": ["libs/@mocka-ui/mu-views/src/index.ts"],
       "@ui-tanstack/common": ["libs/@ui-tanstack/common/src/index.ts"],
       "@ui-tanstack/mocks": ["libs/@ui-tanstack/mocks/src/index.ts"],
       "@ui-tanstack/mocks-shell": ["libs/@ui-tanstack/mocks-shell/src/index.ts"]
