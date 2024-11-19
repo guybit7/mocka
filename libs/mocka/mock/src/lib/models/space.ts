@@ -15,7 +15,7 @@ export interface SpaceDocument extends ISpace, Document {}
 interface SpaceModel extends Model<SpaceDocument> {}
 
 // Define the Mongoose schema for Space
-const spaceSchema = new Schema<SpaceDocument>(
+export const spaceSchema = new Schema<SpaceDocument>(
   {
     name: { type: String, required: true }, // Required name field
     description: { type: String, required: false }, // Optional description field

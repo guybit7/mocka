@@ -1,10 +1,14 @@
 import express, { Request, Response } from 'express';
+import session from 'express-session';
 import cookieParser from 'cookie-parser';
 
+import { UserService } from '@mocka/authentication';
 import cors from 'cors';
-import { createDefaultTenant, registerControllers } from '@mocka/mock';
-import { dbEventEmitter } from '@mocka/core';
+import { registerControllers } from '@mocka/mock';
+// import { MockCron } from '@mocka/cron';
+import { dbEventEmitter, store } from '@mocka/core';
 import { mainMiddleware } from '@mocka/mock';
+import { seedTasks, seedRoles } from '@mocka/authentication';
 import dotenv from 'dotenv';
 
 const host = process.env.HOST ?? 'localhost';
@@ -17,6 +21,25 @@ const app = express();
 app.use(cookieParser());
 app.use(express.json());
 
+// auth session
+const currentDate = new Date();
+
+const theExpiresDate = new Date(currentDate.getTime() + 4 * 60 * 60 * 1000);
+
+app.use(
+  session({
+    secret: 'yourSecretKey',
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+    cookie: {
+      secure: false,
+      httpOnly: true,
+      expires: theExpiresDate, // Set expiration explicitly
+    },
+  })
+);
+
 console.log(process.env.CORS_ORIGIN);
 app.use(
   cors({
@@ -27,7 +50,15 @@ app.use(
 
 dbEventEmitter.on('dbReady', async () => {
   try {
-    createDefaultTenant();
+    const user = await UserService.findOne();
+    if (!user) {
+      await seedTasks();
+      await seedRoles();
+      await UserService.createDefaultUser();
+      console.log('Default user created');
+    } else {
+      console.log('Default user already exists');
+    }
   } catch (err) {
     console.error('Error checking/creating default user:', err);
   }

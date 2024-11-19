@@ -1,5 +1,5 @@
 import User, { IUser as UserType } from '../models/user';
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import Role from '../models/role';
 
 export class UserService {
