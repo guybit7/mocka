@@ -146,6 +146,16 @@ export class AuthController {
     }
   }
 
+  private async postLoginAzure(req: Request, res: Response) {
+    console.log(`register body ${JSON.stringify(req.body)}`);
+    try {
+      res.send({ message: 'Ok', data: 200 });
+    } catch (error) {
+      console.log(error);
+      res.status(400).send('Error accourd during the login');
+    }
+  }
+
   hashPassword = async password => {
     return await bcrypt.hash(password, 10);
   };

@@ -4,9 +4,12 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { Button, FormControl, TextField } from '@mui/material';
 import { muAxiosClient } from '../../api';
+import { LOGIN_REQUEST, PUBLIC_CLIENT_APPLICATION, TOKEN_REQUEST } from '../../msalConfig';
+import { AuthenticationResult } from '@azure/msal-browser';
 
 export function MuLogin() {
   const navigation = useNavigate();
+  const [token, setToken] = useState();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -14,6 +17,19 @@ export function MuLogin() {
 
   const { mutate: signinHandler } = useMutation({
     mutationFn: async ({ formData }: any) => await muAxiosClient.post('/api/auth/login', JSON.stringify(formData)),
+    onSuccess: data => {
+      console.log(data);
+
+      navigation('/');
+    },
+    onError: err => {
+      alert(err);
+    },
+  });
+
+  const { mutate: postSSO } = useMutation({
+    mutationFn: async ({ tokenResponse }: any) =>
+      await muAxiosClient.post('/api/auth/sso/call-back', JSON.stringify(tokenResponse)),
     onSuccess: data => {
       console.log(data);
 
@@ -32,12 +48,35 @@ export function MuLogin() {
     }));
   };
 
+  const handleSignIn = async () => {
+    const loginResponse: AuthenticationResult = await PUBLIC_CLIENT_APPLICATION.loginPopup(LOGIN_REQUEST);
+    if (loginResponse.account) {
+      PUBLIC_CLIENT_APPLICATION.setActiveAccount(loginResponse.account);
+    }
+    const tokenResponse: any = await PUBLIC_CLIENT_APPLICATION.acquireTokenSilent(TOKEN_REQUEST);
+    // setToken(tokenResponse.accessToken);
+    postSSO({ tokenResponse });
+  };
+
   const handleSubmit = (event: any) => {
     event.preventDefault();
     if (formData.email.trim() === '' && formData.passwor.trim() === '') {
       return;
     }
     signinHandler({ formData });
+  };
+
+  const handleSSO = () => {
+    handleSignIn();
+  };
+
+  // Log out the user
+  const logout = async () => {
+    try {
+      await PUBLIC_CLIENT_APPLICATION.logoutPopup(); // Or use logoutRedirect for a full page redirect
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
   return (
@@ -73,6 +112,12 @@ export function MuLogin() {
         <div className="dashbaord-actions">
           <Button variant="contained" onClick={handleSubmit}>
             Login
+          </Button>
+          <Button variant="contained" onClick={handleSSO}>
+            SSO
+          </Button>
+          <Button variant="contained" onClick={logout}>
+            Logout
           </Button>
         </div>
       </section>

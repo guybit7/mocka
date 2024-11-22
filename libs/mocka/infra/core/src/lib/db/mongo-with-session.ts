@@ -11,7 +11,7 @@ export const dbEventEmitter = new EventEmitter();
 
 //////////////////////////////////////////////////// Connect to MongoDB
 mongoose
-  .connect(`${MONGODB_URI}development_tenant`)
+  .connect(`${MONGODB_URI}`)
   .then(res => {
     console.log('connecting to mongodb mocka database');
   })

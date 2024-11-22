@@ -49,19 +49,16 @@ app.use(
 );
 
 dbEventEmitter.on('dbReady', async () => {
-  try {
-    const user = await UserService.findOne();
-    if (!user) {
-      await seedTasks();
-      await seedRoles();
-      await UserService.createDefaultUser();
-      console.log('Default user created');
-    } else {
-      console.log('Default user already exists');
-    }
-  } catch (err) {
-    console.error('Error checking/creating default user:', err);
-  }
+  // try {
+  //   const user = await UserService.findOne();
+  //   if (!user) {
+  //     console.log('Default user created');
+  //   } else {
+  //     console.log('Default user already exists');
+  //   }
+  // } catch (err) {
+  //   console.error('Error checking/creating default user:', err);
+  // }
 });
 
 app.use(mainMiddleware);

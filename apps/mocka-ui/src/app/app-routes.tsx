@@ -1,3 +1,4 @@
+/* eslint-disable @nx/enforce-module-boundaries */
 import { Navigate, RouteObject } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';

@@ -2,9 +2,11 @@ import express, { Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 
 import cors from 'cors';
-import { createDefaultTenant, registerControllers } from '@mocka/mock';
+import { registerControllers } from '@mocka/mock';
 import { dbEventEmitter } from '@mocka/core';
 import { mainMiddleware } from '@mocka/mock';
+import { initializeSystem } from '@mocka/system';
+
 import dotenv from 'dotenv';
 
 const host = process.env.HOST ?? 'localhost';
@@ -27,7 +29,8 @@ app.use(
 
 dbEventEmitter.on('dbReady', async () => {
   try {
-    createDefaultTenant();
+    // createDefaultTenant();
+    await initializeSystem();
   } catch (err) {
     console.error('Error checking/creating default user:', err);
   }
@@ -49,8 +52,6 @@ app.get('/api/test/add', async (req: Request, res: Response) => {
 app.get('/api/test', async (req: Request, res: Response) => {
   try {
     // Replace this with your actual logic to fetch data
-    console.log('>>>>>>>>');
-    console.log(req.session);
     res.json({ status: 'success', message: 'server is running', session: req.session });
   } catch (error) {
     console.log(error);

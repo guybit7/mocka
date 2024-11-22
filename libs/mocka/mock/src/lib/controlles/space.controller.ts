@@ -6,11 +6,9 @@ export class SpaceController extends BaseController<any> {
   constructor() {
     super(new SpaceService());
     // this.router.use(authMiddleware);
-    this.router.get(
-      '/summary/getAll',
-      [authenticateToken, RbacMiddleware.checkPermission('read_space')],
-      this.getAllSummary.bind(this)
-    );
+    // [authenticateToken, RbacMiddleware.checkPermission('read_space')],
+
+    this.router.get('/summary/getAll', this.getAllSummary.bind(this));
     super.initRoutes();
   }
 

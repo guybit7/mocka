@@ -27,7 +27,6 @@ export class MockController {
   }
 
   private async findById(req: Request, res: Response) {
-    console.log(`fetch ${req.params.id}`);
     const r = await MockService.findById(req.params.id);
     res.json(r);
   }
