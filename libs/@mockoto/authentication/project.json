@@ -1,0 +1,33 @@
+{
+  "name": "mockoto-authentication",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/@mockoto/authentication/src",
+  "projectType": "library",
+  "release": {
+    "version": {
+      "generatorOptions": {
+        "packageRoot": "dist\\{projectRoot}",
+        "currentVersionResolver": "git-tag"
+      }
+    }
+  },
+  "tags": ["mockoto-authentication"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/@mockoto/authentication",
+        "tsConfig": "libs/@mockoto/authentication/tsconfig.lib.json",
+        "packageJson": "libs/@mockoto/authentication/package.json",
+        "main": "libs/@mockoto/authentication/src/index.ts",
+        "assets": ["libs/@mockoto/authentication/*.md"]
+      }
+    },
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist\\{projectRoot}"
+      }
+    }
+  }
+}
