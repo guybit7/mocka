@@ -57,7 +57,9 @@ jobs:
         run: npm install
 
       - name: Run Prettier Check
-        run: npm run format:ui-tanstack:check
+        run: npm run format:mocka-ui:write
+        run: npm run format:mockoto:write
+        run: npm run format:mocka-extension-wp:write
 
   build:
     name: Build Application

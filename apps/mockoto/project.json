@@ -44,12 +44,12 @@
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "mockoto:build",
+        "buildTarget": "mockoto:build"
         // "watch": true
       },
       "configurations": {
         "development": {
-          "buildTarget": "mockoto:build:development",
+          "buildTarget": "mockoto:build:development"
           // "runBuildTargetDependencies": true
         },
         "production": {

@@ -134,7 +134,7 @@ function allEventHandler(debuggerId, message, params) {
               existingMap.set(RESPONSE_BODY, response);
               requests.set(requestId, existingMap);
             }
-            // 
+            //
             saveRequestData(requests.get(requestId), requestId);
             requests.delete(requestId);
           }
@@ -160,7 +160,7 @@ function getEndpoint(pathname, params) {
   // if (params) {
 
   // }
-  return theEndpoint
+  return theEndpoint;
 }
 
 function parseAcceptHeader(acceptHeader) {
@@ -191,16 +191,16 @@ async function saveRequestData(requestDataMap, requestId) {
     return;
   }
 
-  if (response.mimeType !== "application/json") {
+  if (response.mimeType !== 'application/json') {
     console.log(`The response.mimeType ${response.mimeType} is not handled yet.`);
     return;
   }
   const method = request_general_header.method;
   const requestHeaderAccept = parseAcceptHeader(request_general_header.headers.Accept);
   const { pathname, params } = new URL(request_general_header.url);
-  
+
   const endpoint = getEndpoint(pathname, params);
-  
+
   console.log(method);
   console.log(requestHeaderAccept);
   console.log(endpoint);
