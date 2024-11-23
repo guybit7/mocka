@@ -87,5 +87,9 @@ jobs:
       - name: Install Dependencies (if not already present)
         run: npm install
 
-      - name: Run Build
-        run: npx nx run ui-tanstack:build
+      - name: Run Build mocka-ui
+        run: npx nx run mocka-ui:build
+      - name: Run Build mockoto
+        run: npx nx run mockoto:build
+      - name: Run Build mocka-extension-wp
+        run: npx nx run mocka-extension-wp:build
