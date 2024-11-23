@@ -1,10 +1,10 @@
 version: '3.8'
 
 services:
-  mocka:
+  mockoto:
     build:
       context: . # Set context to the root of your monorepo
-      dockerfile: apps/mocka/Dockerfile # Specify the path to the Dockerfile
+      dockerfile: apps/mockoto/Dockerfile # Specify the path to the Dockerfile
     ports:
       - '3000:3000'
     networks:
