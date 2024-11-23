@@ -56,9 +56,11 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Run Prettier Check
+      - name: Run Prettier Check mocka-ui
         run: npm run format:mocka-ui:write
+      - name: Run Prettier Check mockoto
         run: npm run format:mockoto:write
+      - name: Run Prettier Check mocka-extension
         run: npm run format:mocka-extension-wp:write
 
   build:
