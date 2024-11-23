@@ -1,3 +1,0 @@
-# @ui-tanstack/common
-
-This library was generated with [Nx](https://nx.dev).

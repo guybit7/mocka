@@ -1,8 +1,0 @@
-{
-  "name": "@ui-tanstack/mocks",
-  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/@ui-tanstack/mocks/src",
-  "projectType": "library",
-  "tags": [],
-  "// targets": "to see all targets run: nx show project @ui-tanstack/mocks --web"
-}
