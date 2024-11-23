@@ -1,0 +1,33 @@
+{
+  "name": "mockoto-core",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/@mockoto/core/src",
+  "projectType": "library",
+  "release": {
+    "version": {
+      "generatorOptions": {
+        "packageRoot": "dist\\{projectRoot}",
+        "currentVersionResolver": "git-tag"
+      }
+    }
+  },
+  "tags": ["mockoto-core"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/@mockoto/core",
+        "tsConfig": "libs/@mockoto/core/tsconfig.lib.json",
+        "packageJson": "libs/@mockoto/core/package.json",
+        "main": "libs/@mockoto/core/src/index.ts",
+        "assets": ["libs/@mockoto/core/*.md"]
+      }
+    },
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist\\{projectRoot}"
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "name": "mockoto-common",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/@mockoto/common/src",
+  "projectType": "library",
+  "release": {
+    "version": {
+      "generatorOptions": {
+        "packageRoot": "dist\\{projectRoot}",
+        "currentVersionResolver": "git-tag"
+      }
+    }
+  },
+  "tags": ["mockoto-common"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/@mockoto/common",
+        "tsConfig": "libs/@mockoto/common/tsconfig.lib.json",
+        "packageJson": "libs/@mockoto/common/package.json",
+        "main": "libs/@mockoto/common/src/index.ts",
+        "assets": ["libs/@mockoto/common/*.md"],
+        "bundle": true,
+        "watch": false
+      },
+      "configurations": {
+        "development": {
+          // "watch": true
+        }
+      }
+    },
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist\\{projectRoot}"
+      }
+    }
+  }
+}

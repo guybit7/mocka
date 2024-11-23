@@ -13,11 +13,12 @@
         "platform": "node",
         "outputPath": "dist/apps/mockoto",
         "format": ["cjs"],
-        "bundle": false,
+        "bundle": true,
         "main": "apps/mockoto/src/main.ts",
         "tsConfig": "apps/mockoto/tsconfig.app.json",
         "assets": ["apps/mockoto/src/assets"],
         "generatePackageJson": true,
+        "watch": false,
         "esbuildOptions": {
           "sourcemap": true,
           "outExtension": {
@@ -26,7 +27,9 @@
         }
       },
       "configurations": {
-        "development": {},
+        "development": {
+          "watch": true
+        },
         "production": {
           "esbuildOptions": {
             "sourcemap": false,
@@ -41,11 +44,13 @@
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "mockoto:build"
+        "buildTarget": "mockoto:build",
+        // "watch": true
       },
       "configurations": {
         "development": {
-          "buildTarget": "mockoto:build:development"
+          "buildTarget": "mockoto:build:development",
+          // "runBuildTargetDependencies": true
         },
         "production": {
           "buildTarget": "mockoto:build:production"
