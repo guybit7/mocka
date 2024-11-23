@@ -1,0 +1,56 @@
+{
+  "name": "mockoto",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/mockoto/src",
+  "projectType": "application",
+  "tags": ["mockoto"],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/apps/mockoto",
+        "format": ["cjs"],
+        "bundle": false,
+        "main": "apps/mockoto/src/main.ts",
+        "tsConfig": "apps/mockoto/tsconfig.app.json",
+        "assets": ["apps/mockoto/src/assets"],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "mockoto:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "mockoto:build:development"
+        },
+        "production": {
+          "buildTarget": "mockoto:build:production"
+        }
+      }
+    }
+  }
+}
