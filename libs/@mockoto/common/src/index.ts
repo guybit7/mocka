@@ -1,1 +1,1 @@
-export * from './lib/mockoto-common';
+export * from './lib/models';

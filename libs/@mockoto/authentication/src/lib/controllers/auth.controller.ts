@@ -25,6 +25,7 @@ export class AuthController {
   }
 
   private async currentUser(req: Request, res: Response) {
+    return;
     // console.log(`session: ${JSON.stringify(req.session.user)}`);
     const theUser = await RedisClient.get(`user:${req.session.user._id}`);
     if (req.session.user) {

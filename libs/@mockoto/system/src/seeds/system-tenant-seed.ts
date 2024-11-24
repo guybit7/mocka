@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
-import { development_tenant } from '@mockoto/core';
+import { development_tenant_1, development_tenant_2, TenantManager } from '@mockoto/core';
 import { TenantsService } from '../lib/services/tenants.service';
-import { SystemService } from '../lib/services/system.service';
 
 /**
  * Seeds the system tenant in the system database.
@@ -30,28 +29,42 @@ import { SystemService } from '../lib/services/system.service';
  */
 
 export async function createSystemTenentSeed() {
-  const systemService = new SystemService();
-  const tenantsService = new TenantsService(systemService);
+  const tenantsService = new TenantsService(new TenantManager());
 
   try {
-    await systemService.connect();
-    const existingTenant = await tenantsService.getTenantByName(development_tenant);
+    const existingTenant = await tenantsService.getTenantByName(development_tenant_1);
     if (existingTenant) {
-      console.log('The system tenant already exists.');
-      return;
+      console.log('The system tenant development_tenant_1 already exists.');
+    } else {
+      // Create the Tenant model for the system database
+      await tenantsService.createTenant({
+        name: development_tenant_1,
+        tenantSchema: 'default',
+        ownerEmail: 'guybiton1012@gmail.com',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        status: 'active',
+      });
+
+      console.log('System tenant development_tenant_1 created successfully');
     }
 
-    // Create the Tenant model for the system database
-    await tenantsService.createTenant({
-      name: development_tenant,
-      tenantSchema: 'default',
-      ownerEmail: 'guybiton1012@gmail.com',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      status: 'active',
-    });
+    const existingTenant2 = await tenantsService.getTenantByName(development_tenant_2);
+    if (existingTenant2) {
+      console.log('The system tenant development_tenant_1 already exists.');
+    } else {
+      // Create the Tenant model for the system database
+      await tenantsService.createTenant({
+        name: development_tenant_2,
+        tenantSchema: 'default',
+        ownerEmail: 'guybiton1012@gmail.com',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        status: 'active',
+      });
 
-    console.log('System tenant created successfully');
+      console.log('System tenant development_tenant_2 created successfully');
+    }
   } catch (error) {
     console.error('Error creating default system:', error);
   } finally {

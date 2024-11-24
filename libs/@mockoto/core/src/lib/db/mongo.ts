@@ -10,7 +10,7 @@ const MongoDBStore = connectMongoDBSession(session);
 export const dbEventEmitter = new EventEmitter();
 
 mongoose
-  .connect(`${MONGODB_URI}mockoto-test`)
+  .connect(`${MONGODB_URI}`)
   .then(res => {
     console.log('connecting to mongodb mocka database');
   })

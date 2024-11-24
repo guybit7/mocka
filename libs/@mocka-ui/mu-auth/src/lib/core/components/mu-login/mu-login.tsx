@@ -33,7 +33,7 @@ export function MuLogin() {
     onSuccess: data => {
       console.log(data);
 
-      navigation('/');
+      // navigation('/');
     },
     onError: err => {
       alert(err);
