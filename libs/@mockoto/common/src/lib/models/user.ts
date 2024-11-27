@@ -1,6 +1,7 @@
 import { Schema, Document, Model } from 'mongoose';
 import { RoleDocument } from './role';
 
+export const USER = 'User';
 export interface IUser {
   email: string;
   password: string;

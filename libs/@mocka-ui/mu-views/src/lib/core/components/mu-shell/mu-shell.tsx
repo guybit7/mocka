@@ -252,7 +252,10 @@ export default function MuShell() {
           </ListItem>
         </List>
       </Drawer>
-      <Main open={open} sx={{ height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+      <Main
+        open={open}
+        sx={{ height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column', padding: '0.5rem' }}
+      >
         <DrawerHeader />
         <Outlet />
       </Main>

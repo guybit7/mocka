@@ -1,5 +1,4 @@
 import { Router, Request, Response } from 'express';
-import User from '../models/user';
 import * as bcrypt from 'bcrypt';
 import { authMiddleware } from '../middlewares';
 import { UserService } from '../services';
@@ -40,21 +39,21 @@ export class AuthController {
       console.log(bcrypt);
       const { email, password } = req.body;
 
-      const user = await User.findOne({ email: req.body.email });
-      if (!user) return res.status(400).send('Invalid email or password.');
+      // const user = await User.findOne({ email: req.body.email });
+      // if (!user) return res.status(400).send('Invalid email or password.');
 
-      const validPassword = await bcrypt.compare(req.body.password, user.password);
-      if (!validPassword) {
-        return res.status(400).send('Invalid email or password!123.');
-      }
+      // const validPassword = await bcrypt.compare(req.body.password, user.password);
+      // if (!validPassword) {
+      //   return res.status(400).send('Invalid email or password!123.');
+      // }
 
-      if (!user.isVerified) {
-        return res.status(400).send('User is not verified');
-      }
+      // if (!user.isVerified) {
+      //   return res.status(400).send('User is not verified');
+      // }
 
-      req.session.user = user._id;
-      await RedisClient.set(`user:${user._id}`, JSON.stringify(user), 360000);
-      console.log(req.session.user);
+      // req.session.user = user._id;
+      // await RedisClient.set(`user:${user._id}`, JSON.stringify(user), 360000);
+      // console.log(req.session.user);
       console.log(`post logi!n`);
       res.send({ message: 'Ok', data: req.session.user });
     } catch (error) {
@@ -100,16 +99,16 @@ export class AuthController {
     try {
       const { email, password, fullName, username } = req.body;
 
-      const user = await User.findOne({ email: req.body.email });
-      if (user) {
-        return res.status(400).send('Email already exsit');
-      }
-      // validate password
-      const crypePassword = await bcrypt.hashSync(password, 10);
-      const thePendingUser = await UserService.create({ email, password: crypePassword, fullName, username });
+      // const user = await User.findOne({ email: req.body.email });
+      // if (user) {
+      //   return res.status(400).send('Email already exsit');
+      // }
+      // // validate password
+      // const crypePassword = await bcrypt.hashSync(password, 10);
+      // const thePendingUser = await UserService.create({ email, password: crypePassword, fullName, username });
 
       console.log(`post login`);
-      res.send({ message: 'Ok', data: thePendingUser });
+      // res.send({ message: 'Ok', data: thePendingUser });
     } catch (error) {
       console.log(error);
       res.status(400).send('Error accourd during the login');
