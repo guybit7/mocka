@@ -1,9 +1,15 @@
+/* eslint-disable @nx/enforce-module-boundaries */
+import { MuCollapsibleListItem } from '@mocka-ui/mu-design-system';
 import { PUBLIC_CLIENT_APPLICATION } from '@mu/mu-auth';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import CorporateFareIcon from '@mui/icons-material/CorporateFare';
 import DashboardIcon from '@mui/icons-material/Dashboard'; // Admin-specific icon
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
+import PeopleIcon from '@mui/icons-material/People';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -20,9 +26,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useMutation } from '@tanstack/react-query';
 import * as React from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import './mu-shell.scss';
-
 const drawerWidth = 240;
 
 const Main = styled('main', { shouldForwardProp: prop => prop !== 'open' })<{
@@ -117,12 +122,25 @@ export default function MuShell() {
 
   const navigate = useNavigate();
 
-  const navigationItems = [
-    { text: 'Admin', path: '/admin', icon: <DashboardIcon /> },
-    { text: 'Groups', path: '/groups', icon: <DashboardIcon /> },
-    // { text: 'Groups', path: '/groups', icon: <DashboardIcon /> },
-    // { text: 'Starred', path: '/starred' },
-    // { text: 'Send Email', path: '/send-email' },
+  const navigationItems = [{ text: 'Groups', path: '/groups', icon: <DashboardIcon /> }];
+
+  const nestedNavigationItems = [
+    {
+      label: 'Admin',
+      icon: <AdminPanelSettingsIcon />,
+      items: [
+        {
+          label: 'Spaces',
+          icon: <CorporateFareIcon />,
+          path: '/admin/spaces',
+        },
+        {
+          label: 'Users',
+          icon: <PeopleIcon />,
+          path: '/admin/users',
+        },
+      ],
+    },
   ];
 
   const handleDrawerOpen = () => {
@@ -141,6 +159,10 @@ export default function MuShell() {
     } catch (error) {
       console.error('Logout failed:', error);
     }
+  };
+
+  const onClickNestedItem = (item: any) => {
+    navigate(item.path);
   };
 
   return (
@@ -187,18 +209,37 @@ export default function MuShell() {
         </DrawerHeader>
         <Divider />
         <List>
-          {navigationItems.map((item, index) => (
-            <ListItem key={item.text} disablePadding>
-              <ListItemButton
-                onClick={() => {
-                  navigate(item.path);
-                }}
-              >
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.text} />
-              </ListItemButton>
-            </ListItem>
+          {nestedNavigationItems.map((item, index) => (
+            <MuCollapsibleListItem
+              key={index}
+              label={item.label}
+              icon={item.icon}
+              subItems={item.items}
+              onClickNestedItem={item => onClickNestedItem(item)}
+              iconCollapsed={<ExpandMore />}
+              iconExpanded={<ExpandLess />}
+            />
           ))}
+          {navigationItems.map((item, index) => {
+            return (
+              <NavLink
+                to={item.path} // The path for the navigation
+                key={index} // Key for each NavLink
+                style={({ isActive }) => ({
+                  textDecoration: 'none',
+                  width: '100%',
+                  display: 'flex',
+                  backgroundColor: isActive ? 'rgba(0, 123, 255, 0.2)' : 'transparent', // Highlight active item
+                  color: isActive ? '#007bff' : 'inherit', // Change text color on active
+                })}
+              >
+                <ListItemButton sx={{}} onClick={() => navigate(item.path)}>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.text} />
+                </ListItemButton>
+              </NavLink>
+            );
+          })}
           <ListItem key={'logout'} disablePadding>
             <ListItemButton
               onClick={() => {

@@ -18,6 +18,7 @@
       "@me/auth": ["libs/@mocka-extension/auth/src/index.ts"],
       "@me/common": ["libs/@mocka-extension/common/src/index.ts"],
       "@me/views": ["libs/@mocka-extension/views/src/index.ts"],
+      "@mocka-ui/mu-design-system": ["libs/@mocka-ui/mu-design-system/src/index.ts"],
       "@mocka/authentication": ["libs/mocka/authentication/src/index.ts"],
       "@mocka/core": ["libs/mocka/infra/core/src/index.ts"],
       "@mocka/cron": ["libs/mocka/cron/src/index.ts"],

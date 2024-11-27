@@ -1,0 +1,9 @@
+{
+  "name": "mu-design-system",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/@mocka-ui/mu-design-system/src",
+  "projectType": "library",
+  "tags": ["mocka-design-system"],
+  "// targets": "to see all targets run: nx show project mu-design-system --web",
+  "targets": {}
+}
