@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
 import { development_tenant_1, development_tenant_2, TenantManager } from '@mockoto/core';
+import mongoose from 'mongoose';
 import { TenantsService } from '../lib/services/tenants.service';
 
 /**
@@ -34,7 +34,7 @@ export async function createSystemTenentSeed() {
   try {
     const existingTenant = await tenantsService.getTenantByName(development_tenant_1);
     if (existingTenant) {
-      console.log('The system tenant development_tenant_1 already exists.');
+      console.log('The system tenant development_tenant_1 already exists!');
     } else {
       // Create the Tenant model for the system database
       await tenantsService.createTenant({
@@ -51,13 +51,13 @@ export async function createSystemTenentSeed() {
 
     const existingTenant2 = await tenantsService.getTenantByName(development_tenant_2);
     if (existingTenant2) {
-      console.log('The system tenant development_tenant_1 already exists.');
+      console.log('The system tenant development_tenant_2 already exists.');
     } else {
       // Create the Tenant model for the system database
       await tenantsService.createTenant({
         name: development_tenant_2,
         tenantSchema: 'default',
-        ownerEmail: 'guybiton1012@gmail.com',
+        ownerEmail: 'guybiton7p@gmail.com',
         createdAt: new Date(),
         updatedAt: new Date(),
         status: 'active',

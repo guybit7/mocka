@@ -15,25 +15,23 @@ export function MuLogin() {
     password: '',
   } as any);
 
-  const { mutate: signinHandler } = useMutation({
-    mutationFn: async ({ formData }: any) => await muAxiosClient.post('/api/auth/login', JSON.stringify(formData)),
-    onSuccess: data => {
-      console.log(data);
+  // const { mutate: signinHandler } = useMutation({
+  //   mutationFn: async ({ formData }: any) => await muAxiosClient.post('/api/auth/login', JSON.stringify(formData)),
+  //   onSuccess: data => {
+  //     console.log(data);
 
-      navigation('/');
-    },
-    onError: err => {
-      alert(err);
-    },
-  });
+  //     navigation('/');
+  //   },
+  //   onError: err => {
+  //     alert(err);
+  //   },
+  // });
 
   const { mutate: postSSO } = useMutation({
     mutationFn: async ({ tokenResponse }: any) =>
       await muAxiosClient.post('/api/auth/sso/call-back', JSON.stringify(tokenResponse)),
     onSuccess: data => {
-      console.log(data);
-
-      // navigation('/');
+      navigation('/');
     },
     onError: err => {
       alert(err);
@@ -63,7 +61,7 @@ export function MuLogin() {
     if (formData.email.trim() === '' && formData.passwor.trim() === '') {
       return;
     }
-    signinHandler({ formData });
+    // signinHandler({ formData });
   };
 
   const handleSSO = () => {
@@ -83,7 +81,7 @@ export function MuLogin() {
     <div className="login-container">
       <section className="login-section">
         <div className="login-header">
-          <span>Welcome to Mocka</span>
+          <span>Welcome to Mockoto</span>
         </div>
         <div className="login-form">
           <FormControl fullWidth>
@@ -116,14 +114,12 @@ export function MuLogin() {
           <Button variant="contained" onClick={handleSSO}>
             SSO
           </Button>
-          <Button variant="contained" onClick={logout}>
+          {/* <Button variant="contained" onClick={logout}>
             Logout
-          </Button>
+          </Button> */}
         </div>
       </section>
-      <div className="login-footer">
-        <span>The Mockup System Revolution</span>
-      </div>
+      <div className="login-footer">{<span>The Mockup System Revolution</span>}</div>
     </div>
   );
 }

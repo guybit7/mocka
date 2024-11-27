@@ -40,9 +40,12 @@ export class TenantManager {
     return connection;
   }
 
-  public async getModel<T>(tenantDbName: string, modelName: string, schema: Schema, cache = true): Promise<Model<T>> {
+  public async getModel<T>(tenantDbName: string, modelName: string, schema: Schema, cache = false): Promise<Model<T>> {
     // Ensure a valid connection
-    const connection = await this.getConnection(tenantDbName);
+
+    const sanitizedDbName = TenantManager.sanitizeTenantDbName(tenantDbName);
+
+    const connection = await this.getConnection(sanitizedDbName);
 
     // Initialize tenant models map if needed
     if (!this.models.has(tenantDbName)) {
@@ -74,6 +77,21 @@ export class TenantManager {
     const closePromises = Array.from(this.connections.values()).map(connection => connection.close());
     await Promise.all(closePromises);
     console.log('All tenant connections closed.');
+  }
+
+  /**
+   * Prevents database injection attacks or the introduction of malicious characters that could affect the connection string.
+   */
+  private static sanitizeTenantDbName(tenantDbName: string): string {
+    // Only allow alphanumeric characters, underscores, and hyphens
+    const sanitizedDbName = tenantDbName.replace(/[^a-zA-Z0-9_-]/g, '');
+
+    // Ensure that the database name is not empty
+    if (!sanitizedDbName) {
+      throw new Error('Invalid tenant database name: Database name cannot be empty or contain invalid characters.');
+    }
+
+    return sanitizedDbName;
   }
 }
 

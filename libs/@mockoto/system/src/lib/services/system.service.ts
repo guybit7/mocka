@@ -1,6 +1,6 @@
+import { connect } from '@mockoto/core';
 import { Connection } from 'mongoose';
 import { tenantSchema } from '../models';
-import { connect } from '@mockoto/core';
 
 const MONGODB_URI = process.env.MONGO_URI;
 

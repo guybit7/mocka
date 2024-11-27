@@ -1,5 +1,5 @@
 import { Schema, Document, model, Model } from 'mongoose';
-
+export const GROUP = 'GROUP';
 // Interface for the Group
 export interface IGroup {
   name: string; // Name of the mock item group
@@ -13,10 +13,10 @@ export interface IGroup {
 export interface GroupDocument extends IGroup, Document {}
 
 // Extend Model interface for Group
-interface GroupModel extends Model<GroupDocument> {}
+type GroupModel = Model<GroupDocument>;
 
 // Define the Mongoose schema for Group
-const groupSchema = new Schema<GroupDocument>(
+export const groupSchema = new Schema<GroupDocument>(
   {
     name: { type: String, required: true, unique: true }, // Required name field
     description: { type: String, required: false }, // Optional description field

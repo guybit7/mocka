@@ -1,14 +1,15 @@
-import { Space, SpaceDocument } from '../models/space';
-import { BaseService } from './base-service';
-
-export class SpaceService extends BaseService<SpaceDocument> {
+import { ISpace, SPACE, SpaceDocument } from './../models/space';
+import { BaseService } from '@mockoto/common';
+import { spaceSchema } from '../models/space';
+export class SpaceService extends BaseService<ISpace> {
   constructor() {
-    super(Space);
+    super(SPACE, spaceSchema);
   }
 
-  public async getAllSummary(): Promise<SpaceDocument[]> {
+  public async getAllSummary(req: any): Promise<SpaceDocument[]> {
     try {
-      return await this.model.find().select({ name: 1, _id: 1 });
+      const model = await this.getTenantModel(req.tenantId);
+      return model.find({});
     } catch (error) {
       throw new Error(`Error fetching entities: ${error.message}`);
     }

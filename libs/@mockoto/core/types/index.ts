@@ -5,3 +5,8 @@ declare module 'express-session' {
     user: any;
   }
 }
+declare module 'express' {
+  export interface Request {
+    tenantId?: string;
+  }
+}

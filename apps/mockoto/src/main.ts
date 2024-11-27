@@ -1,19 +1,20 @@
-import express, { Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
+import express, { Request, Response } from 'express';
 
 import cors from 'cors';
-import { dbEventEmitter } from '@mockoto/core';
+// import { dbEventEmitter } from '@mockoto/core';
 import { initializeSystem } from '@mockoto/system';
 
-import dotenv from 'dotenv';
 import { registerAuthControllers } from '@mockoto/authentication';
 import { mainMiddleware, registerDomainControllers } from '@mockoto/domain';
+import dotenv from 'dotenv';
 
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
 dotenv.config();
 console.log(process.env.CORS_ORIGIN);
+console.log(process.env.JWT_SECRET_KEY);
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
@@ -25,15 +26,6 @@ app.use(
     credentials: true,
   })
 );
-
-dbEventEmitter.on('dbReady', async () => {
-  try {
-    // createDefaultTenant();
-    await initializeSystem();
-  } catch (err) {
-    console.error('Error checking/creating default user:', err);
-  }
-});
 
 app.use(mainMiddleware);
 registerAuthControllers(app);
@@ -58,8 +50,9 @@ app.get('/api/test', async (req: Request, res: Response) => {
   }
 });
 
-const server = app.listen(port, '0.0.0.0', () => {
+const server = app.listen(port, '0.0.0.0', async () => {
   console.log(`[ ready ] http://${host}:${port}`);
   // const mock = new MockCron();
+  await initializeSystem();
   console.log('Current server time:', new Date().toString());
 });
