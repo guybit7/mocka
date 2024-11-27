@@ -1,26 +1,27 @@
-import { Outlet, useNavigate } from 'react-router-dom';
-import './mu-shell.scss';
-import * as React from 'react';
-import { styled, useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import CssBaseline from '@mui/material/CssBaseline';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
+import { PUBLIC_CLIENT_APPLICATION } from '@mu/mu-auth';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import DashboardIcon from '@mui/icons-material/Dashboard'; // Admin-specific icon
+import LogoutIcon from '@mui/icons-material/Logout';
+import MenuIcon from '@mui/icons-material/Menu';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import CssBaseline from '@mui/material/CssBaseline';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import DashboardIcon from '@mui/icons-material/Dashboard'; // Admin-specific icon
+import { styled, useTheme } from '@mui/material/styles';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import { useMutation } from '@tanstack/react-query';
+import * as React from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import './mu-shell.scss';
 
 const drawerWidth = 240;
 
@@ -50,6 +51,26 @@ const Main = styled('main', { shouldForwardProp: prop => prop !== 'open' })<{
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
+}
+
+export async function logout() {
+  const url = `http://localhost:3000/api/auth/sso/logout`;
+
+  const response = await fetch(url, {
+    method: 'POST',
+    body: null,
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    const error: any = new Error('An error occurred while fetching the events');
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  return await response.json();
 }
 
 const AppBar = styled(MuiAppBar, {
@@ -87,6 +108,13 @@ export default function MuShell() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
 
+  const { mutate: logoutHandler } = useMutation({
+    mutationFn: () => logout(),
+    onSuccess: () => {
+      navigate('./login');
+    },
+  });
+
   const navigate = useNavigate();
 
   const navigationItems = [
@@ -103,6 +131,16 @@ export default function MuShell() {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const onLogout = async () => {
+    try {
+      await PUBLIC_CLIENT_APPLICATION.logoutPopup().then(() => {
+        logoutHandler();
+      });
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
   return (
@@ -161,6 +199,16 @@ export default function MuShell() {
               </ListItemButton>
             </ListItem>
           ))}
+          <ListItem key={'logout'} disablePadding>
+            <ListItemButton
+              onClick={() => {
+                onLogout();
+              }}
+            >
+              <ListItemIcon>{<LogoutIcon />}</ListItemIcon>
+              <ListItemText primary={'Logout'} />
+            </ListItemButton>
+          </ListItem>
         </List>
       </Drawer>
       <Main open={open} sx={{ height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>

@@ -12,7 +12,7 @@ export function MuAuthProvider({ children }: MuAuthProviderProps) {
     console.log('effect auth');
     const checkAuth = async () => {
       try {
-        const response = await muAxiosClient.get('/api/auth/currentUser');
+        const response = await muAxiosClient.get('/api/auth/sso/currentUser');
         setUser(response.data);
       } catch (error) {
         setUser(null);

@@ -1,30 +1,8 @@
-import User, { IUser as UserType } from '../models/user';
+import User, { userSchema, IUser as UserType } from '../models/user';
 import bcrypt from 'bcrypt';
-import Role from '../models/role';
+import { roleSchema } from '../models/role';
 
 export class UserService {
-  public static async createDefaultUser() {
-    try {
-      const adminRole = await Role.findOne({ name: 'super-admin' });
-      if (!adminRole) {
-        throw new Error('Admin role not found');
-      }
-
-      const user = new User({
-        email: 'super-admin@gmail.com',
-        password: await bcrypt.hash('admin123', 10),
-        fullName: 'super-admin',
-        username: 'super-admin',
-        createdAt: new Date(),
-        role: adminRole._id,
-        isVerified: true,
-      });
-      user.save();
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
   public static async findById(id: string): Promise<UserType | null> {
     try {
       return await User.findById(id);

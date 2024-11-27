@@ -1,22 +1,20 @@
-import { RedisClient } from '@mockoto/core';
-import { Request } from 'express';
+import * as jwt from 'jsonwebtoken';
+
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 export const authMiddleware = async (req: any, res, next) => {
-  console.log(`******* [start - authMiddleware - ${req.url}] *******`);
-  console.log(req.session);
-  if (!req.session.user) {
-    return res.status(401).send('Access denied.');
-  }
-
   try {
-    const theUser = await RedisClient.get(`user:${req.session.user}`);
-    if (!theUser) {
-      return res.status(404).send('User not found.');
+    console.log('********************authMiddleware - start************************');
+    const token = req.cookies?.token;
+    if (!token) {
+      return res.status(401).json({ message: 'Unauthorized: No token provided' });
     }
-
-    req.user = JSON.parse(theUser); // Attach user to request object
+    const decoded = jwt.verify(token, JWT_SECRET_KEY);
+    req.tenantId = decoded.tenantId;
+    console.log('********************authMiddleware -end ************************');
     next();
   } catch (error) {
-    res.status(500).send('Internal server error.');
+    console.error('Authentication error:', error);
+    return res.status(401).json({ message: 'Unauthorized: Invalid token' });
   }
 };

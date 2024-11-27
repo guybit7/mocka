@@ -1,7 +1,7 @@
-import Role from '../models/role';
-import Task from '../models/task';
+import { roleSchema, taskSchema } from '@mockoto/common';
 
-export async function seedTasks() {
+export async function seedTasks(tenantManager, userTenant) {
+  const Task = await tenantManager.getModel(userTenant, 'Task', taskSchema, false);
   const tasks = [
     { taskId: 'create_space', description: 'Create new Space' },
     { taskId: 'read_space', description: 'Read Space' },
@@ -17,7 +17,8 @@ export async function seedTasks() {
   }
 }
 
-export async function seedRoles() {
+export async function seedRoles(tenantManager, userTenant) {
+  const Role = await tenantManager.getModel(userTenant, 'Role', roleSchema, false);
   const roles = [
     { name: 'super-admin', tasks: ['create_space', 'read_space', 'update_space', 'delete_space'] },
     { name: 'admin', tasks: ['create_space', 'read_space', 'update_space'] },

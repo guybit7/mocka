@@ -1,4 +1,4 @@
-import { Schema, Document, model, Model } from 'mongoose';
+import { Schema, Document, Model } from 'mongoose';
 import { RoleDocument } from './role';
 
 export interface IUser {
@@ -8,7 +8,7 @@ export interface IUser {
   username: string;
   createdAt: Date;
   updatedAt: Date;
-  role: RoleDocument['_id']; // Reference to Role
+  role: RoleDocument['_id'];
   token: string;
   refreshToken: string;
   lastLogin: Date;
@@ -32,30 +32,3 @@ export const userSchema = new Schema<UserDocument>({
   lastLogin: { type: Date },
   isVerified: { type: Boolean, default: false },
 });
-
-const User = model<UserDocument, UserModel>('Users', userSchema);
-
-export default User;
-
-// userSchema.methods.addToCart = function (product) {
-//   const cartProductIndex = this.cart.items.findIndex(cp => {
-//     return cp.productId.toString() === product._id.toString();
-//   });
-//   let newQuantity = 1;
-//   const updatedCartItems = [...this.cart.items];
-
-//   if (cartProductIndex >= 0) {
-//     newQuantity = this.cart.items[cartProductIndex].quantity + 1;
-//     updatedCartItems[cartProductIndex].quantity = newQuantity;
-//   } else {
-//     updatedCartItems.push({
-//       productId: product._id,
-//       quantity: newQuantity,
-//     });
-//   }
-//   const updatedCart = {
-//     items: updatedCartItems,
-//   };
-//   this.cart = updatedCart;
-//   return this.save();
-// };
