@@ -1,4 +1,5 @@
-import mongoose, { Connection, Model } from 'mongoose';
+import { connect } from '@mockoto/core';
+import { Connection } from 'mongoose';
 import { tenantSchema } from '../models';
 
 const MONGODB_URI = process.env.MONGO_URI;
@@ -7,8 +8,12 @@ export class SystemService {
   private connection: Connection | null = null;
 
   async connect(): Promise<void> {
-    if (!this.connection) {
-      this.connection = await mongoose.createConnection(`${MONGODB_URI}system`, {});
+    try {
+      if (!this.connection) {
+        this.connection = await connect(`${MONGODB_URI}/system`);
+      }
+    } catch (e) {
+      console.log(e);
     }
   }
 

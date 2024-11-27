@@ -1,17 +1,18 @@
-import { Schema, Document, model, Model } from 'mongoose';
+import { Document, model, Model, Schema } from 'mongoose';
 
+export const MOCK = 'Mock';
 export interface IMock {
-  name: String;
-  value: Object;
-  groupId: String;
+  name: string;
+  value: any;
+  groupId: string;
   status: boolean;
 }
 
 export interface MockDocument extends IMock, Document {}
 
-export interface MockModel extends Model<MockDocument> {}
+export type MockModel = Model<MockDocument>;
 
-const mockSchema = new Schema<MockDocument>({
+export const mockSchema = new Schema<MockDocument>({
   name: { type: String, required: true },
   value: { type: Object, required: true },
   groupId: { type: String, required: true },

@@ -1,51 +1,44 @@
-import axios from 'axios';
-import { IMock } from '../models';
-import { Response } from 'express';
+import * as jwt from 'jsonwebtoken';
+import { MockDocument } from '../models';
+import { MockService } from '../services';
 
-async function redirect(groupId, endpoint): Promise<IMock> {
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
+const mockService = new MockService();
+
+async function redirect(tid, groupId, endpoint): Promise<MockDocument> {
   try {
-    // Make a request to another API
-    const body = {
-      groupId: groupId,
-      endpoint: endpoint,
-    };
-    return await axios.post(`http://localhost:3000/api/mock/findQuery`, body);
+    return await mockService.findQuery(tid, groupId, endpoint);
   } catch (error) {
-    // Handle any errors that occur during the API call
     console.error('Error calling external API:', error);
   }
 }
 
-export async function mainMiddleware(req: Request, res, next) {
-  console.log('mainMiddleware');
+export async function mainMiddleware(req: any, res, next) {
   let theUrl = req.url;
   if (theUrl.endsWith('/')) {
     theUrl = theUrl.slice(0, -1);
   }
-  console.log(theUrl);
-  const segments = theUrl.split('/').filter(segment => segment); // Filter out empty segments
-  const firstPath = segments[0] || ''; // First segment
+  const segments = theUrl.split('/').filter(segment => segment);
+  const firstPath = segments[0] || '';
   if (firstPath === 'api' || firstPath === '') {
     return next();
   }
-  const groupId = segments[0]; // Second segment
-  const endpoint = segments.slice(1).join('/') || ''; // Join remaining segments
-  console.log(groupId);
-  console.log(endpoint);
+  const groupId = segments[0];
+  const endpoint = segments.slice(1).join('/') || '';
   if (groupId === 'favicon.ico') {
     return next();
   }
-
-  const response: any = await redirect(groupId, endpoint);
-  console.log(response.data);
-  if (response.data && response.data.status) {
-    res.json(JSON.parse(response.data.value));
+  const token = req.cookies?.token;
+  if (!token) {
+    return res.status(401).json({ message: 'Unauthorized: No token provided' });
+  }
+  const decoded = jwt.verify(token, JWT_SECRET_KEY);
+  req.user = decoded;
+  req.tenantId = decoded.tenantId;
+  const response: MockDocument = await redirect(req.tenantId, groupId, endpoint);
+  if (response && response.status) {
+    res.json(JSON.parse(response.value));
   } else {
     res.status(500).json({ message: 'Internal Server Error' });
   }
-  // if (Object.keys(response.data.value).length > 0) {
-  //   res.status(500).json(JSON.parse(response.data.value));
-  // } else {
-  // }
-  // }
 }

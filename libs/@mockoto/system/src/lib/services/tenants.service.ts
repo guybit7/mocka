@@ -1,9 +1,13 @@
-import { ITenant } from '../models';
-import { SystemService } from './system.service';
-
+import { TenantManager } from '@mockoto/core';
+import { ITenant, tenantSchema } from '../models';
 export class TenantsService {
   readonly modelName = 'tenants';
-  constructor(private readonly systemService: SystemService) {}
+
+  private tenantManager: TenantManager;
+
+  constructor(tenantManager: TenantManager) {
+    this.tenantManager = tenantManager;
+  }
 
   /**
    * Fetches a tenant by name from the system database.
@@ -12,9 +16,9 @@ export class TenantsService {
    */
   async getTenantByName(name: string) {
     try {
-      const tenantsModel = this.systemService.getModel(this.modelName);
-      const existingTenant = await tenantsModel.findOne({ name });
-      return existingTenant;
+      const systemTenantModel = await this.tenantManager.getModel('system', 'Tenant', tenantSchema, false);
+      const tenantMetadata = await systemTenantModel.findOne({ name: name }).exec();
+      return tenantMetadata;
     } catch (error) {
       console.error(`Error fetching tenant by name "${name}":`, error);
       throw error;
@@ -23,12 +27,8 @@ export class TenantsService {
 
   async createTenant(tenantData: ITenant) {
     try {
-      if (!this.systemService.isConnected()) {
-        await this.systemService.connect();
-      }
-
-      const tenantsModel = this.systemService.getModel('tenants');
-      await tenantsModel.create(tenantData);
+      const systemTenantModel = await this.tenantManager.getModel('system', 'Tenant', tenantSchema, false);
+      await systemTenantModel.create(tenantData);
     } catch (error) {
       console.error('Error creating tenant:', error);
       throw error;

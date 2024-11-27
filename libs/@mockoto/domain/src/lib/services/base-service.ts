@@ -1,4 +1,4 @@
-import { Model, Document } from 'mongoose';
+import { Document, Model } from 'mongoose';
 
 export abstract class BaseService<T extends Document> {
   protected model: Model<T>;
@@ -41,7 +41,6 @@ export abstract class BaseService<T extends Document> {
 
   public async delete(id: string): Promise<any | null> {
     try {
-      console.log({ _id: id });
       return await this.model.deleteOne({ _id: id });
     } catch (error) {
       throw new Error(`Error deleting entity: ${error.message}`);

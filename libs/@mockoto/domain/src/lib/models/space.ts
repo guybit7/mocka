@@ -1,23 +1,25 @@
-import { Schema, Document, model, Model } from 'mongoose';
+import { Schema, Document, Model } from 'mongoose';
+
+export const SPACE = 'Space';
 
 // Interface for the Space
 export interface ISpace {
-  name: string; // Name of the mock item Space
+  name: string; // Name of the Space
   description?: string; // Optional description of the Space
-  createdAt?: Date; // Creation timestamp (optional)
-  updatedAt?: Date; // Update timestamp (optional)
+  createdAt?: Date; // Creation timestamp (optional, set automatically by Mongoose)
+  updatedAt?: Date; // Update timestamp (optional, set automatically by Mongoose)
 }
 
 // Extend Document interface to include ISpace
 export interface SpaceDocument extends ISpace, Document {}
 
 // Extend Model interface for Space
-interface SpaceModel extends Model<SpaceDocument> {}
+export type SpaceModel = Model<SpaceDocument>;
 
 // Define the Mongoose schema for Space
-const spaceSchema = new Schema<SpaceDocument>(
+export const spaceSchema = new Schema<SpaceDocument>(
   {
-    name: { type: String, required: true }, // Required name field
+    name: { type: String, required: true },
     description: { type: String, required: false }, // Optional description field
   },
   {
@@ -25,7 +27,8 @@ const spaceSchema = new Schema<SpaceDocument>(
   }
 );
 
-// Create the Space model
-export const Space = model<SpaceDocument, SpaceModel>('Space', spaceSchema);
+// // Create the Space model
+// export const SpaceModel = model<SpaceDocument, SpaceModel>('Space', spaceSchema);
 
-export default Space; // Ensure the model is exported
+// // Export the model for use in the application
+// export default SpaceModel;
