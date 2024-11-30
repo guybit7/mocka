@@ -1,10 +1,21 @@
-import React from 'react';
-import { useQuery, useMutation } from '@tanstack/react-query';
-import './users-table.scss';
-import { User } from '../interfaces/user';
+import { MuTable } from '@mockoto-ui-common/ui-components';
+import { LazyLoadMeta } from '@mockoto-ui-common/types';
 import { muAxiosClient } from '@mu/mu-auth';
+import { Button } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import { usersTableHeaders } from './users-table-config';
+import './users-table.scss';
 
 export function UsersTable() {
+  const [lazyLoadMeta, setLazyLoadMeta] = useState<LazyLoadMeta>({});
+  const handleLazyLoadMetaChange = (meta: LazyLoadMeta) => {
+    console.log('Lazy Load Meta:', meta);
+    setLazyLoadMeta(meta);
+
+    // Handle fetching filtered/sorted data based on this meta
+  };
+
   const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['users'],
     queryFn: ({ signal }) => {
@@ -12,42 +23,36 @@ export function UsersTable() {
       return muAxiosClient.get<any, any>(url, { signal });
     },
     enabled: true, // Only run query if activeSpace is set
-    refetchOnWindowFocus: false, // Optional: Prevents refetch when window is focused
+    refetchOnWindowFocus: true, // Optional: Prevents refetch when window is focused
   });
+
+  const handleAddUser = () => {
+    alert('hew');
+  };
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error.message}</div>;
-  console.log(data);
-  return (
-    <div>
-      <h1>Users Table</h1>
 
-      <table className="users-table">
-        <thead>
-          <tr>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Full Name</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data &&
-            data?.map((user: User) => (
-              <tr key={user._id}>
-                <td>{user.username}</td>
-                <td>{user.email}</td>
-                <td>{user.fullName}</td>
-                <td>
-                  {/* <button onClick={() => deleteUserMutation(user._id)} disabled={isDeleting}>
-                  {isDeleting ? 'Deleting...' : 'Delete'}
-                </button> */}
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
-    </div>
+  return (
+    <MuTable
+      dataSource={data}
+      key={'users-data'}
+      headers={usersTableHeaders}
+      id={'users'}
+      onLazyLoadMetaChange={handleLazyLoadMetaChange}
+      order={'desc'}
+      orderBy={''}
+      rowCount={0}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <Button variant="contained" onClick={handleAddUser}>
+          Add User
+        </Button>
+        <Button variant="contained" onClick={handleAddUser}>
+          Delete
+        </Button>
+      </div>
+    </MuTable>
   );
 }
 

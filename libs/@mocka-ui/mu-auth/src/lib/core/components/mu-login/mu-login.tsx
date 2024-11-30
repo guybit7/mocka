@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import './mu-login.scss';
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { Button, FormControl, TextField } from '@mui/material';
+import { Box, Button, FormControl, TextField } from '@mui/material';
 import { muAxiosClient } from '../../api';
 import { LOGIN_REQUEST, PUBLIC_CLIENT_APPLICATION, TOKEN_REQUEST } from '../../msalConfig';
 import { AuthenticationResult } from '@azure/msal-browser';
@@ -81,7 +81,7 @@ export function MuLogin() {
     <div className="login-container">
       <section className="login-section">
         <div className="login-header">
-          <span>Welcome to Mockoto</span>
+          <Box sx={{ color: 'text.secondary' }}>Mockoto</Box>
         </div>
         <div className="login-form">
           <FormControl fullWidth>
@@ -119,7 +119,9 @@ export function MuLogin() {
           </Button> */}
         </div>
       </section>
-      <div className="login-footer">{<span>The Mockup System Revolution</span>}</div>
+      <Box className="login-footer" sx={{ color: 'text.secondary' }}>
+        The Mockup System Revolution
+      </Box>
     </div>
   );
 }

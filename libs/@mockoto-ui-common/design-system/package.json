@@ -1,5 +1,5 @@
 {
-  "name": "@mocka-ui/mu-design-system",
+  "name": "@mockoto-ui-common/design-system",
   "version": "0.0.1",
   "main": "./index.js",
   "types": "./index.d.ts",

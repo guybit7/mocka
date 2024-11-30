@@ -9,7 +9,7 @@ interface LayoutProps {
 export const LayoutPrimary: React.FC<LayoutProps> = ({ header, body, footer }) => {
   return (
     <div className="layout">
-      {/* <div className="layout-header">{header}</div> */}
+      <div className="layout-header">{header}</div>
       <div className="layout-body">{body}</div>
       <div className="layout-footer">{footer}</div>
     </div>

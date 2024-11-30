@@ -1,9 +1,8 @@
 import { Outlet } from 'react-router-dom';
 import './users-container.scss';
-// eslint-disable-next-line @nx/enforce-module-boundaries
-import { LayoutPrimary } from '@mocka-ui/mu-design-system';
 import { createContext, useState } from 'react';
 import { User } from '../interfaces/user';
+import { LayoutPrimary } from '@mockoto-ui-common/design-system';
 
 interface UsersContextType {
   users: User[];
@@ -22,9 +21,9 @@ export function UsersContainer() {
   return (
     <UserContext.Provider value={{ users: [], activeUser, setActiveUser }}>
       <LayoutPrimary
-        header={<span>Header Content</span>}
+        // header={<span>Header Content</span>}
         body={<Outlet />}
-        footer={<span>Users container footer</span>}
+        // footer={<span>Users container footer</span>}
       />
     </UserContext.Provider>
   );

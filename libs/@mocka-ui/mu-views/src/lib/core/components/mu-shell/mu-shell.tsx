@@ -1,5 +1,5 @@
 /* eslint-disable @nx/enforce-module-boundaries */
-import { MuCollapsibleListItem } from '@mocka-ui/mu-design-system';
+import { MuCollapsibleListItem } from '@mockoto-ui-common/design-system';
 import { PUBLIC_CLIENT_APPLICATION } from '@mu/mu-auth';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';

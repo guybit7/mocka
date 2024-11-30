@@ -4,13 +4,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: currentColor;
   .login-section {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: 20rem;
-    background-color: var(--me-background-secondary);
+    // background-color: var(--me-background-secondary);
     margin: 1rem;
     padding: 1rem;
     border-radius: 1rem;
@@ -21,7 +20,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: currentColor;
     }
     .login-form {
       display: flex;

@@ -1,0 +1,9 @@
+{
+  "name": "design-system",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/@mockoto-ui-common/design-system/src",
+  "projectType": "library",
+  "tags": ["design-system"],
+  "// targets": "to see all targets run: nx show project design-system --web",
+  "targets": {}
+}

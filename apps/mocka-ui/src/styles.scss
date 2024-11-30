@@ -10,7 +10,7 @@
 html {
   height: 100%;
   overflow: hidden;
-  background-color: var(--me-background-primary);
+  // background-color: var(--me-background-primary);
   display: flex;
   flex-direction: column;
 }
@@ -21,7 +21,7 @@ html {
     color: var(--me-text-primary);
     display: flex;
     flex-direction: column;
-    background-color: var(--me-background-primary);
+    // background-color: var(--me-background-primary);
     border-radius: 1rem;
     // margin: 1rem;
     &.light {
