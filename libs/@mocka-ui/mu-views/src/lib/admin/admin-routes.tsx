@@ -1,9 +1,10 @@
 import { Suspense } from 'react';
 import { Navigate, RouteObject } from 'react-router-dom';
 import AdminContainer from './admin-container/admin-container';
+import SpaceForm from './spaces/space-form/space-form';
 import SpacesContainer from './spaces/spaces-container/spaces-container';
 import SpacesList from './spaces/spaces-list/spaces-list';
-import SpaceForm from './spaces/space-form/space-form';
+import User from './users/user/user';
 import UsersContainer from './users/users-container/users-container';
 import UsersTable from './users/users-table/users-table';
 
@@ -76,7 +77,7 @@ export const adminRoutes: RouteObject[] = [
                 path: ':id',
                 element: (
                   <Suspense fallback={<div>Loading...</div>}>
-                    <SpaceForm />
+                    <User />
                   </Suspense>
                 ),
               },

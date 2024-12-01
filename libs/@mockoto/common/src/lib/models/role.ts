@@ -1,5 +1,6 @@
 import { Schema, Document, Model } from 'mongoose';
 
+export const ROLE = 'Role';
 export interface IRole {
   name: string;
   tasks: string[];

@@ -10,7 +10,7 @@ export class BaseService<T> {
     this.schema = schema;
   }
 
-  protected async getTenantModel(tenantId: string): Promise<Model<T>> {
+  async getTenantModel(tenantId: string): Promise<Model<T>> {
     if (!tenantId) {
       throw new Error('Tenant ID is required');
     }

@@ -1,5 +1,6 @@
 import { Schema, Document, Model } from 'mongoose';
 
+export const TENANT = 'Tenant';
 export interface ITenant {
   name: string;
   tenantSchema: string; // Renamed from `schema` to avoid conflict
