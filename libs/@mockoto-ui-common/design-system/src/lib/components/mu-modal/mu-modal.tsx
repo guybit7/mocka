@@ -11,7 +11,7 @@ export const MuModal: React.FC<MuModalPropsAbstract> = ({
 }) => {
   return (
     <Modal open={open} onClose={onClose} closeAfterTransition>
-      <Box className="modal-container">
+      <Box className="modal-container" sx={{ bgcolor: 'background.paper' }}>
         {header && <Box className="modal-header">{header}</Box>}
         <Box className="modal-body">{children}</Box>
         {footer && <Box className="modal-footer">{footer}</Box>}
