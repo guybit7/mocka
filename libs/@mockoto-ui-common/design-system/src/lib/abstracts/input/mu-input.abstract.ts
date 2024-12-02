@@ -1,7 +1,7 @@
 export interface MuInputPropsAbstract {
   label: string;
   name: string;
-  value: string;
+  value?: string;
   size?: 'small' | 'medium';
   type?: string;
   error?: boolean;

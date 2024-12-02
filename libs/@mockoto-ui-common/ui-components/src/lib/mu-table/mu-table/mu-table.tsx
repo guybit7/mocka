@@ -3,6 +3,7 @@ import { globalSearch } from '@mockoto-ui-common/utils';
 import {
   Box,
   CircularProgress,
+  InputAdornment,
   Paper,
   Table,
   TableBody,
@@ -31,6 +32,7 @@ interface MuTableProps {
   rowCount: number;
   onLazyLoadMetaChange: (meta: LazyLoadMeta) => void;
   children?: React.ReactNode;
+  onRowClick?: (row: any) => void;
 }
 
 export const MuTable: React.FC<MuTableProps> = ({
@@ -42,6 +44,7 @@ export const MuTable: React.FC<MuTableProps> = ({
   orderBy,
   children,
   onLazyLoadMetaChange,
+  onRowClick,
 }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -81,21 +84,32 @@ export const MuTable: React.FC<MuTableProps> = ({
     if (JSON.stringify(meta) !== JSON.stringify(prevMetaRef.current)) {
       if (
         prevMetaRef.current === null ||
-        (meta.first === prevMetaRef.current?.first && meta.rows === prevMetaRef.current?.rows)
+        (meta.first === prevMetaRef.current?.first && meta.rows === prevMetaRef.current?.rows) ||
+        meta.globalFilter !== prevMetaRef.current.globalFilter
       ) {
         // onLazyLoadMetaChange(meta); // Send the metadata to the parent
-        const globalFilter = meta.globalFilter ?? '';
-        const finalData: any = globalSearch(dataSource, globalFilter, sortField, sortOrder);
-        setLoading(true);
-        setPage(0); // Reset page to 0 when rows per page changes
-        setTimeout(() => {
-          setFilteredData(finalData); // Set the filtered data
-          setLoading(false);
-        }, 300);
+        applyFilter(meta);
       }
-      prevMetaRef.current = meta; // Update the ref with the latest metadata
     }
   }, [dataSource, page, rowsPerPage, sortField, sortOrder, filters, globalFilter, onLazyLoadMetaChange]); // Dependency array ensures it's called on changes
+
+  useEffect(() => {
+    if (prevMetaRef.current) {
+      applyFilter(prevMetaRef.current);
+    }
+  }, [dataSource]);
+
+  const applyFilter = (lazyLoadMeta: LazyLoadMeta) => {
+    const globalFilter = lazyLoadMeta.globalFilter ?? '';
+    const finalData: any = globalSearch(dataSource, globalFilter, sortField, sortOrder);
+    setLoading(true);
+    setPage(0); // Reset page to 0 when rows per page changes
+    setTimeout(() => {
+      setFilteredData(finalData); // Set the filtered data
+      setLoading(false);
+      prevMetaRef.current = lazyLoadMeta; // Update the ref with the latest metadata
+    }, 300);
+  };
 
   const handleSortChange = (field: string) => {
     const newSortOrder = sortField === field && sortOrder === 1 ? -1 : 1; // Toggle between asc and desc
@@ -107,8 +121,18 @@ export const MuTable: React.FC<MuTableProps> = ({
     setGlobalFilter(event.target.value);
   };
 
+  const handleRowClick = (row: any) => {
+    if (onRowClick) {
+      onRowClick(row); // Trigger the callback passed from the parent component
+    }
+  };
+
+  const handleClearGlobalFilter = () => {
+    setGlobalFilter(''); // Clear the global filter input
+  };
+
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column', flex: '1' }}>
+    <Paper sx={{ width: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column', flex: '1', padding: 1 }}>
       <Box sx={{ paddingBlock: 2, display: 'flex', flexDirection: 'row', gap: '1rem', alignItems: 'center' }}>
         <TextField
           label="Global Search"
@@ -118,6 +142,17 @@ export const MuTable: React.FC<MuTableProps> = ({
           value={globalFilter}
           onChange={handleGlobalFilterChange}
           sx={{ width: '15rem', minWidth: '10rem' }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                {globalFilter && (
+                  <span style={{ cursor: 'pointer', fontSize: '16px' }} onClick={handleClearGlobalFilter}>
+                    &#10005;
+                  </span>
+                )}
+              </InputAdornment>
+            ),
+          }}
         />
         {children}
       </Box>
@@ -177,7 +212,16 @@ export const MuTable: React.FC<MuTableProps> = ({
             {!isLoading &&
               paginatedData.length > 0 &&
               paginatedData.map((row, index) => (
-                <TableRow key={index}>
+                <TableRow
+                  key={index}
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: 'var(--me-row-hover)', // Hover effect
+                      cursor: 'pointer', // Change cursor to pointer on hover
+                    },
+                  }}
+                  onClick={() => handleRowClick(row)} // Handle row click
+                >
                   {headers.map(header => (
                     <TableCell key={header.field} id={`cell-${id}-${header.field}`}>
                       {row[header.field]}

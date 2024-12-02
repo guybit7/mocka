@@ -1,9 +1,9 @@
 import { MuInput, MuModal } from '@mockoto-ui-common/design-system';
 import { MuModalFooterCommonActions } from '@mockoto-ui-common/ui-components';
 import { muAxiosClient, muQueryClient } from '@mu/mu-auth';
-import { Box, Grid } from '@mui/material';
-import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
+import { Box, Button, CircularProgress, Grid } from '@mui/material';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './user.scss';
 
@@ -11,8 +11,8 @@ interface UserFormData {
   email: string;
   fullName: string;
   username: string;
-  password: string;
-  confirmPassword: string;
+  password?: string;
+  confirmPassword?: string;
 }
 
 export function User() {
@@ -47,6 +47,30 @@ export function User() {
       handleClose();
     },
   });
+
+  const { mutate: userDeleteMutate } = useMutation({
+    mutationFn: () => muAxiosClient.delete(`/api/user/${id}`),
+    onSuccess: () => {
+      muQueryClient.invalidateQueries({ queryKey: ['users'] });
+      handleClose();
+    },
+  });
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ['user', { id: id }],
+    queryFn: ({ signal, queryKey }) => muAxiosClient.get<any, any>(`/api/user/${id}`, { signal }),
+    enabled: id !== undefined && id !== 'NEW',
+  });
+
+  useEffect(() => {
+    if (data) {
+      setFormData({
+        email: data.email,
+        fullName: data.fullName,
+        username: data.username,
+      });
+    }
+  }, [data]);
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const { name } = e.target;
@@ -93,6 +117,12 @@ export function User() {
 
   const handleClose = () => {
     navigate('../');
+  };
+
+  const handleDelete = () => {
+    if (!isCreateMode) {
+      userDeleteMutate();
+    }
   };
 
   const validateForm = () => {
@@ -142,74 +172,106 @@ export function User() {
       onClose={handleClose}
       header={<span>User</span>}
       children={
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <MuInput
-                label="Username"
-                name="username"
-                value={formData.username}
-                error={!!errors.username}
-                helperText={errors.username}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-            </Grid>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem', flex: 1 }}>
+          {isLoading && (
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flex: 1,
+              }}
+            >
+              <CircularProgress />
+            </Box>
+          )}
+          {!isLoading && (
+            <>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <MuInput
+                    label="Username"
+                    name="username"
+                    value={formData.username}
+                    error={!!errors.username}
+                    helperText={errors.username}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                </Grid>
 
-            <Grid item xs={12} sm={6}>
-              <MuInput
-                label="Full Name"
-                name="fullName"
-                value={formData.fullName}
-                onChange={handleChange}
-                error={!!errors.fullName}
-                helperText={errors.fullName}
-                onBlur={handleBlur}
-              />
-            </Grid>
-          </Grid>
+                <Grid item xs={12} sm={6}>
+                  <MuInput
+                    label="Full Name"
+                    name="fullName"
+                    value={formData.fullName}
+                    onChange={handleChange}
+                    error={!!errors.fullName}
+                    helperText={errors.fullName}
+                    onBlur={handleBlur}
+                  />
+                </Grid>
+              </Grid>
 
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={12}>
-              <MuInput
-                label="Email"
-                name="email"
-                value={formData.email}
-                error={!!errors.email}
-                helperText={errors.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-            </Grid>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={12}>
+                  <MuInput
+                    label="Email"
+                    name="email"
+                    value={formData.email}
+                    error={!!errors.email}
+                    helperText={errors.email}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                </Grid>
 
-            <Grid item xs={6} sm={6}>
-              <MuInput
-                label="Password"
-                name="password"
-                type="password"
-                value={formData.password}
-                error={!!errors.password}
-                helperText={errors.password}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-            </Grid>
-            <Grid item xs={6} sm={6}>
-              <MuInput
-                label="Confirm Password"
-                name="confirmPassword"
-                type="password"
-                value={formData.confirmPassword}
-                error={!!errors.confirmPassword}
-                helperText={errors.confirmPassword}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-            </Grid>
-          </Grid>
+                {isCreateMode && (
+                  <>
+                    <Grid item xs={6} sm={6}>
+                      <MuInput
+                        label="Password"
+                        name="password"
+                        type="password"
+                        value={formData.password}
+                        error={!!errors.password}
+                        helperText={errors.password}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                      />
+                    </Grid>
+                    <Grid item xs={6} sm={6}>
+                      <MuInput
+                        label="Confirm Password"
+                        name="confirmPassword"
+                        type="password"
+                        value={formData.confirmPassword}
+                        error={!!errors.confirmPassword}
+                        helperText={errors.confirmPassword}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                      />
+                    </Grid>
+                  </>
+                )}
+                {!isCreateMode && (
+                  <Grid item xs={12} sm={12} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Button variant="contained">Update Password</Button>
+                  </Grid>
+                )}
+              </Grid>
+            </>
+          )}
         </Box>
       }
-      footer={<MuModalFooterCommonActions onSave={handleSubmit} onClose={handleClose} />}
+      footer={
+        <MuModalFooterCommonActions
+          onSave={handleSubmit}
+          onClose={handleClose}
+          showDelete={!isCreateMode}
+          onDelete={handleDelete}
+        />
+      }
     />
   );
 }

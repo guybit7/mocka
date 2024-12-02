@@ -23,7 +23,7 @@ export function UsersContainer() {
       <LayoutPrimary
         // header={<span>Header Content</span>}
         body={<Outlet />}
-        // footer={<span>Users container footer</span>}
+        footer={<span>Users container footer</span>}
       />
     </UserContext.Provider>
   );

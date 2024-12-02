@@ -81,7 +81,7 @@ export function MuLogin() {
     <div className="login-container">
       <section className="login-section">
         <div className="login-header">
-          <Box sx={{ color: 'text.secondary' }}>Mockoto</Box>
+          <Box sx={{ color: 'text.secondary' }}>{/* Mockoto */}</Box>
         </div>
         <div className="login-form">
           <FormControl fullWidth>
@@ -114,9 +114,9 @@ export function MuLogin() {
           <Button variant="contained" onClick={handleSSO}>
             SSO
           </Button>
-          {/* <Button variant="contained" onClick={logout}>
+          <Button variant="contained" onClick={logout}>
             Logout
-          </Button> */}
+          </Button>
         </div>
       </section>
       <Box className="login-footer" sx={{ color: 'text.secondary' }}>
