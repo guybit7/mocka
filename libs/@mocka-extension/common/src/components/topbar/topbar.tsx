@@ -2,7 +2,7 @@ import { Button } from '@mui/material';
 import './topbar.scss';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '@me/auth';
 
 export async function logout() {
@@ -40,6 +40,13 @@ export function Topbar() {
   const handleLogout = () => {
     logoutHandler();
   };
+  const [currentTime, setCurrentTime] = useState<string>('');
+
+  // When the component mounts, set the current time
+  useEffect(() => {
+    const time = new Date().toLocaleTimeString(); // Get current time
+    setCurrentTime(time);
+  }, []); // Empty dependency array to run only once when the component mounts
 
   return (
     <div className="topbar-container">
@@ -62,6 +69,9 @@ export function Topbar() {
         <Button variant="outlined" onClick={handleLogout}>
           Logout
         </Button>
+        {/* <div>
+          <span style={{ color: 'red' }}> {<p>Current Time: {currentTime}</p>}</span>
+        </div> */}
       </div>
     </div>
   );

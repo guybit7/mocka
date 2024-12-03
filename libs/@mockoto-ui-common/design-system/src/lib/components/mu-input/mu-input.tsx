@@ -1,8 +1,8 @@
 import { FormControl, TextField } from '@mui/material';
-import { MuInputPropsAbstract } from '../../abstracts/input';
+import { MuInputProps } from '../../interfaces/input/';
 import './mu-input.scss';
 
-export const MuInput: React.FC<MuInputPropsAbstract> = ({
+export const MuInput: React.FC<MuInputProps> = ({
   label,
   name,
   value,
@@ -11,7 +11,6 @@ export const MuInput: React.FC<MuInputPropsAbstract> = ({
   error,
   helperText,
   onChange,
-  onBlur,
   ...props
 }) => {
   return (
@@ -26,7 +25,6 @@ export const MuInput: React.FC<MuInputPropsAbstract> = ({
         error={error}
         helperText={helperText}
         onChange={onChange}
-        onBlur={onBlur}
         {...props}
       />
     </FormControl>
