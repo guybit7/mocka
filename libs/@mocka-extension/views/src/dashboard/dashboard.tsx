@@ -1,172 +1,152 @@
-import { useEffect, useState } from 'react';
+import { MuFormSelect, MuFormTextField } from '@mockoto-ui-common/design-system';
+import { Box, Button } from '@mui/material';
+import { sendMessage } from '@me/common';
+import { useForm } from 'react-hook-form';
 import './dashboard.scss';
-import { getTabs, sendMessage } from '@me/common';
-import { Button, FormControl, InputLabel, Menu, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
-import Divider from '@mui/material/Divider';
+import SelectBrowserTab from './components/select-browser-tab/select-browser-tab';
+import { useQuery } from '@tanstack/react-query';
+import { meAxiosClient } from '@me/auth';
+import { useEffect, useState } from 'react';
+
+interface Tab {
+  id: number;
+  label: string;
+}
+
+interface IDashboardInput {
+  domainValue: string;
+  selectedTab: Tab | null;
+  space: any;
+  group: any;
+}
+
+const defaultValues = {
+  domainValue: 'http://localhost:3000',
+  selectedTab: null,
+  space: null,
+  group: null,
+};
 
 export function Dashboard() {
-  const [tabs, setTabs] = useState([] as any[]);
+  const [recording, setRecording] = useState(false);
+  const { handleSubmit, control, setValue, watch, getValues } = useForm<IDashboardInput>({
+    defaultValues: defaultValues,
+    mode: 'onBlur',
+  });
 
-  const [formData, setFormData] = useState({
-    tab: '',
-    groupId: '',
-    domainList: 'http://localhost:3000', // change to list
-  } as any);
+  const { data: spaces, refetch: refetchSpaces } = useQuery({
+    queryKey: ['spaces-summary'],
+    queryFn: ({ signal }) => meAxiosClient.get<any, any>(`/api/space/summary/getAll`, { signal }),
+    enabled: false,
+  });
 
-  async function initTabsList() {
-    const tabs = await getTabs();
-    const theTabs = [];
-    for (const tab of tabs) {
-      theTabs.push({
-        label: tab.title,
-        id: tab.id,
-      });
-    }
-    setTabs(theTabs);
-  }
+  const watchedSpace = watch('space');
+
+  const { data: groups, refetch: refetchGroups } = useQuery({
+    queryKey: ['spaces-summary', { id: watchedSpace?._id }],
+    queryFn: ({ signal }) => meAxiosClient.get<any, any>(`/api/group/getAll/${watchedSpace?._id}`, { signal }),
+    enabled: watchedSpace != null,
+  });
+
   useEffect(() => {
-    initTabsList();
-  }, []);
+    if (watchedSpace) {
+      setValue('group', null);
+      refetchGroups(watchedSpace?._id);
+    }
+  }, [watchedSpace]);
 
-  const handleSelectTab = (event: SelectChangeEvent) => {
-    setFormData((prevData: any) => ({
-      ...prevData,
-      tab: event.target.value as string,
-    }));
+  const domainValidationRules = {
+    required: 'Domain is required',
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormData((prevData: any) => ({
-      ...prevData,
-      [name]: value,
-    }));
+  const handlerSelectedTab = (tab: Tab | null) => {
+    setValue('selectedTab', tab);
   };
 
-  const handleStart = async () => {
-    console.log(formData);
+  useEffect(() => {
+    refetchSpaces();
+  }, [refetchSpaces]);
+
+  const onSubmit = async (data: IDashboardInput) => {
     const messageResponse = await sendMessage({
-      id: formData.tab.id,
-      groupId: formData.groupId,
-      domainList: [formData.domainList],
+      type: 'START',
+      payload: {
+        id: data.selectedTab?.id,
+        groupId: data.group._id,
+        domainList: [data.domainValue],
+      },
     });
+
+    setRecording(true);
   };
-  const handleStop = () => {
-    console.log(formData);
+
+  const handleStop = async () => {
+    const messageResponse = await sendMessage({
+      type: 'STOP',
+      payload: {
+        tabId: getValues().selectedTab?.id,
+      },
+    });
+    setTimeout(() => {
+      setRecording(false);
+    }, 1000);
   };
 
   return (
-    <div className="dashboard-container">
-      <div className="dashboard-form">
-        <FormControl fullWidth>
-          <TextField
-            className="me-text-field"
-            name="domainList"
-            id="domainList"
-            value={formData.domainList}
-            label="Domain List"
-            variant="outlined"
-            onChange={handleInputChange}
-          />
-        </FormControl>
-        {/* <Divider /> */}
-        <FormControl fullWidth>
-          <InputLabel id="select-tab-label">Tab</InputLabel>
-          <Select
-            labelId="select-tab-label"
-            id="select-tab-id"
-            value={formData.tab}
-            label="Tab"
-            onChange={handleSelectTab}
+    <Box className="dashboard-container">
+      <Box className="dashboard-form">
+        <MuFormTextField
+          id="domain"
+          name="domainValue"
+          control={control}
+          rules={domainValidationRules}
+          label="Domain"
+        />
+        <SelectBrowserTab selectedTab={handlerSelectedTab} />
+        <MuFormSelect
+          id="space"
+          label="Select Space"
+          name="space"
+          optionValue="_id"
+          optionLabel="name"
+          options={spaces}
+          control={control}
+          rules={{
+            required: 'Space is required',
+          }}
+        />
+        <MuFormSelect
+          id="group"
+          label="Select Group"
+          name="group"
+          optionValue="_id"
+          optionLabel="name"
+          options={groups}
+          control={control}
+          rules={{
+            required: 'Group is required',
+          }}
+        />
+      </Box>
+      <Box className="dashboard-actions">
+        {!recording && (
+          <Button
+            onClick={handleSubmit(onSubmit)}
+            variant={'contained'}
+            sx={{ background: 'rgb(0 120 0)', color: 'white' }}
           >
-            {tabs &&
-              tabs.map(t => {
-                return <MenuItem value={t}>{t.label} </MenuItem>;
-              })}
-          </Select>
-        </FormControl>
-        {/* <Divider /> */}
-        <FormControl fullWidth>
-          <TextField name="groupId" id="groupId" label="Group Id" variant="outlined" onChange={handleInputChange} />
-        </FormControl>
-      </div>
-      <div className="dashbaord-actions">
-        <Button type="submit" variant="contained" onClick={handleStart}>
-          Start
-        </Button>
-        <Button type="submit" variant="contained" onClick={handleStop}>
-          Stop
-        </Button>
-      </div>
-    </div>
+            Record
+          </Button>
+        )}
+
+        {recording && (
+          <Button onClick={handleStop} variant={'contained'} sx={{ background: 'rgb(139, 0, 0)', color: 'white' }}>
+            STOP
+          </Button>
+        )}
+      </Box>
+    </Box>
   );
 }
 
 export default Dashboard;
-/*
-
-active
-: 
-true
-audible
-: 
-false
-autoDiscardable
-: 
-true
-discarded
-: 
-false
-favIconUrl
-: 
-"https://reactrouter.com/favicon-dark.png"
-groupId
-: 
--1
-height
-: 
-1039
-highlighted
-: 
-true
-id
-: 
-138221087
-incognito
-: 
-false
-index
-: 
-9
-lastAccessed
-: 
-1731406906733.958
-mutedInfo
-: 
-{muted: false}
-openerTabId
-: 
-138220874
-pinned
-: 
-false
-selected
-: 
-true
-status
-: 
-"complete"
-title
-: 
-"createHashRouter | React Router"
-url
-: 
-"https://reactrouter.com/en/main/routers/create-hash-router"
-width
-: 
-1920
-windowId
-: 
-138212085
-
-*/

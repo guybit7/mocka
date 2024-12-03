@@ -1,5 +1,5 @@
 import { Box, Modal } from '@mui/material';
-import { MuModalPropsAbstract } from '../../abstracts/modal/mu-modal.abstract';
+import { MuModalPropsAbstract } from '../../interfaces/modal/mu-modal.abstract';
 import './mu-modal.scss';
 
 export const MuModal: React.FC<MuModalPropsAbstract> = ({

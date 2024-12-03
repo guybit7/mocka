@@ -41,14 +41,4 @@ export const appRoutes: RouteObject[] = [
       </Suspense>
     ),
   },
-  {
-    path: 'register',
-    element: (
-      <Suspense>
-        <QueryClientProvider client={muQueryClient}>
-          <div>TODO REGISTER</div>
-        </QueryClientProvider>
-      </Suspense>
-    ),
-  },
 ];

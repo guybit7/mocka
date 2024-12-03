@@ -25,22 +25,49 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 chrome.runtime.onMessage.addListener((req, sender, sendRes) => {
-  console.log(req);
-  if (currentTabId) {
-    chrome.debugger.detach({ tabId: currentTabId });
+  switch (req.type) {
+    case 'START':
+      startRecording(req.payload)
+    break;
+    case 'STOP':
+      stopRecording(req.payload);
+    break;
+    default: {
+      console.log("missing req type: " + req.type)
+    }
   }
-  currentTabId = parseInt(req.id);
+});
+
+function startRecording(payload) {
+
+  if (payload.currentTabId) {
+    chrome.debugger.detach({ tabId: payload.currentTabId });
+  }
+
+  currentTabId = parseInt(payload.id);
 
   if (currentTabId < 0) {
     return;
   }
-  //   server = req.server;
-  groupId = req.groupId;
-  domainList = req.domainList;
+
+  groupId = payload.groupId;
+  domainList = payload.domainList;
   chrome.debugger.attach({ tabId: currentTabId }, version, onAttach.bind(null, currentTabId));
   chrome.debugger.onDetach.addListener(debuggerDetachHandler);
   sendRes({ status: 0 });
+}
+
+function stopRecording(payload) {
+  chrome.debugger.detach({ tabId: payload.tabId }, function() {
+  if (chrome.runtime.lastError) {
+    console.error('Error detaching debugger: ', chrome.runtime.lastError);
+  } else {
+    console.log('Debugger detached successfully');
+  }
 });
+}
+
+
 
 function debuggerDetachHandler() {
   requests.clear();

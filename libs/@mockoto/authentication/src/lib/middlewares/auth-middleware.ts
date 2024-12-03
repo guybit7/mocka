@@ -5,6 +5,7 @@ const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 export const authMiddleware = async (req: any, res, next) => {
   try {
     console.log('********************authMiddleware - start************************');
+    console.log(req.url);
     const token = req.cookies?.token;
     if (!token) {
       return res.status(401).json({ message: 'Unauthorized: No token provided' });

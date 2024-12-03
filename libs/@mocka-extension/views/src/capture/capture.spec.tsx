@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import LayoutPrimary from './layout-primary';
+import Capture from './capture';
 
-describe('LayoutPrimary', () => {
+describe('Capture', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<LayoutPrimary />);
+    const { baseElement } = render(<Capture />);
     expect(baseElement).toBeTruthy();
   });
 });
