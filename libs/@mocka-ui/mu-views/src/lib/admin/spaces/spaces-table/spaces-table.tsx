@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { spacesTableHeaders } from './spaces-table-config';
 import './spaces-table.scss';
+import { Box } from '@mui/material';
 
 export function SpacesTable() {
   const [lazyLoadMeta, setLazyLoadMeta] = useState<LazyLoadMeta>({});
@@ -56,9 +57,9 @@ export function SpacesTable() {
         orderBy={''}
         rowCount={0}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <AddCircleOutlineIcon onClick={handleAddSpace} />
-        </div>
+        </Box>
       </MuTable>
       <Outlet />
     </>

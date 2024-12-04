@@ -1,68 +1,71 @@
-import { MuFormTextField, MuModal } from '@mockoto-ui-common/design-system';
-import { MuModalFooterCommonActions } from '@mockoto-ui-common/ui-components';
-import { muAxiosClient, muQueryClient } from '@mu/mu-auth';
-import { Box, CircularProgress } from '@mui/material';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import './space.scss';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import './group.scss';
 import { useForm } from 'react-hook-form';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { muAxiosClient, muQueryClient } from '@mu/mu-auth';
+import { useEffect } from 'react';
+import { MuFormTextField, MuModal } from '@mockoto-ui-common/design-system';
+import { Box, CircularProgress } from '@mui/material';
+import { MuModalFooterCommonActions } from '@mockoto-ui-common/ui-components';
 
-interface SpaceFormData {
+interface GroupFormData {
   name: string;
 }
 const defaultValues = {
   name: '',
 };
 
-export function Space() {
+export function Group() {
   const navigate = useNavigate();
-  const { handleSubmit, control, setValue, reset } = useForm<SpaceFormData>({
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const { handleSubmit, control, setValue, reset } = useForm<GroupFormData>({
     defaultValues: defaultValues,
     mode: 'onBlur',
   });
   const { id } = useParams();
   const isCreateMode = id === 'NEW';
 
-  const { mutate: spaceMutate } = useMutation({
-    mutationFn: (formData: SpaceFormData) =>
-      isCreateMode ? muAxiosClient.post('/api/space', formData) : muAxiosClient.put('/api/space', formData),
+  const { mutate: groupMutate } = useMutation({
+    mutationFn: (formData: GroupFormData) =>
+      isCreateMode ? muAxiosClient.post('/api/group', formData) : muAxiosClient.put('/api/group', formData),
     onSuccess: () => {
-      muQueryClient.invalidateQueries({ queryKey: ['spaces'] });
+      muQueryClient.invalidateQueries({ queryKey: ['groups'] });
       handleClose();
     },
   });
 
   const { mutate: spaceDeleteMutate } = useMutation({
-    mutationFn: () => muAxiosClient.delete(`/api/space/${id}`),
+    mutationFn: () => muAxiosClient.delete(`/api/group/${id}`),
     onSuccess: () => {
-      muQueryClient.invalidateQueries({ queryKey: ['spaces'] });
+      muQueryClient.invalidateQueries({ queryKey: ['groups'] });
       handleClose();
     },
   });
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['space'],
-    queryFn: ({ signal, queryKey }) => muAxiosClient.get<any, any>(`/api/space/${id}`, { signal }),
+    queryKey: ['group'],
+    queryFn: ({ signal, queryKey }) => muAxiosClient.get<any, any>(`/api/group/${id}`, { signal }),
     enabled: id !== undefined && id !== 'NEW',
   });
 
   useEffect(() => {
     if (data) {
-      // Set the form field values when data is available
-      setValue('name', data.name); // Example: setting the 'name' field with data
+      setValue('name', data.name);
     }
-  }, [data, setValue]); // Runs every time data changes
-
-  const handleClose = () => {
-    navigate('../');
-  };
+  }, [data, setValue]);
 
   useEffect(() => {
     if (isCreateMode) {
       reset(defaultValues);
     }
   }, [isCreateMode, reset]);
+
+  const handleClose = () => {
+    const currentQueryParams = new URLSearchParams(window.location.search);
+
+    navigate('../?' + currentQueryParams);
+  };
 
   const handleDelete = () => {
     if (!isCreateMode) {
@@ -75,7 +78,11 @@ export function Space() {
     if (data.name?.trim()?.length === 0) {
       return;
     }
-    spaceMutate(data);
+    const formData = {
+      name: data.name,
+      spaceId: searchParams.get('space'),
+    };
+    groupMutate(formData);
   };
 
   return (
@@ -84,7 +91,7 @@ export function Space() {
       onClose={handleClose}
       header={
         <span>
-          {isCreateMode ? 'Create' : 'Update'} <span>&nbsp;Space</span>
+          {isCreateMode ? 'Create' : 'Update'} <span>&nbsp;Group</span>
         </span>
       }
       children={
@@ -118,4 +125,4 @@ export function Space() {
   );
 }
 
-export default Space;
+export default Group;

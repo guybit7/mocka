@@ -95,6 +95,7 @@ export const MuTable: React.FC<MuTableProps> = ({
 
   useEffect(() => {
     if (prevMetaRef.current) {
+      handleClearGlobalFilter();
       applyFilter(prevMetaRef.current);
     }
   }, [dataSource]);

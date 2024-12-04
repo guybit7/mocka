@@ -4,14 +4,11 @@ import { LayoutPrimary } from '@mockoto-ui-common/design-system';
 
 export function SpacesContainer() {
   return (
-    <div className="space-container">
-      {/* <SpacesHeader /> */}
-      <LayoutPrimary
-        // header={<span>Header Content</span>}
-        body={<Outlet />}
-        footer={<span>Spaces container footer</span>}
-      />
-    </div>
+    <LayoutPrimary
+      // header={<span>Header Content</span>}
+      body={<Outlet />}
+      footer={<span>Spaces container footer</span>}
+    />
   );
 }
 

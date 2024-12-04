@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import GroupsHeader from './groups-header';
+import Group from './group';
 
-describe('GroupsHeader', () => {
+describe('Group', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<GroupsHeader />);
+    const { baseElement } = render(<Group />);
     expect(baseElement).toBeTruthy();
   });
 });

@@ -1,8 +1,8 @@
 import { Suspense } from 'react';
 import { Navigate, RouteObject } from 'react-router-dom';
 import GroupsContainer from './groups-container/groups-container';
-import GroupsList from './groups-list/groups-list';
-import GroupModal from './group-modal/group-modal';
+import GroupsTable from './groups-table/groups-table';
+import Group from './group/group';
 
 export const groupsRoutes: RouteObject[] = [
   {
@@ -21,7 +21,7 @@ export const groupsRoutes: RouteObject[] = [
         path: 'list',
         element: (
           <Suspense fallback={<div>Loading...</div>}>
-            <GroupsList />
+            <GroupsTable />
           </Suspense>
         ),
         children: [
@@ -29,7 +29,7 @@ export const groupsRoutes: RouteObject[] = [
             path: ':id',
             element: (
               <Suspense fallback={<div>Loading...</div>}>
-                <GroupModal />
+                <Group />
               </Suspense>
             ),
           },
