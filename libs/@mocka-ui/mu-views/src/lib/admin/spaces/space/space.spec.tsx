@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import SpacesList from './spaces-list';
+import Space from './space';
 
-describe('SpacesList', () => {
+describe('Space', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<SpacesList />);
+    const { baseElement } = render(<Space />);
     expect(baseElement).toBeTruthy();
   });
 });

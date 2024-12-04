@@ -5,10 +5,10 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { User } from '../interfaces/user';
-import { usersTableHeaders } from './users-table-config';
-import './users-table.scss';
-export function UsersTable() {
+import { spacesTableHeaders } from './spaces-table-config';
+import './spaces-table.scss';
+
+export function SpacesTable() {
   const [lazyLoadMeta, setLazyLoadMeta] = useState<LazyLoadMeta>({});
   const navigate = useNavigate();
   const handleLazyLoadMetaChange = (meta: LazyLoadMeta) => {
@@ -19,20 +19,20 @@ export function UsersTable() {
   };
 
   const { data, isLoading, isError, error, refetch } = useQuery({
-    queryKey: ['users'],
+    queryKey: ['spaces'],
     queryFn: ({ signal }) => {
-      const url = '/api/user/getAll';
+      const url = '/api/space/getAll';
       return muAxiosClient.get<any, any>(url, { signal });
     },
-    enabled: true, // Only run query if activeSpace is set
-    refetchOnWindowFocus: true, // Optional: Prevents refetch when window is focused
+    enabled: true,
+    refetchOnWindowFocus: true,
   });
 
-  const handleAddUser = () => {
+  const handleAddSpace = () => {
     navigate('./NEW');
   };
 
-  const onRowClick = (row: User) => {
+  const onRowClick = (row: any) => {
     navigate(`./${row._id}`);
   };
 
@@ -48,7 +48,7 @@ export function UsersTable() {
       <MuTable
         dataSource={data}
         key={'users-data'}
-        headers={usersTableHeaders}
+        headers={spacesTableHeaders}
         id={'users'}
         onLazyLoadMetaChange={handleLazyLoadMetaChange}
         onRowClick={onRowClick}
@@ -57,7 +57,7 @@ export function UsersTable() {
         rowCount={0}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <AddCircleOutlineIcon onClick={handleAddUser} />
+          <AddCircleOutlineIcon onClick={handleAddSpace} />
         </div>
       </MuTable>
       <Outlet />
@@ -65,4 +65,4 @@ export function UsersTable() {
   );
 }
 
-export default UsersTable;
+export default SpacesTable;

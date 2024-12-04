@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import SpaceForm from './space-form';
+import SpacesTable from './spaces-table';
 
-describe('SpaceForm', () => {
+describe('SpacesTable', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<SpaceForm />);
+    const { baseElement } = render(<SpacesTable />);
     expect(baseElement).toBeTruthy();
   });
 });

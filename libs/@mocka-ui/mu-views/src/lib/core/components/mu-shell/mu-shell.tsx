@@ -1,6 +1,6 @@
 /* eslint-disable @nx/enforce-module-boundaries */
 import { MuCollapsibleListItem } from '@mockoto-ui-common/design-system';
-import { PUBLIC_CLIENT_APPLICATION } from '@mu/mu-auth';
+import { MuAuthContext, PUBLIC_CLIENT_APPLICATION } from '@mu/mu-auth';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -113,6 +113,8 @@ export default function MuShell() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
 
+  const { user }: any = React.useContext(MuAuthContext);
+
   const { mutate: logoutHandler } = useMutation({
     mutationFn: () => logout(),
     onSuccess: () => {
@@ -169,7 +171,7 @@ export default function MuShell() {
     <Box sx={{ display: 'flex', flexDirection: 'row', height: '100%' }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
-        <Toolbar>
+        <Toolbar sx={{ display: 'flex', justifyContent: open ? 'flex-end' : 'space-between' }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -184,9 +186,11 @@ export default function MuShell() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Title
-          </Typography>
+          <Box>
+            <Typography variant="h6" noWrap component="div">
+              {user.email}
+            </Typography>
+          </Box>
         </Toolbar>
       </AppBar>
       <Drawer
