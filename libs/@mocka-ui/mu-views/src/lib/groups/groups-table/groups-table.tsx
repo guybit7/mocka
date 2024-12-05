@@ -4,7 +4,7 @@ import { LazyLoadMeta } from '@mockoto-ui-common/types';
 import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { muAxiosClient } from '@mu/mu-auth';
-import { MuTable } from '@mockoto-ui-common/ui-components';
+import { MuTable, MuTableActionEvent } from '@mockoto-ui-common/ui-components';
 import { Box, Tooltip } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { groupsTableHeaders } from './groups-table-config';
@@ -76,6 +76,11 @@ export function GroupsTable() {
     }
   }, [watchedSpace]);
 
+  const handlerActionClick = (muTableActionEvent: MuTableActionEvent) => {
+    // mocks/671804a0ad4c48e7578ff0ff/6718191770b53f9f2ebd64bf/list
+    navigate(`/mocks/${watchedSpace._id}/${muTableActionEvent.row._id}/list`);
+  };
+
   // if (isLoading) return <div>Loading...</div>;
   // if (isError) return <div>Error: {error.message}</div>;
   return (
@@ -90,6 +95,7 @@ export function GroupsTable() {
         order={'desc'}
         orderBy={''}
         rowCount={0}
+        onActionClick={handlerActionClick}
       >
         <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
           <Box sx={{ width: '15rem' }}>
@@ -105,7 +111,7 @@ export function GroupsTable() {
             />
           </Box>
           <Tooltip title="Add New Group" arrow sx={{ cursor: 'pointer' }}>
-            <AddCircleOutlineIcon onClick={handleAddSpace} />
+            <AddCircleOutlineIcon onClick={handleAddSpace} className="action-icon" />
           </Tooltip>
         </Box>
       </MuTable>

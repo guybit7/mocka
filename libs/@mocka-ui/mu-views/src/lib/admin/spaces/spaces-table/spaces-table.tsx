@@ -58,7 +58,7 @@ export function SpacesTable() {
         rowCount={0}
       >
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <AddCircleOutlineIcon onClick={handleAddSpace} />
+          <AddCircleOutlineIcon onClick={handleAddSpace} className="action-icon" />
         </Box>
       </MuTable>
       <Outlet />
