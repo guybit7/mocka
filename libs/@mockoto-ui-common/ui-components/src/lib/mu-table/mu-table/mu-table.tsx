@@ -2,6 +2,7 @@ import { FilterMetadata, LazyLoadMeta } from '@mockoto-ui-common/types';
 import { globalSearch } from '@mockoto-ui-common/utils';
 import {
   Box,
+  Button,
   CircularProgress,
   InputAdornment,
   Paper,
@@ -14,11 +15,13 @@ import {
   TableRow,
   TableSortLabel,
   TextField,
+  Tooltip,
 } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
 import React, { useEffect, useRef, useState } from 'react';
-import { MuTableHeaderItem } from '../interfaces/mu-table-header-item.interface';
+import { MuTableActionEvent, MuTableHeaderItem } from '../interfaces/mu-table-header-item.interface';
 import './mu-table.scss';
+import { MuTableHeaderType } from '../enums';
 
 type Order = 'asc' | 'desc';
 
@@ -33,6 +36,7 @@ interface MuTableProps {
   onLazyLoadMetaChange: (meta: LazyLoadMeta) => void;
   children?: React.ReactNode;
   onRowClick?: (row: any) => void;
+  onActionClick?: (muTableActionEvent: MuTableActionEvent) => void;
 }
 
 export const MuTable: React.FC<MuTableProps> = ({
@@ -45,6 +49,7 @@ export const MuTable: React.FC<MuTableProps> = ({
   children,
   onLazyLoadMetaChange,
   onRowClick,
+  onActionClick,
 }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -95,6 +100,7 @@ export const MuTable: React.FC<MuTableProps> = ({
 
   useEffect(() => {
     if (prevMetaRef.current) {
+      handleClearGlobalFilter();
       applyFilter(prevMetaRef.current);
     }
   }, [dataSource]);
@@ -104,11 +110,11 @@ export const MuTable: React.FC<MuTableProps> = ({
     const finalData: any = globalSearch(dataSource, globalFilter, sortField, sortOrder);
     setLoading(true);
     setPage(0); // Reset page to 0 when rows per page changes
-    setTimeout(() => {
-      setFilteredData(finalData); // Set the filtered data
-      setLoading(false);
-      prevMetaRef.current = lazyLoadMeta; // Update the ref with the latest metadata
-    }, 300);
+    // setTimeout(() => {
+    setFilteredData(finalData); // Set the filtered data
+    setLoading(false);
+    prevMetaRef.current = lazyLoadMeta; // Update the ref with the latest metadata
+    // }, 300);
   };
 
   const handleSortChange = (field: string) => {
@@ -130,6 +136,17 @@ export const MuTable: React.FC<MuTableProps> = ({
   const handleClearGlobalFilter = () => {
     setGlobalFilter(''); // Clear the global filter input
   };
+
+  function handleIconActionClick(header: MuTableHeaderItem, row: any) {
+    if (onActionClick) {
+      const muTableActionEvent: MuTableActionEvent = {
+        id: header.id,
+        type: header.type,
+        row,
+      };
+      onActionClick(muTableActionEvent);
+    }
+  }
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column', flex: '1', padding: 1 }}>
@@ -164,29 +181,45 @@ export const MuTable: React.FC<MuTableProps> = ({
         <Table stickyHeader aria-label={`aria-${id}`} id={`mu-table-${id}`} size={'small'}>
           <TableHead>
             <TableRow id={`header-row`}>
+              {/* actions */}
               {headers &&
-                headers.map(header => (
-                  <TableCell
-                    id={`cell-${id}`}
-                    key={header.field}
-                    align={'left'}
-                    padding={'none'}
-                    sortDirection={orderBy === header.field ? order : false}
-                  >
-                    <TableSortLabel
-                      active={sortField === header.field}
-                      direction={sortField === header.field ? (sortOrder === 1 ? 'asc' : 'desc') : 'asc'}
-                      onClick={() => handleSortChange(header.field)}
+                headers
+                  .filter(h => h.type === MuTableHeaderType.ICON)
+                  .map(header => (
+                    <TableCell
+                      id={`cell-${id}`}
+                      key={header.field}
+                      align={'left'}
+                      padding={'none'}
+                      sortDirection={orderBy === header.field ? order : false}
+                    ></TableCell>
+                  ))}
+              {/* header */}
+              {headers &&
+                headers
+                  .filter(h => h.type !== MuTableHeaderType.ICON)
+                  .map(header => (
+                    <TableCell
+                      id={`cell-${id}`}
+                      key={header.field}
+                      align={'left'}
+                      padding={'none'}
+                      sortDirection={orderBy === header.field ? order : false}
                     >
-                      {header.label}
-                      {orderBy === header.field ? (
-                        <Box component="span" sx={visuallyHidden}>
-                          {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                        </Box>
-                      ) : null}
-                    </TableSortLabel>
-                  </TableCell>
-                ))}
+                      <TableSortLabel
+                        active={sortField === header.field}
+                        direction={sortField === header.field ? (sortOrder === 1 ? 'asc' : 'desc') : 'asc'}
+                        onClick={() => handleSortChange(header.field!)}
+                      >
+                        {header.label}
+                        {orderBy === header.field ? (
+                          <Box component="span" sx={visuallyHidden}>
+                            {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                          </Box>
+                        ) : null}
+                      </TableSortLabel>
+                    </TableCell>
+                  ))}
             </TableRow>
           </TableHead>
 
@@ -208,7 +241,6 @@ export const MuTable: React.FC<MuTableProps> = ({
               </TableRow>
             )}
 
-            {/* Display actual paginated data */}
             {!isLoading &&
               paginatedData.length > 0 &&
               paginatedData.map((row, index) => (
@@ -222,11 +254,39 @@ export const MuTable: React.FC<MuTableProps> = ({
                   }}
                   onClick={() => handleRowClick(row)} // Handle row click
                 >
-                  {headers.map(header => (
-                    <TableCell key={header.field} id={`cell-${id}-${header.field}`}>
-                      {row[header.field]}
-                    </TableCell>
-                  ))}
+                  {headers
+                    .filter(h => h.type !== MuTableHeaderType.TEXT)
+                    .map((header: MuTableHeaderItem) => (
+                      <TableCell
+                        sx={{
+                          '&:hover': {
+                            backgroundColor: 'unset',
+                            cursor: 'pointer',
+                          },
+                        }}
+                        key={header.field}
+                        id={`cell-${id}-${header.field}`}
+                      >
+                        {header.action?.icon && (
+                          <Tooltip title={header.action?.name || 'Action'} arrow placement="top">
+                            {React.createElement(header.action.icon, {
+                              onClick: (e: React.MouseEvent) => {
+                                e.stopPropagation();
+                                handleIconActionClick(header, row);
+                              },
+                              className: 'action-icon',
+                            })}
+                          </Tooltip>
+                        )}
+                      </TableCell>
+                    ))}
+                  {headers
+                    .filter(h => h.type !== MuTableHeaderType.ICON)
+                    .map(header => (
+                      <TableCell key={header.field} id={`cell-${id}-${header.field}`}>
+                        {row[header.field!]}
+                      </TableCell>
+                    ))}
                 </TableRow>
               ))}
           </TableBody>

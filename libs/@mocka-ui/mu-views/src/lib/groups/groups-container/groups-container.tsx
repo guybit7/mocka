@@ -4,6 +4,7 @@ import GroupsHeader from '../groups-header/groups-header';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { muAxiosClient } from '@mu/mu-auth';
+import { LayoutPrimary } from '@mockoto-ui-common/design-system';
 
 // Define the shape of the space object
 interface Space {
@@ -39,15 +40,28 @@ export function GroupsContainer() {
 
   useEffect(() => {}, []);
 
+  // return (
+  //   <GroupContext.Provider value={{}}>
+  //     {/* <div className="module-container">
+  //     <GroupsHeader></GroupsHeader>
+  //     <div className="module-outlet-container">
+  //       <Outlet />
+  //     </div>
+  //   </div> */}
+  //     <LayoutPrimary
+  //       // header={<span>Header Content</span>}
+  //       body={<Outlet />}
+  //       footer={<span>Spaces container footer</span>}
+  //     />
+  //   </GroupContext.Provider>
+  // );
+
   return (
-    <GroupContext.Provider value={{ summarySpaces, activeSpace, setActiveSpace }}>
-      <div className="module-container">
-        <GroupsHeader></GroupsHeader>
-        <div className="module-outlet-container">
-          <Outlet />
-        </div>
-      </div>
-    </GroupContext.Provider>
+    <LayoutPrimary
+      // header={<span>Header Content</span>}
+      body={<Outlet />}
+      footer={<span>Spaces container footer</span>}
+    />
   );
 }
 

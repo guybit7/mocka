@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import GroupModal from './group-modal';
+import GroupsTable from './groups-table';
 
-describe('GroupModal', () => {
+describe('GroupsTable', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<GroupModal />);
+    const { baseElement } = render(<GroupsTable />);
     expect(baseElement).toBeTruthy();
   });
 });

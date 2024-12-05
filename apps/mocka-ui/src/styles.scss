@@ -2,7 +2,7 @@
   --me-background-primary: #1e1e1e;
   --me-background-secondary: #252526;
   --me-text-primary: #ffffffcc;
-  --me-row-hover: #3a70b3;
+  --me-row-hover: #012c30; //#3a70b3;
 }
 
 #root {
@@ -32,5 +32,11 @@ html {
     &.dark {
       // @include dark;
     }
+  }
+}
+
+.action-icon {
+  &:hover {
+    color: rgb(5, 255, 22);
   }
 }

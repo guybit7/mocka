@@ -57,7 +57,7 @@ export function UsersTable() {
         rowCount={0}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <AddCircleOutlineIcon onClick={handleAddUser} />
+          <AddCircleOutlineIcon onClick={handleAddUser} className="action-icon" />
         </div>
       </MuTable>
       <Outlet />
