@@ -77,7 +77,6 @@ export function GroupsTable() {
   }, [watchedSpace]);
 
   const handlerActionClick = (muTableActionEvent: MuTableActionEvent) => {
-    // mocks/671804a0ad4c48e7578ff0ff/6718191770b53f9f2ebd64bf/list
     navigate(`/mocks/${watchedSpace._id}/${muTableActionEvent.row._id}/list`);
   };
 

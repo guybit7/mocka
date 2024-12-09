@@ -11,6 +11,8 @@ export const MuFormTextField: React.FC<MuInputProps> = ({
   type = 'text',
   control,
   rules,
+  multiline = false,
+  rows = 1,
   ...props
 }) => {
   return (
@@ -29,6 +31,8 @@ export const MuFormTextField: React.FC<MuInputProps> = ({
             onBlur={onBlur}
             value={value}
             fullWidth
+            multiline={multiline ?? false}
+            rows={rows}
             label={label}
             variant="outlined"
           />

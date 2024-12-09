@@ -81,7 +81,7 @@ export function MuLogin() {
     <div className="login-container">
       <section className="login-section">
         <div className="login-header">
-          <Box sx={{ color: 'text.secondary' }}>{/* Mockoto */}</Box>
+          <Box sx={{ color: 'text.secondary' }}>Mockoto</Box>
         </div>
         <div className="login-form">
           <FormControl fullWidth>

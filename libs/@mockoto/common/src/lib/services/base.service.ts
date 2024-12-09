@@ -45,4 +45,16 @@ export class BaseService<T> {
   async deleteAll(tenantId: string) {
     return await (await this.getTenantModel(tenantId)).deleteMany({});
   }
+
+  public async findAllByParent(tenantId, parentName, parentId): Promise<T[]> {
+    try {
+      const model = await this.getTenantModel(tenantId);
+      const query = {
+        [parentName]: parentId,
+      };
+      return await model.find(query);
+    } catch (error) {
+      throw new Error(`Error fetching entities: ${error.message}`);
+    }
+  }
 }

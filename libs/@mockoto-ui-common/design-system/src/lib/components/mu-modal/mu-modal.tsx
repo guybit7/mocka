@@ -8,10 +8,13 @@ export const MuModal: React.FC<MuModalPropsAbstract> = ({
   header = null,
   children = null,
   footer = null,
+  maxWidth,
+  minWidth,
+  minHeight,
 }) => {
   return (
     <Modal open={open} onClose={onClose} closeAfterTransition>
-      <Box className="modal-container" sx={{ bgcolor: 'background.paper' }}>
+      <Box className="modal-container" sx={{ bgcolor: 'background.paper', maxWidth, minWidth, minHeight }}>
         {header && <Box className="modal-header">{header}</Box>}
         <Box className="modal-body">{children}</Box>
         {footer && <Box className="modal-footer">{footer}</Box>}

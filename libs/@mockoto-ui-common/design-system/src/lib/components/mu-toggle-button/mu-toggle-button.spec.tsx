@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import MocksHeader from './mocks-header';
+import MuToggleButton from './mu-toggle-button';
 
-describe('MocksHeader', () => {
+describe('MuToggleButton', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<MocksHeader />);
+    const { baseElement } = render(<MuToggleButton />);
     expect(baseElement).toBeTruthy();
   });
 });

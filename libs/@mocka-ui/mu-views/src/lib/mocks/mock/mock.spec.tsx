@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import MockModal from './mock-modal';
+import Mock from './mock';
 
-describe('MockModal', () => {
+describe('Mock', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<MockModal />);
+    const { baseElement } = render(<Mock />);
     expect(baseElement).toBeTruthy();
   });
 });
