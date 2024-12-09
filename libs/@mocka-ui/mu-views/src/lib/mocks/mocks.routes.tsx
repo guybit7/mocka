@@ -1,8 +1,8 @@
 import { Suspense } from 'react';
 import { Navigate, RouteObject } from 'react-router-dom';
+import Mock from './mock/mock';
 import MocksContainer from './mocks-container/mocks-container';
-import MocksList from './mocks-list/mocks-list';
-import MockModal from './mock-modal/mock-modal';
+import MocksTable from './mocks-table/mocks-table';
 
 export const mocksRoutes: RouteObject[] = [
   {
@@ -21,7 +21,7 @@ export const mocksRoutes: RouteObject[] = [
         path: 'list',
         element: (
           <Suspense fallback={<div>Loading...</div>}>
-            <MocksList />
+            <MocksTable />
           </Suspense>
         ),
         children: [
@@ -29,7 +29,7 @@ export const mocksRoutes: RouteObject[] = [
             path: ':id',
             element: (
               <Suspense fallback={<div>Loading...</div>}>
-                <MockModal />
+                <Mock />
               </Suspense>
             ),
           },

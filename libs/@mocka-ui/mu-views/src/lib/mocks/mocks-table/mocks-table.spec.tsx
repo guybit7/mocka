@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import MocksList from './mocks-list';
+import MocksTable from './mocks-table';
 
-describe('MocksList', () => {
+describe('MocksTable', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<MocksList />);
+    const { baseElement } = render(<MocksTable />);
     expect(baseElement).toBeTruthy();
   });
 });

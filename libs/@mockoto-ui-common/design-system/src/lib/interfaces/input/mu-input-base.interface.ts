@@ -9,6 +9,8 @@ export interface MuInputBase {
   type?: string;
   error?: boolean;
   helperText?: string;
+  multiline?: boolean;
+  rows?: number;
   setValue?: any;
   control?: Control<any>;
   rules: Omit<RegisterOptions<any, any>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>;
