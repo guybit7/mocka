@@ -1,37 +1,36 @@
 :root {
-    --me-background-primary: #1E1E1E;
-    --me-background-secondary: #252526;
-    --me-text-primary: #ffffffcc;
+  --me-background-primary: #1e1e1e;
+  --me-background-secondary: #252526;
+  --me-text-primary: #ffffffcc;
+  --me-row-hover: #012c30; //#3a70b3;
 }
 
 #root {
-    height: 100%;
+  height: 100%;
 }
 html {
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--me-background-primary);
+  display: flex;
+  flex-direction: column;
+}
+html {
+  body {
     height: 100%;
-    overflow: hidden;
-    background-color: var(--me-background-primary);
+    font-size: 14px;
+    color: var(--me-text-primary);
     display: flex;
     flex-direction: column;
-}
-html {
-    body {
-        height: 100%;
-        font-size: 14px;
-        color: var(--me-text-primary);
-        display: flex;
-        flex-direction: column;
-        background-color: var(--me-background-primary);
-        border-radius: 1rem;
-        // margin: 1rem;
-        &.light {
-            // @include light;
-        }
-    
-        &.dark {
-            // @include dark;
-        }
+    background-color: var(--me-background-primary);
+    border-radius: 1rem;
+    // margin: 1rem;
+    &.light {
+      // @include light;
     }
+
+    &.dark {
+      // @include dark;
+    }
+  }
 }
-
-

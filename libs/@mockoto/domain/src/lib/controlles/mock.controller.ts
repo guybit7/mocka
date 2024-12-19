@@ -21,6 +21,7 @@ export class MockController extends BaseController<IMock> {
       ],
       this.findQuery.bind(this)
     );
+    this.router.post('/mocks', this.saveMocks.bind(this));
   }
 
   protected async findAllByParent(req: any, res: Response) {
@@ -39,6 +40,15 @@ export class MockController extends BaseController<IMock> {
         req.body.groupId,
         req.body.endpoint
       );
+      res.json(result);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+
+  private async saveMocks(req: Request, res: Response) {
+    try {
+      const result = await (this.service as MockService).saveMocks(req);
       res.json(result);
     } catch (error) {
       res.status(500).json({ message: error.message });

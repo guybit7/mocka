@@ -3,6 +3,7 @@ let currentTabId;
 let groupId = null;
 let version = '1.0';
 let domainList = [];
+let responseType = '';
 
 const REQUEST_WILL_BE_SENT = 'Network.requestWillBeSent';
 const RESPONSE_RECEIVED = 'Network.responseReceived';
@@ -52,6 +53,7 @@ function startRecording(payload) {
 
   groupId = payload.groupId;
   domainList = payload.domainList;
+  responseType = payload.responseType;
   chrome.debugger.attach({ tabId: currentTabId }, version, onAttach.bind(null, currentTabId));
   chrome.debugger.onDetach.addListener(debuggerDetachHandler);
   sendRes({ status: 0 });
@@ -213,12 +215,8 @@ function filterRequestHandler(url) {
 async function saveRequestData(requestDataMap, requestId) {
   const requestData = createObjectFromMap(requestDataMap);
   const { request_general_header, response, response_body, cookies } = requestData;
-  if (groupId.trim() === '') {
-    console.log(`missing groupId`);
-    return;
-  }
 
-  if (response.mimeType !== 'application/json') {
+  if (response.mimeType !== responseType) {
     console.log(`The response.mimeType ${response.mimeType} is not handled yet.`);
     return;
   }
@@ -229,7 +227,7 @@ async function saveRequestData(requestDataMap, requestId) {
   const endpoint = getEndpoint(pathname, params);
 
   console.log(method);
-  console.log(requestHeaderAccept);
+  console.log(requestHeaderAccept); 
   console.log(endpoint);
 
   const reqBody = {
@@ -237,7 +235,14 @@ async function saveRequestData(requestDataMap, requestId) {
     value: response_body?.body ?? '{}',
     groupId: groupId,
   };
-  await saveMock(reqBody);
+  
+  const eventPayload = {
+    type: 'CAPTURE',
+    payload: reqBody
+  }
+
+  await chrome.runtime.sendMessage(eventPayload);
+  // await saveMock(reqBody);
 }
 
 function protocolFilter(protocol) {
@@ -251,11 +256,14 @@ function resourceTypeFilter() {
 
 function isUrlInDomainList(origin) {
   try {
+    console.log(`URL for checking - ${origin}`);
     const isOriginIncludes = domainList.includes(origin);
     if (isOriginIncludes) {
-      console.log('The URL is under the domain list:', origin);
+      console.log('isUrlInDomainList >> The URL is under the domain list:', origin);
+      return true;
     }
-    return true;
+    console.log('isUrlInDomainList >> The URL is NOT under the domain list:', origin);
+    return false;
   } catch (error) {
     console.error('Invalid origin:', origin);
     return false;

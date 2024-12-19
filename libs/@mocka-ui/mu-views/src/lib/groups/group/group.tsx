@@ -28,7 +28,9 @@ export function Group() {
 
   const { mutate: groupMutate } = useMutation({
     mutationFn: (formData: GroupFormData) =>
-      isCreateMode ? muAxiosClient.post('/api/group', formData) : muAxiosClient.put('/api/group', formData),
+      isCreateMode
+        ? muAxiosClient.post('/api/group', formData)
+        : muAxiosClient.put('/api/group', { ...formData, _id: id }),
     onSuccess: () => {
       muQueryClient.invalidateQueries({ queryKey: ['groups'] });
       handleClose();

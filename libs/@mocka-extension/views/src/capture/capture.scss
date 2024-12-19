@@ -1,0 +1,11 @@
+.capture-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  background-color: var(--me-background-secondary);
+  margin: 1rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  overflow: hidden;
+}

@@ -10,9 +10,11 @@ import { useForm } from 'react-hook-form';
 
 interface SpaceFormData {
   name: string;
+  _id: string;
 }
 const defaultValues = {
   name: '',
+  _id: '',
 };
 
 export function Space() {
@@ -74,6 +76,9 @@ export function Space() {
     console.log('Form data:', data.name);
     if (data.name?.trim()?.length === 0) {
       return;
+    }
+    if (!isCreateMode) {
+      data._id = id;
     }
     spaceMutate(data);
   };

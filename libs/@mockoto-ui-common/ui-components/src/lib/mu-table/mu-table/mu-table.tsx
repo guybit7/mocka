@@ -27,13 +27,13 @@ type Order = 'asc' | 'desc';
 
 interface MuTableProps {
   id: string;
-  dataSource: [];
+  dataSource: any[];
   headers: MuTableHeaderItem[];
   sx?: React.CSSProperties;
   order: Order;
   orderBy: string;
   rowCount: number;
-  onLazyLoadMetaChange: (meta: LazyLoadMeta) => void;
+  onLazyLoadMetaChange?: (meta: LazyLoadMeta) => void;
   children?: React.ReactNode;
   onRowClick?: (row: any) => void;
   onActionClick?: (muTableActionEvent: MuTableActionEvent) => void;
