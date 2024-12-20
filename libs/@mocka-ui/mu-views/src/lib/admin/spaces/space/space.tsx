@@ -79,6 +79,8 @@ export function Space() {
     }
     if (!isCreateMode) {
       data._id = id;
+    } else {
+      delete data._id;
     }
     spaceMutate(data);
   };

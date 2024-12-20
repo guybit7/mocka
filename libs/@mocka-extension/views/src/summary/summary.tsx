@@ -13,7 +13,7 @@ export function Summary() {
   const { state, setState } = useSharedState();
   const { handleSubmit, control, setValue, watch, getValues } = useForm<CaptureState>({
     defaultValues: defaultCaptureState,
-    mode: 'onBlur',
+    mode: 'onChange',
   });
 
   const { mutate: saveMocks } = useMutation({

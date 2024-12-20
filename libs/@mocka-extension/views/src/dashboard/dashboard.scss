@@ -11,13 +11,14 @@
   .dashboard-form {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1.5rem;
+    padding-block: 2rem;
     height: 100%;
   }
 
   .dashboard-actions {
     display: flex;
-    padding-inline: 1rem;
+    width: 100%;
     justify-content: center;
     gap: 1rem;
   }
