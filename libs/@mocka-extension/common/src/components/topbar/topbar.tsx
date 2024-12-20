@@ -66,9 +66,9 @@ export function Topbar() {
         </Button> */}
       </div>
       <div>
-        <Button variant="outlined" onClick={handleLogout}>
+        {/* <Button variant="outlined" onClick={handleLogout}>
           Logout
-        </Button>
+        </Button> */}
         {/* <div>
           <span style={{ color: 'red' }}> {<p>Current Time: {currentTime}</p>}</span>
         </div> */}

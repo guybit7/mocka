@@ -1,10 +1,14 @@
-import styles from './capture.module.scss';
+import { Box } from '@mui/material';
+import CaptureHeader from './capture-header/capture-header';
+import './capture.scss';
+import CapturesTable from './captures-table/captures-table';
 
 export function Capture() {
   return (
-    <div className={styles['container']}>
-      <h1>Welcome to Capture!</h1>
-    </div>
+    <Box className="capture-container">
+      <CaptureHeader />
+      <CapturesTable />
+    </Box>
   );
 }
 

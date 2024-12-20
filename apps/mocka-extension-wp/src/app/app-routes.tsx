@@ -1,8 +1,8 @@
-import { RouteObject } from 'react-router-dom';
-import { Suspense } from 'react';
 import { AuthProvider, Login, ProtectedRoute } from '@me/auth';
-import { Shell } from '@me/common';
-import { Dashboard } from '@me/views';
+import { SharedStateProvider, Shell } from '@me/common';
+import { Capture, Dashboard, Summary } from '@me/views';
+import { Suspense } from 'react';
+import { Navigate, Outlet, RouteObject } from 'react-router-dom';
 
 export const appRoutes: RouteObject[] = [
   {
@@ -20,8 +20,32 @@ export const appRoutes: RouteObject[] = [
     },
     children: [
       {
-        path: '/',
-        element: <Suspense fallback={<div>Loading...</div>}>{<Dashboard />}</Suspense>,
+        index: true,
+        element: <Navigate to="dashboard" replace />,
+      },
+      {
+        path: '',
+        element: (
+          <SharedStateProvider>
+            <Suspense fallback={<div>Loading...</div>}>
+              <Outlet />
+            </Suspense>
+          </SharedStateProvider>
+        ),
+        children: [
+          {
+            path: 'dashboard',
+            element: <Dashboard />,
+          },
+          {
+            path: 'captures',
+            element: <Capture />,
+          },
+          {
+            path: 'summary',
+            element: <Summary />,
+          },
+        ],
       },
     ],
   },

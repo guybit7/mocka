@@ -18,7 +18,7 @@ interface MockFormDataPaylod {
   name: string;
   value: string;
   status: boolean;
-  groupId: string;
+  groupId: string | undefined;
 }
 const defaultValues = {
   name: '',
@@ -45,7 +45,9 @@ export function Mock() {
 
   const { mutate: mockMutate } = useMutation({
     mutationFn: (formData: MockFormDataPaylod) =>
-      isCreateMode ? muAxiosClient.post('/api/mock', formData) : muAxiosClient.put('/api/mock', formData),
+      isCreateMode
+        ? muAxiosClient.post('/api/mock', formData)
+        : muAxiosClient.put('/api/mock', { ...formData, _id: id }),
     onSuccess: () => {
       muQueryClient.invalidateQueries({ queryKey: ['mocks'] });
       handleClose();

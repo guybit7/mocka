@@ -16,6 +16,7 @@ dotenv.config();
 console.log(process.env.CORS_ORIGIN);
 console.log(process.env.JWT_SECRET_KEY);
 const app = express();
+app.use(express.json({ limit: '10mb' }));
 app.use(cookieParser());
 app.use(express.json());
 
