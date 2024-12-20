@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import { sendMessage, useSharedState } from '@me/common';
 import { MuTable } from '@mockoto-ui-common/ui-components';
 import { Box, Button } from '@mui/material';
@@ -11,11 +12,20 @@ export function CapturesTable() {
   const [data, setData] = useState<any[]>([]);
   const navigate = useNavigate();
 
+  const isCaptureExist = (capture: { name: string; value: string }): number => {
+    return data.findIndex(item => item.name === capture.name);
+  };
+
   useEffect(() => {
     const handleMessage = (message: any, sender: any, sendResponse: any) => {
       if (message.type === 'CAPTURE') {
         console.log('Payload:', message.payload);
-        setData(prevData => [message.payload, ...prevData]);
+        setData(prevData => {
+          if (prevData.findIndex(item => item.name === message.payload.name) === -1) {
+            return [message.payload, ...prevData];
+          }
+          return prevData; // No changes if capture already exists
+        });
       }
     };
     chrome.runtime.onMessage.addListener(handleMessage);

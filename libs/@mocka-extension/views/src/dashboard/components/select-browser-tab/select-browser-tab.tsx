@@ -23,7 +23,7 @@ export function SelectBrowserTab({ selectedTab }: SelectBrowserTabProps) {
   const { tabs, initTabsList } = useTabs();
   const { control, watch } = useForm<ISelectBrowserTab>({
     defaultValues: defaultValues,
-    mode: 'onBlur',
+    mode: 'onChange',
   });
 
   const tabsValidationRules = {

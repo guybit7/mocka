@@ -21,11 +21,13 @@ export function Dashboard() {
   const types = useMemo(() => responseTypes(), []);
   const navigate = useNavigate();
 
-  const { handleSubmit, control, setValue, watch, getValues } = useForm<CaptureState>({
+  const { handleSubmit, control, setValue, watch, getValues, formState } = useForm<CaptureState>({
     defaultValues: defaultCaptureState,
-    mode: 'onBlur',
+    mode: 'onChange',
   });
 
+  const { isValid } = formState;
+  const selectedTab = watch('selectedTab');
   const handlerSelectedTab = (tab: Tab | null) => {
     setValue('selectedTab', tab);
   };
@@ -88,7 +90,8 @@ export function Dashboard() {
           <Button
             onClick={handleSubmit(onSubmit)}
             variant={'contained'}
-            sx={{ background: 'rgb(0 120 0)', color: 'white' }}
+            disabled={!isValid}
+            sx={{ background: 'rgb(0 120 0)', color: 'white', width: '100%' }}
           >
             Record
           </Button>
