@@ -37,7 +37,7 @@ pipeline {
 
         stage('build') {
             steps {
-                bat 'npx nx run mocka-ui:build'
+                bat 'npx nx run mockoto-ui:build'
             }
         }
     }

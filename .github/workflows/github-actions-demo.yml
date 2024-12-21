@@ -56,8 +56,8 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Run Prettier Check mocka-ui
-        run: npm run format:mocka-ui:write
+      - name: Run Prettier Check mockoto-ui
+        run: npm run format:mockoto-ui:write
       - name: Run Prettier Check mockoto
         run: npm run format:mockoto:write
       - name: Run Prettier Check mocka-extension
@@ -87,8 +87,8 @@ jobs:
       - name: Install Dependencies (if not already present)
         run: npm install
 
-      - name: Run Build mocka-ui
-        run: npx nx run mocka-ui:build
+      - name: Run Build mockoto-ui
+        run: npx nx run mockoto-ui:build
       - name: Run Build mockoto
         run: npx nx run mockoto:build
       - name: Run Build mocka-extension-wp

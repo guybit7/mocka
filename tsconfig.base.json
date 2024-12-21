@@ -31,8 +31,8 @@
       "@mockoto/core": ["libs/@mockoto/core/src/index.ts"],
       "@mockoto/domain": ["libs/@mockoto/domain/src/index.ts"],
       "@mockoto/system": ["libs/@mockoto/system/src/index.ts"],
-      "@mu/mu-auth": ["libs/@mocka-ui/mu-auth/src/index.ts"],
-      "@mu/mu-views": ["libs/@mocka-ui/mu-views/src/index.ts"]
+      "@mu/mu-auth": ["libs/@mockoto-ui/mu-auth/src/index.ts"],
+      "@mu/mu-views": ["libs/@mockoto-ui/mu-views/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
