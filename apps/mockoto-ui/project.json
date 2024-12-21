@@ -1,0 +1,9 @@
+{
+  "name": "mockoto-ui",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/mockoto-ui/src",
+  "projectType": "application",
+  "tags": ["mockoto-ui"],
+  "// targets": "to see all targets run: nx show project mockoto-ui --web",
+  "targets": {}
+}

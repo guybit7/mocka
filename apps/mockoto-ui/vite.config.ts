@@ -5,7 +5,7 @@ import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 
 export default defineConfig({
   root: __dirname,
-  cacheDir: '../../node_modules/.vite/apps/mocka-ui',
+  cacheDir: '../../node_modules/.vite/apps/mockoto-ui',
 
   server: {
     port: 4200,
@@ -25,7 +25,7 @@ export default defineConfig({
   // },
 
   build: {
-    outDir: '../../dist/apps/mocka-ui',
+    outDir: '../../dist/apps/mockoto-ui',
     emptyOutDir: true,
     reportCompressedSize: true,
     commonjsOptions: {
