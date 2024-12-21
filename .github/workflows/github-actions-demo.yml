@@ -1,4 +1,4 @@
-name: GitHub Actions - UITanstack Application
+name: GitHub Actions - Mockoto
 
 on:
   push:
