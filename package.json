@@ -1,18 +1,18 @@
 {
-  "name": "@mocka/source",
+  "name": "@mockoto/source",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "npx nx run mocka:serve --configuration=production",
+    "start": "npx nx run mockoto:serve --configuration=production",
     "format:mockoto-ui:write": "prettier --write \"libs/@mockoto-ui/**/*.{ts,tsx,js,json,md}\" \"apps/mockoto-ui/*.{ts,tsx,js,json,md}\"",
     "format:mockoto-ui:read": "prettier --read \"libs/@mockoto-ui/**/*.{ts,tsx,js,json,md}\" \"apps/mockoto-ui/*.{ts,tsx,js,json,md}\"",
     "format:mockoto-ui:check": "prettier --check \"libs/@mockoto-ui/**/*.{ts,tsx,js,json,md}\" \"apps/mockoto-ui/*.{ts,tsx,js,json,md}\"",
     "format:mockoto:write": "prettier --write \"libs/@mockoto/**/*.{ts,tsx,js,json,md}\" \"apps/mockoto/**/*.{ts,tsx,js,json,md}\"",
     "format:mockoto:read": "prettier --read \"libs/@mockoto/**/*.{ts,tsx,js,json,md}\" \"apps/mockoto/**/*.{ts,tsx,js,json,md}\"",
     "format:mockoto:check": "prettier --check \"libs/@mockoto/**/*.{ts,tsx,js,json,md}\" \"apps/mockoto/**/*.{ts,tsx,js,json,md}\"",
-    "format:mocka-extension-wp:write": "prettier --write \"libs/@mocka-extension/**/*.{ts,tsx,js,json,md}\" \"apps/mocka-extension-wp/**/*.{ts,tsx,js,json,md}\"",
-    "format:mocka-extension-wp:read": "prettier --read \"libs/@mocka-extension/**/*.{ts,tsx,js,json,md}\" \"apps/mocka-extension-wp/**/*.{ts,tsx,js,json,md}\"",
-    "format:mocka-extension-wp:check": "prettier --check \"libs/@mocka-extension/**/*.{ts,tsx,js,json,md}\" \"apps/mocka-extension-wp/**/*.{ts,tsx,js,json,md}\""
+    "format:mockoto-extension:write": "prettier --write \"libs/@mockoto-extension/**/*.{ts,tsx,js,json,md}\" \"apps/mmockoto-extension**/*.{ts,tsx,js,json,md}\"",
+    "format:mockoto-extension:read": "prettier --read \"libs/@mockoto-extension/**/*.{ts,tsx,js,json,md}\" \"apps/mmockoto-extension**/*.{ts,tsx,js,json,md}\"",
+    "format:mockoto-extension:check": "prettier --check \"libs/@mockoto-extension/**/*.{ts,tsx,js,json,md}\" \"apps/mmockoto-extension**/*.{ts,tsx,js,json,md}\""
   },
   "private": true,
   "dependencies": {

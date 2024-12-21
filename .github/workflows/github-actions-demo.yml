@@ -60,8 +60,8 @@ jobs:
         run: npm run format:mockoto-ui:write
       - name: Run Prettier Check mockoto
         run: npm run format:mockoto:write
-      - name: Run Prettier Check mocka-extension
-        run: npm run format:mocka-extension-wp:write
+      - name: Run Prettier Check mockoto-extension
+        run: npm run format:mockoto-extension:write
 
   build:
     name: Build Application
@@ -91,5 +91,5 @@ jobs:
         run: npx nx run mockoto-ui:build
       - name: Run Build mockoto
         run: npx nx run mockoto:build
-      - name: Run Build mocka-extension-wp
-        run: npx nx run mocka-extension-wp:build
+      - name: Run Build mockoto-extension
+        run: npx nx run mockoto-extension:build

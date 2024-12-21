@@ -15,9 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@me/auth": ["libs/@mocka-extension/auth/src/index.ts"],
-      "@me/common": ["libs/@mocka-extension/common/src/index.ts"],
-      "@me/views": ["libs/@mocka-extension/views/src/index.ts"],
+      "@me/auth": ["libs/@mockoto-extension/auth/src/index.ts"],
+      "@me/common": ["libs/@mockoto-extension/common/src/index.ts"],
+      "@me/views": ["libs/@mockoto-extension/views/src/index.ts"],
       "@mocka/authentication": ["libs/mocka/authentication/src/index.ts"],
       "@mocka/core": ["libs/mocka/infra/core/src/index.ts"],
       "@mocka/cron": ["libs/mocka/cron/src/index.ts"],

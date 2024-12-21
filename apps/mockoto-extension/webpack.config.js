@@ -6,7 +6,7 @@ const { join } = require('path');
 
 module.exports = {
   output: {
-    path: join(__dirname, '../../dist/apps/mocka-extension-wp'),
+    path: join(__dirname, '../../dist/apps/mockoto-extension'),
     filename: '[name].bundle.js', // Outputs separate bundles for main and background
   },
   devServer: {

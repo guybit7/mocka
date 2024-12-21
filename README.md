@@ -12,11 +12,11 @@ comes with a LSP for Vim users.
 
 ## Start the application
 
-Run `npx nx serve mocka` to start the development server. Happy coding!
+Run `npx nx serve mockoto` to start the development server. Happy coding!
 
 ## Build for production
 
-Run `npx nx build mocka` to build the application. The build artifacts are stored in the output directory (e.g. `dist/` or `build/`), ready to be deployed.
+Run `npx nx build mockoto` to build the application. The build artifacts are stored in the output directory (e.g. `dist/` or `build/`), ready to be deployed.
 
 ## Running tasks
 

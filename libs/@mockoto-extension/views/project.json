@@ -1,7 +1,7 @@
 {
   "name": "views",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/@mocka-extension/views/src",
+  "sourceRoot": "libs/@mockoto-extension/views/src",
   "projectType": "library",
   "tags": [],
   "// targets": "to see all targets run: nx show project views --web",
