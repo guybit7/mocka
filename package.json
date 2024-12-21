@@ -4,9 +4,9 @@
   "license": "MIT",
   "scripts": {
     "start": "npx nx run mocka:serve --configuration=production",
-    "format:mocka-ui:write": "prettier --write \"libs/@mocka-ui/**/*.{ts,tsx,js,json,md}\" \"apps/mocka-ui/**/*.{ts,tsx,js,json,md}\"",
-    "format:mocka-ui:read": "prettier --read \"libs/@mocka-ui/**/*.{ts,tsx,js,json,md}\" \"apps/mocka-ui/**/*.{ts,tsx,js,json,md}\"",
-    "format:mocka-ui:check": "prettier --check \"libs/@mocka-ui/**/*.{ts,tsx,js,json,md}\" \"apps/mocka-ui/**/*.{ts,tsx,js,json,md}\"",
+    "format:mocka-ui:write": "prettier --write \"libs/@mocka-ui/**/*.{ts,tsx,js,json,md}\" \"apps/mockoto-ui/*.{ts,tsx,js,json,md}\"",
+    "format:mocka-ui:read": "prettier --read \"libs/@mocka-ui/**/*.{ts,tsx,js,json,md}\" \"apps/mockoto-ui/*.{ts,tsx,js,json,md}\"",
+    "format:mocka-ui:check": "prettier --check \"libs/@mocka-ui/**/*.{ts,tsx,js,json,md}\" \"apps/mockoto-ui/*.{ts,tsx,js,json,md}\"",
     "format:mockoto:write": "prettier --write \"libs/@mockoto/**/*.{ts,tsx,js,json,md}\" \"apps/mockoto/**/*.{ts,tsx,js,json,md}\"",
     "format:mockoto:read": "prettier --read \"libs/@mockoto/**/*.{ts,tsx,js,json,md}\" \"apps/mockoto/**/*.{ts,tsx,js,json,md}\"",
     "format:mockoto:check": "prettier --check \"libs/@mockoto/**/*.{ts,tsx,js,json,md}\" \"apps/mockoto/**/*.{ts,tsx,js,json,md}\"",
