@@ -2,12 +2,12 @@ import { LazyLoadMeta } from '@mockoto-ui-common/types';
 import { MuTable } from '@mockoto-ui-common/ui-components';
 import { muAxiosClient } from '@mu/mu-auth';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import { Box } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { spacesTableHeaders } from './spaces-table-config';
 import './spaces-table.scss';
-import { Box } from '@mui/material';
 
 export function SpacesTable() {
   const [lazyLoadMeta, setLazyLoadMeta] = useState<LazyLoadMeta>({});
@@ -36,10 +36,6 @@ export function SpacesTable() {
   const onRowClick = (row: any) => {
     navigate(`./${row._id}`);
   };
-
-  useEffect(() => {
-    console.log('new search!');
-  }, [data]);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error.message}</div>;

@@ -4,9 +4,9 @@ import { muAxiosClient, muQueryClient } from '@mu/mu-auth';
 import { Box, CircularProgress } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import './space.scss';
-import { useForm } from 'react-hook-form';
 
 interface SpaceFormData {
   name: string;
@@ -51,10 +51,9 @@ export function Space() {
 
   useEffect(() => {
     if (data) {
-      // Set the form field values when data is available
-      setValue('name', data.name); // Example: setting the 'name' field with data
+      setValue('name', data.name);
     }
-  }, [data, setValue]); // Runs every time data changes
+  }, [data, setValue]);
 
   const handleClose = () => {
     navigate('../');

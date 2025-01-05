@@ -1,8 +1,8 @@
-import { Outlet } from 'react-router-dom';
-import './users-container.scss';
-import { createContext, useState } from 'react';
-import { User } from '../interfaces/user';
 import { LayoutPrimary } from '@mockoto-ui-common/design-system';
+import { createContext, useState } from 'react';
+import { Outlet } from 'react-router-dom';
+import { User } from '../interfaces/user';
+import './users-container.scss';
 
 interface UsersContextType {
   users: User[];
@@ -13,18 +13,14 @@ interface UsersContextType {
 const UserContext = createContext<UsersContextType>({
   users: [],
   activeUser: null,
-  setActiveUser: () => {},
+  setActiveUser: () => null,
 });
 export function UsersContainer() {
   const [activeUser, setActiveUser] = useState<User | null>(null);
 
   return (
     <UserContext.Provider value={{ users: [], activeUser, setActiveUser }}>
-      <LayoutPrimary
-        // header={<span>Header Content</span>}
-        body={<Outlet />}
-        footer={<span>Users container footer</span>}
-      />
+      <LayoutPrimary body={<Outlet />} />
     </UserContext.Provider>
   );
 }

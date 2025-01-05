@@ -1,8 +1,9 @@
-import { Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import { Navigate, RouteObject } from 'react-router-dom';
-import Mock from './mock/mock';
-import MocksContainer from './mocks-container/mocks-container';
-import MocksTable from './mocks-table/mocks-table';
+
+const MocksContainer = lazy(() => import('./mocks-container/mocks-container'));
+const MocksTable = lazy(() => import('./mocks-table/mocks-table'));
+const Mock = lazy(() => import('./mock/mock'));
 
 export const mocksRoutes: RouteObject[] = [
   {

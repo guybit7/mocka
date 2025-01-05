@@ -9,6 +9,8 @@ import { Outlet, useNavigate, useParams, useSearchParams } from 'react-router-do
 import { mocksTableHeaders } from './mocks-table-config';
 import './mocks-table.scss';
 
+const env = import.meta.env;
+
 export function MocksTable() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { groupId } = useParams<{ groupId: string }>();
@@ -36,37 +38,14 @@ export function MocksTable() {
     navigate(`./${row._id}?` + currentQueryParams.toString());
   };
 
-  //  useEffect(() => {
-  //  const spaceIdFromUrl = searchParams.get('space');
-  //  if (spaceIdFromUrl) {
-  //    const selectedSpace = summarySpaces?.find((space: any) => space._id === spaceIdFromUrl);
-  //    if (selectedSpace) {
-  //      setValue('space', selectedSpace);
-  //    }
-  //  } else if (summarySpaces?.length) {
-  //    setValue('space', summarySpaces[0]);
-  //  }
-  //  }, [summarySpaces, setValue]);
-
-  //  useEffect(() => {
-  //    if (watchedSpace) {
-  //      refetchGroups(watchedSpace?._id);
-  //      setSearchParams({ space: watchedSpace?._id });
-  //    }
-  //  }, [watchedSpace]);
-
   const handlerActionClick = (muTableActionEvent: MuTableActionEvent) => {
     switch (muTableActionEvent.id) {
       case 'MOCK_LINK':
-        window.open(`http://localhost:3000/${groupId}/${muTableActionEvent.row.name}`, '_blank'); // Open in a new tab
+        window.open(`${env.VITE_API_BASE_URL}/${groupId}/${muTableActionEvent.row.name}`, '_blank'); // Open in a new tab
         break;
     }
-
-    //  navigate(`/mocks/${watchedSpace._id}/${muTableActionEvent.row._id}/list`);
   };
 
-  // if (isLoading) return <div>Loading...</div>;
-  // if (isError) return <div>Error: {error.message}</div>;
   return (
     <>
       <MuTable

@@ -2,7 +2,6 @@ import { FilterMetadata, LazyLoadMeta } from '@mockoto-ui-common/types';
 import { globalSearch } from '@mockoto-ui-common/utils';
 import {
   Box,
-  Button,
   CircularProgress,
   InputAdornment,
   Paper,
@@ -19,9 +18,9 @@ import {
 } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
 import React, { useEffect, useRef, useState } from 'react';
+import { MuTableHeaderType } from '../enums';
 import { MuTableActionEvent, MuTableHeaderItem } from '../interfaces/mu-table-header-item.interface';
 import './mu-table.scss';
-import { MuTableHeaderType } from '../enums';
 
 type Order = 'asc' | 'desc';
 
@@ -54,16 +53,14 @@ export const MuTable: React.FC<MuTableProps> = ({
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [sortField, setSortField] = useState<string | null>(null);
-  const [sortOrder, setSortOrder] = useState<number>(1); // 1 for ascending, -1 for descending
+  const [sortOrder, setSortOrder] = useState<number>(1);
   const [filters, setFilters] = useState<{ [key: string]: FilterMetadata }>({});
-  const [globalFilter, setGlobalFilter] = useState<string>(''); // For global search input
+  const [globalFilter, setGlobalFilter] = useState<string>('');
   const [filteredData, setFilteredData] = useState<[]>([]);
   const [isLoading, setLoading] = useState(false);
 
-  // Ref to store the previous lazy load metadata
   const prevMetaRef = useRef<LazyLoadMeta | null>(null);
 
-  // Slice the data according to pagination settings
   const paginatedData = filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -72,10 +69,9 @@ export const MuTable: React.FC<MuTableProps> = ({
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(+event.target.value);
-    setPage(0); // Reset page to 0 when rows per page changes
+    setPage(0);
   };
 
-  // Effect to notify parent about meta changes
   useEffect(() => {
     const meta: LazyLoadMeta = {
       first: page * rowsPerPage,
@@ -85,18 +81,17 @@ export const MuTable: React.FC<MuTableProps> = ({
       filters,
       globalFilter,
     };
-    // Only call onLazyLoadMetaChange if the meta has changed
+
     if (JSON.stringify(meta) !== JSON.stringify(prevMetaRef.current)) {
       if (
         prevMetaRef.current === null ||
         (meta.first === prevMetaRef.current?.first && meta.rows === prevMetaRef.current?.rows) ||
         meta.globalFilter !== prevMetaRef.current.globalFilter
       ) {
-        // onLazyLoadMetaChange(meta); // Send the metadata to the parent
         applyFilter(meta);
       }
     }
-  }, [dataSource, page, rowsPerPage, sortField, sortOrder, filters, globalFilter, onLazyLoadMetaChange]); // Dependency array ensures it's called on changes
+  }, [dataSource, page, rowsPerPage, sortField, sortOrder, filters, globalFilter, onLazyLoadMetaChange]);
 
   useEffect(() => {
     if (prevMetaRef.current) {
@@ -109,16 +104,14 @@ export const MuTable: React.FC<MuTableProps> = ({
     const globalFilter = lazyLoadMeta.globalFilter ?? '';
     const finalData: any = globalSearch(dataSource, globalFilter, sortField, sortOrder);
     setLoading(true);
-    setPage(0); // Reset page to 0 when rows per page changes
-    // setTimeout(() => {
-    setFilteredData(finalData); // Set the filtered data
+    setPage(0);
+    setFilteredData(finalData);
     setLoading(false);
-    prevMetaRef.current = lazyLoadMeta; // Update the ref with the latest metadata
-    // }, 300);
+    prevMetaRef.current = lazyLoadMeta;
   };
 
   const handleSortChange = (field: string) => {
-    const newSortOrder = sortField === field && sortOrder === 1 ? -1 : 1; // Toggle between asc and desc
+    const newSortOrder = sortField === field && sortOrder === 1 ? -1 : 1;
     setSortField(field);
     setSortOrder(newSortOrder);
   };
@@ -129,12 +122,12 @@ export const MuTable: React.FC<MuTableProps> = ({
 
   const handleRowClick = (row: any) => {
     if (onRowClick) {
-      onRowClick(row); // Trigger the callback passed from the parent component
+      onRowClick(row);
     }
   };
 
   const handleClearGlobalFilter = () => {
-    setGlobalFilter(''); // Clear the global filter input
+    setGlobalFilter('');
   };
 
   function handleIconActionClick(header: MuTableHeaderItem, row: any) {
@@ -248,11 +241,11 @@ export const MuTable: React.FC<MuTableProps> = ({
                   key={index}
                   sx={{
                     '&:hover': {
-                      backgroundColor: 'var(--me-row-hover)', // Hover effect
-                      cursor: 'pointer', // Change cursor to pointer on hover
+                      backgroundColor: 'var(--me-row-hover)',
+                      cursor: 'pointer',
                     },
                   }}
-                  onClick={() => handleRowClick(row)} // Handle row click
+                  onClick={() => handleRowClick(row)}
                 >
                   {headers
                     .filter(h => h.type !== MuTableHeaderType.TEXT)
