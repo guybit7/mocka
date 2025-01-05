@@ -11,6 +11,7 @@ export const MuInput: React.FC<MuInputProps> = ({
   error,
   helperText,
   onChange,
+  onBlur,
   ...props
 }) => {
   return (

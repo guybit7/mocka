@@ -1,46 +1,46 @@
-version: '3.8'
-
 services:
   mockoto:
     build:
-      context: . # Set context to the root of your monorepo
-      dockerfile: apps/mockoto/Dockerfile # Specify the path to the Dockerfile
+      context: .
+      dockerfile: apps/mockoto/Dockerfile
     ports:
       - '3000:3000'
     networks:
-      - mocka-network
-    environment:
-      - MONGO_URI=mongodb://mocka-mongo:27017/mocka
-      - REDIS_HOST=mocka-redis
-      - REDIS_PORT=6379
-      - CORS_ORIGIN=http://localhost:3001
+      - mockoto-network
+    env_file:
+      - apps/mockoto/.env.production
 
-  ui-tanstack:
+  mockoto-ui:
     build:
-      context: . # Set context to the root of your monorepo
-      dockerfile: apps/ui-tanstack/Dockerfile # Specify the path to the Dockerfile
+      context: . 
+      dockerfile: apps/mockoto-ui/Dockerfile
     ports:
-      - '3001:80' # Map container port 80 to host port 3001
+      - '3001:80'
     networks:
-      - mocka-network
+      - mockoto-network
+    env_file:
+      - apps/mockoto-ui/.env.production
+
   mongo:
     image: mongo:latest
-    container_name: mocka-mongo
+    container_name: mockoto-mongo
     networks:
-      - mocka-network
+      - mockoto-network
     ports:
-      - "27018:27017"  # Map MongoDB container port 27017 to host port 27018
+      - "27018:27017" 
     volumes:
       - mongo-data:/data/db
 
   redis:
     image: redis:latest
-    container_name: mocka-redis
+    container_name: mockoto-redis
     networks:
-      - mocka-network
+      - mockoto-network
+    ports:
+      - "6379:6379" 
 
 networks:
-  mocka-network:
+  mockoto-network:
 
 volumes:
   mongo-data:

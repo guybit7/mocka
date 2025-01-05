@@ -5,6 +5,7 @@ export class RedisClient {
 
   constructor() {
     if (!RedisClient.client) {
+      console.log(`----REDIS---> `, process.env.REDIS_HOST);
       RedisClient.client = new Redis({
         host: process.env.REDIS_HOST || 'localhost',
         port: Number(process.env.REDIS_PORT) || 6379,

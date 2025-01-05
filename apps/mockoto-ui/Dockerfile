@@ -13,7 +13,8 @@ RUN npm install
 COPY . .
 
 # Build the app
-RUN npx nx run mockoto-ui:build
+RUN npx nx reset
+RUN npx nx run mockoto-ui:build:production
 
 # Step 2: Use Nginx to serve the app
 FROM nginx:latest

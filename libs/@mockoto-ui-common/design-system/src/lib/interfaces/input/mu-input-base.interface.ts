@@ -1,7 +1,7 @@
 import { Control, RegisterOptions } from 'react-hook-form';
 
 export interface MuInputBase {
-  id: string;
+  id?: string;
   label: string;
   name: string;
   value?: string;
@@ -13,6 +13,7 @@ export interface MuInputBase {
   rows?: number;
   setValue?: any;
   control?: Control<any>;
-  rules: Omit<RegisterOptions<any, any>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>;
+  rules?: Omit<RegisterOptions<any, any>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>;
   onChange?: any;
+  onBlur?: any;
 }

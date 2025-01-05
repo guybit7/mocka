@@ -1,6 +1,5 @@
 import './groups-container.scss';
 import { Outlet } from 'react-router-dom';
-import GroupsHeader from '../groups-header/groups-header';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { muAxiosClient } from '@mu/mu-auth';
@@ -37,8 +36,6 @@ export function GroupsContainer() {
     queryFn: ({ signal }) => muAxiosClient.get('/api/space/summary/getAll', { signal }),
     enabled: true,
   });
-
-  useEffect(() => {}, []);
 
   // return (
   //   <GroupContext.Provider value={{}}>

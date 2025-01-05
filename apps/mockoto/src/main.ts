@@ -2,25 +2,23 @@ import cookieParser from 'cookie-parser';
 import express, { Request, Response } from 'express';
 
 import cors from 'cors';
-// import { dbEventEmitter } from '@mockoto/core';
+
 import { initializeSystem } from '@mockoto/system';
 
 import { registerAuthControllers } from '@mockoto/authentication';
 import { mainMiddleware, registerDomainControllers } from '@mockoto/domain';
 import dotenv from 'dotenv';
 
+dotenv.config();
+
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
-dotenv.config();
-console.log(process.env.CORS_ORIGIN);
-console.log(process.env.JWT_SECRET_KEY);
 const app = express();
 app.use(express.json({ limit: '10mb' }));
 app.use(cookieParser());
 app.use(express.json());
 
-console.log(process.env.CORS_ORIGIN);
 app.use(
   cors({
     origin: [process.env.CORS_ORIGIN, 'http://localhost:4200'], // setting from process.env

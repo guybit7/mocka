@@ -1,5 +1,6 @@
 import axios from 'axios';
 const env = import.meta.env;
+
 export const muAxiosClient = axios.create({
   baseURL: env.VITE_API_BASE_URL,
   headers: {
